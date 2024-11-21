@@ -18,10 +18,13 @@
     ]
   },
   "dependencies": {
+    "@mantine/core": "^7.14.1",
+    "@mantine/hooks": "^7.14.1",
     "@notionhq/client": "^2.2.15",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "next": "15.0.3",
+    "pnpm": "^9.14.2",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106"
   },
@@ -32,6 +35,9 @@
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
+    "postcss": "^8.4.49",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.3.3",
     "typescript": "^5"
   }
