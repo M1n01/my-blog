@@ -1,15 +1,22 @@
+import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import { type NotionPost } from "../../types/notionPost";
 
-import { Client } from "@notionhq/client";
+import { APIErrorCode, Client } from "@notionhq/client";
 
 const notion = new Client({
-  auth: process.env.NOTION_TOKEN,
+  auth: process.env.NEXT_PUBLIC_NOTION_TOKEN,
 });
 
-export async function getAllPosts(): Promise<NotionPost[]> {
+async function getAPIResponse(): Promise<QueryDatabaseResponse | null> {
+  console.log("Getting API response...");
+  console.log(
+    "NEXT_PUBLIC_NOTION_TOKEN: ",
+    process.env.NEXT_PUBLIC_NOTION_TOKEN,
+  );
+  console.log("NEXT_PUBLIC_DATABASE_ID: ", process.env.NEXT_PUBLIC_DATABASE_ID);
   try {
-    const res = await notion.databases.query({
-      database_id: process.env.DATABASE_ID!,
+    const response = await notion.databases.query({
+      database_id: process.env.NEXT_PUBLIC_DATABASE_ID!,
       sorts: [
         {
           property: "publishedAt",
@@ -17,7 +24,24 @@ export async function getAllPosts(): Promise<NotionPost[]> {
         },
       ],
     });
+    console.log(response);
+    return response;
+  } catch (error) {
+    if ((error as { code: string }).code === APIErrorCode.ObjectNotFound) {
+      console.error(
+        `Database not found: ${process.env.NEXT_PUBLIC_DATABASE_ID}`,
+      );
+    } else {
+      console.error(error);
+    }
+  }
+  return null;
+}
 
+export async function getAllPosts(): Promise<NotionPost[]> {
+  const res = await getAPIResponse();
+
+  if (res !== null) {
     const posts = res.results.map((page: any) => ({
       id: page.id,
       title: page.properties.Title.title[0].plain_text ?? "",
@@ -28,10 +52,8 @@ export async function getAllPosts(): Promise<NotionPost[]> {
       content: "", // contents will be fetched later
     }));
     return posts;
-  } catch (err) {
-    console.error(err);
-    return [];
   }
+  return [];
 }
 
 export async function getPostBySlug(slug: string): Promise<NotionPost | null> {
