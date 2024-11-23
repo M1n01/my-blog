@@ -19,7 +19,7 @@ export async function GET() {
       database_id: process.env.NEXT_PUBLIC_DATABASE_ID!,
       sorts: [
         {
-          property: "PublishedAt",
+          property: "publishedAt",
           direction: "descending",
         },
       ],
