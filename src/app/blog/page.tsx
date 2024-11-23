@@ -1,6 +1,7 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import {
+  Anchor,
   Container,
   Title,
   Card,
@@ -66,17 +67,19 @@ const BlogList: FC = () => {
                 ))
             : paginatedPosts.map((post) => (
                 <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
-                  <Card key={post.slug} shadow="xs" padding="xl">
-                    <Title order={3}>{post.title}</Title>
-                    <Text>{post.description}</Text>
-                    <Group mt="md">
-                      {post.tags?.map((tag) => (
-                        <Badge key={tag} color="teal" variant="light">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </Group>
-                  </Card>
+                  <Anchor href={`/blog/${post.id}`}>
+                    <Card key={post.id} shadow="xs" padding="xl">
+                      <Title order={3}>{post.title}</Title>
+                      <Text>{post.description}</Text>
+                      <Group mt="md">
+                        {post.tags?.map((tag) => (
+                          <Badge key={tag} color="teal" variant="light">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </Group>
+                    </Card>
+                  </Anchor>
                 </GridCol>
               ))}
         </Grid>
