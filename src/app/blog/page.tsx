@@ -15,7 +15,6 @@ import {
 
 import Layout from "./_layout";
 import { type NotionPost } from "../../types/notionPost";
-import { getAllPosts } from "../../lib/notion/notion";
 
 const BlogList: FC = () => {
   const [posts, setPosts] = useState<NotionPost[]>([]);
@@ -25,12 +24,27 @@ const BlogList: FC = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const fetchedPosts = await getAllPosts();
-      setPosts(fetchedPosts);
-      setLoading(false);
+      try {
+        const fetchedPosts = await fetch("/api/notion", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => data.results);
+        setPosts(fetchedPosts);
+        console.log("fetchedPosts", fetchedPosts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+        setPosts([]); // エラー時は空配列を設定
+      } finally {
+        setLoading(false);
+      }
     };
     fetchPosts();
   }, []);
+  console.log("posts", posts);
 
   const paginatedPosts = posts.slice(
     (activePage - 1) * postsPerPage,
