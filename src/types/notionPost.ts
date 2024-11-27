@@ -4,6 +4,10 @@ export type NotionPost = {
   description: string;
   slug: string;
   publishedAt: string;
-  tags?: string[];
+  tags?: {
+    id: string;
+    name: string;
+    color?: string;
+  }[];
   content: string;
 };

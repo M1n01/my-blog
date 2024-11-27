@@ -26,6 +26,7 @@ const BlogList: FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        console.log("Fetching posts...");
         const fetchedPosts = await fetch("/api/notion", {
           method: "GET",
           headers: {
@@ -41,9 +42,14 @@ const BlogList: FC = () => {
             description: post.properties.description.rich_text[0].plain_text,
             slug: post.properties.slug.rich_text[0].plain_text,
             publishedAt: post.properties.publishedAt.date.start,
-            tags: post.properties.tags.multi_select,
+            tag: post.properties.tags.multi_select.map((tag: any) => ({
+              id: tag.id,
+              name: tag.name,
+              color: tag.color,
+            })),
           };
         });
+        console.log("Fetched posts:", articles);
         setPosts(articles);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
@@ -59,7 +65,6 @@ const BlogList: FC = () => {
     (activePage - 1) * postsPerPage,
     activePage * postsPerPage,
   );
-  console.count("render BlogList");
 
   return (
     <Layout>
@@ -77,7 +82,7 @@ const BlogList: FC = () => {
                     <Skeleton height={200} radius="md" mb="xl" />
                   </GridCol>
                 ))
-            : paginatedPosts.map((post) => (
+            : posts.map((post) => (
                 <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
                   <Anchor href={`/blog/${post.id}`}>
                     <Card shadow="xs" padding="xl">
@@ -85,8 +90,12 @@ const BlogList: FC = () => {
                       <Text>{post.description}</Text>
                       <Group mt="md">
                         {post.tags?.map((tag) => (
-                          <Badge key={tag} color="teal" variant="light">
-                            {tag}
+                          <Badge
+                            key={`${post.id}-${tag.id}`}
+                            color="teal"
+                            variant="light"
+                          >
+                            {tag.name}
                           </Badge>
                         ))}
                       </Group>
