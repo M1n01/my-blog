@@ -15,19 +15,19 @@ import {
 } from "@mantine/core";
 
 import Layout from "./_layout";
-import { type NotionPost } from "../../types/notionPost";
+import { type NotionArticle } from "../../types/notionArticle";
 
 const BlogList: FC = () => {
-  const [posts, setPosts] = useState<NotionPost[]>([]);
+  const [posts, setPosts] = useState<NotionArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const postsPerPage = 9;
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchArticles = async () => {
       try {
         console.log("Fetching posts...");
-        const fetchedPosts = await fetch("/api/notion", {
+        const fetchedArticles = await fetch("/api/notion", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -35,7 +35,7 @@ const BlogList: FC = () => {
         })
           .then((res) => res.json())
           .then((data) => data.results);
-        const articles = fetchedPosts.map((post: any) => {
+        const articles = fetchedArticles.map((post: any) => {
           return {
             id: post.id,
             title: post.properties.title.title[0].plain_text,
@@ -49,16 +49,16 @@ const BlogList: FC = () => {
             })),
           };
         });
-        console.log("Fetched posts:", articles);
+        console.log("Fetched articles:", articles);
         setPosts(articles);
       } catch (error) {
-        console.error("Failed to fetch posts:", error);
+        console.error("Failed to fetch articles:", error);
         setPosts([]); // エラー時は空配列を設定
       } finally {
         setLoading(false);
       }
     };
-    fetchPosts();
+    fetchArticles();
   }, []);
 
   const paginatedPosts = posts.slice(

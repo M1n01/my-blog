@@ -1,4 +1,4 @@
-export type NotionPost = {
+export type NotionArticle = {
   id: string;
   title: string;
   description: string;
