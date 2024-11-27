@@ -34,8 +34,17 @@ const BlogList: FC = () => {
         })
           .then((res) => res.json())
           .then((data) => data.results);
-        setPosts(fetchedPosts);
-        console.log("fetchedPosts", fetchedPosts);
+        const articles = fetchedPosts.map((post: any) => {
+          return {
+            id: post.id,
+            title: post.properties.title.title[0].plain_text,
+            description: post.properties.description.rich_text[0].plain_text,
+            slug: post.properties.slug.rich_text[0].plain_text,
+            publishedAt: post.properties.publishedAt.date.start,
+            tags: post.properties.tags.multi_select,
+          };
+        });
+        setPosts(articles);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
         setPosts([]); // エラー時は空配列を設定
@@ -45,12 +54,12 @@ const BlogList: FC = () => {
     };
     fetchPosts();
   }, []);
-  console.log("posts", posts);
 
   const paginatedPosts = posts.slice(
     (activePage - 1) * postsPerPage,
     activePage * postsPerPage,
   );
+  console.count("render BlogList");
 
   return (
     <Layout>
@@ -61,14 +70,17 @@ const BlogList: FC = () => {
             ? Array(3)
                 .fill(0)
                 .map((_, index) => (
-                  <GridCol key={index} span={{ base: 12, sm: 6, md: 4 }}>
+                  <GridCol
+                    key={`skeleton-${index}`}
+                    span={{ base: 12, sm: 6, md: 4 }}
+                  >
                     <Skeleton height={200} radius="md" mb="xl" />
                   </GridCol>
                 ))
             : paginatedPosts.map((post) => (
                 <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
                   <Anchor href={`/blog/${post.id}`}>
-                    <Card key={post.id} shadow="xs" padding="xl">
+                    <Card shadow="xs" padding="xl">
                       <Title order={3}>{post.title}</Title>
                       <Text>{post.description}</Text>
                       <Group mt="md">
