@@ -1,18 +1,15 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import {
-  Anchor,
   Container,
   Title,
-  Card,
-  Text,
   Grid,
   Skeleton,
-  Badge,
   Group,
   Pagination,
   GridCol,
 } from "@mantine/core";
+import { BadgeCard } from "../../components/BadgeCard";
 
 import Layout from "./_layout";
 import { type NotionArticle } from "../../types/notionArticle";
@@ -84,23 +81,7 @@ const BlogList: FC = () => {
                 ))
             : posts.map((post) => (
                 <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
-                  <Anchor href={`/blog/${post.id}`}>
-                    <Card shadow="xs" padding="xl">
-                      <Title order={3}>{post.title}</Title>
-                      <Text>{post.description}</Text>
-                      <Group mt="md">
-                        {post.tags?.map((tag) => (
-                          <Badge
-                            key={`${post.id}-${tag.id}`}
-                            color="teal"
-                            variant="light"
-                          >
-                            {tag.name}
-                          </Badge>
-                        ))}
-                      </Group>
-                    </Card>
-                  </Anchor>
+                  <BadgeCard post={post} />
                 </GridCol>
               ))}
         </Grid>

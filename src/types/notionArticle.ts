@@ -1,5 +1,6 @@
 export type NotionArticle = {
   id: string;
+  thumbnail: string;
   title: string;
   description: string;
   slug: string;
