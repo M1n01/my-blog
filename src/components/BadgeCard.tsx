@@ -15,7 +15,7 @@ export function BadgeCard({ post }: { post: NotionArticle }) {
 
   return (
     <Card withBorder shadow="sm" radius="md" p="md" className={classes.card}>
-      <Anchor href={`/blog/${slug}`}>
+      <Anchor href={`/blog/${id}`}>
         <Card.Section>
           <Image src={thumbnail} alt={title} height={180} />
         </Card.Section>

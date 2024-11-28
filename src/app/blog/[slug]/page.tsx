@@ -12,18 +12,19 @@ import {
 import { IconCalendar, IconTag } from "@tabler/icons-react";
 import Layout from "../_layout";
 import { type NotionArticle } from "../../../types/notionArticle";
+import { MdBlock } from "notion-to-md/build/types";
 
-const BlogPost: FC = () => {
-  const [post, setPost] = useState<NotionArticle | null>(null);
+const BlogContents: FC = () => {
+  const [contents, setContents] = useState<MdBlock[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchcontents = async () => {
       try {
-        console.log("Fetching post...");
+        console.log("Fetching contents...");
         const id = window.location.pathname.split("/").pop();
         console.log("articleID:", id);
-        const fetchedPost = await fetch(`/api/notion/${id}`, {
+        const fetchedcontents = await fetch(`/api/notion/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -31,30 +32,17 @@ const BlogPost: FC = () => {
         })
           .then((res) => res.json())
           .then((data) => data.results[0]);
-        console.log("Fetched post:", fetchedPost);
-        setPost({
-          id: fetchedPost.id,
-          title: fetchedPost.properties.title.title[0].plain_text,
-          description:
-            fetchedPost.properties.description.rich_text[0].plain_text,
-          slug: fetchedPost.properties.slug.rich_text[0].plain_text,
-          publishedAt: fetchedPost.properties.publishedAt.date.start,
-          tags: fetchedPost.properties.tags.multi_select.map((tag: any) => ({
-            id: tag.id,
-            name: tag.name,
-            color: tag.color,
-          })),
-          content: fetchedPost.properties.content.rich_text[0].plain_text,
-        });
+        console.log("Fetched contents:", fetchedcontents);
+        setContents({});
       } catch (error) {
-        console.error("Failed to fetch post:", error);
-        setPost(null);
+        console.error("Failed to fetch contents:", error);
+        setContents(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPost();
+    fetchcontents();
   });
 
   if (loading)
@@ -68,12 +56,12 @@ const BlogPost: FC = () => {
       </Layout>
     );
 
-  if (!post)
+  if (!contents)
     return (
       <Layout>
         <Container size="md" py="xl">
-          <Title order={1}>Post not found</Title>
-          <Text>The requested post could not be found.</Text>
+          <Title order={1}>contents not found</Title>
+          <Text>The requested contents could not be found.</Text>
         </Container>
       </Layout>
     );
@@ -84,14 +72,14 @@ const BlogPost: FC = () => {
         <Stack gap="xl">
           <div>
             <Title order={1} mb="md">
-              {post.title}
+              {contents.title}
             </Title>
 
             <Group mb="xl">
               <Badge leftSection={<IconCalendar size={14} />} variant="light">
-                {new Date(post.publishedAt).toLocaleDateString()}
+                {new Date(contents.publishedAt).toLocaleDateString()}
               </Badge>
-              {post.tags?.map((tag) => (
+              {contents.tags?.map((tag) => (
                 <Badge
                   key={tag.id}
                   leftSection={<IconTag size={14} />}
@@ -102,16 +90,16 @@ const BlogPost: FC = () => {
               ))}
             </Group>
 
-            {post.description && (
+            {contents.description && (
               <Text size="lg" c="dimmed" mb="xl">
-                {post.description}
+                {contents.description}
               </Text>
             )}
           </div>
 
           <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: contents.content }}
           />
         </Stack>
       </Container>
@@ -119,4 +107,4 @@ const BlogPost: FC = () => {
   );
 };
 
-export default BlogPost;
+export default BlogContents;

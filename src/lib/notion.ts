@@ -29,8 +29,7 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 
 // スラッグを元に記事を取得する関数
 export async function getArticleBySlug(slug: string) {
-  const mdblocks = await n2m.pageToMarkdown(slug, 2);
+  const mdblocks = await n2m.pageToMarkdown(slug);
 
-  console.log(mdblocks);
   return mdblocks;
 }

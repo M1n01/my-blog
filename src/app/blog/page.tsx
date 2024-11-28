@@ -35,6 +35,7 @@ const BlogList: FC = () => {
         const articles = fetchedArticles.map((post: any) => {
           return {
             id: post.id,
+            thumbnail: post.properties.thumbnail.url,
             title: post.properties.title.title[0].plain_text,
             description: post.properties.description.rich_text[0].plain_text,
             slug: post.properties.slug.rich_text[0].plain_text,
