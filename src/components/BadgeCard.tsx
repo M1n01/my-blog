@@ -5,12 +5,13 @@ import classes from "./BadgeCard.module.css";
 
 export function BadgeCard({ post }: { post: NotionArticle }) {
   const { id, thumbnail, title, description, slug, publishedAt, tags } = post;
+  console.log("post:", post);
+  console.log("tags:", tags);
   const labels = tags?.map((tag) => (
     <Badge key={`${tag.id}`} color={`${tag.color!}`} variant="light">
       {tag.name}
     </Badge>
   ));
-  console.log("labels:", labels);
 
   return (
     <Card withBorder shadow="sm" radius="md" p="md" className={classes.card}>
@@ -34,12 +35,10 @@ export function BadgeCard({ post }: { post: NotionArticle }) {
       </Anchor>
 
       <Card.Section className={classes.section}>
-        <Text mt="md" className={classes.label} c="dimmed">
+        <Text mt="md" mb="md" className={classes.label} c="dimmed">
           Labels
         </Text>
-        <Group gap={7} mt={5}>
-          {labels}
-        </Group>
+        <Group gap={7}>{labels}</Group>
       </Card.Section>
     </Card>
   );

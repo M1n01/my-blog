@@ -39,7 +39,7 @@ const BlogList: FC = () => {
             description: post.properties.description.rich_text[0].plain_text,
             slug: post.properties.slug.rich_text[0].plain_text,
             publishedAt: post.properties.publishedAt.date.start,
-            tag: post.properties.tags.multi_select.map((tag: any) => ({
+            tags: post.properties.tags.multi_select.map((tag: any) => ({
               id: tag.id,
               name: tag.name,
               color: tag.color,
