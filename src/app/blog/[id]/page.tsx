@@ -70,7 +70,7 @@ const BlogContents: FC = () => {
       }
     };
     fetchContent();
-  });
+  }, []);
 
   return (
     <Layout>
