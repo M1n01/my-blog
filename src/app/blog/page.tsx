@@ -32,13 +32,14 @@ const BlogList: FC = () => {
         })
           .then((res) => res.json())
           .then((data) => data.results);
+        console.debug("data.results:", fetchedArticles);
+
         const articles = fetchedArticles.map((post: any) => {
           return {
             id: post.id,
-            thumbnail: post.properties.thumbnail.url,
+            thumbnail: post.cover?.external.url,
             title: post.properties.title.title[0].plain_text,
-            description: post.properties.description.rich_text[0].plain_text,
-            slug: post.properties.slug.rich_text[0].plain_text,
+            description: post.properties.description.rich_text[0]?.plain_text,
             publishedAt: post.properties.publishedAt.date.start,
             tags: post.properties.tags.multi_select.map((tag: any) => ({
               id: tag.id,
@@ -47,7 +48,7 @@ const BlogList: FC = () => {
             })),
           };
         });
-        console.log("Fetched articles:", articles);
+        console.debug("Fetched articles:", articles);
         setPosts(articles);
       } catch (error) {
         console.error("Failed to fetch articles:", error);

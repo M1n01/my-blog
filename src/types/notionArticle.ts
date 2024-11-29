@@ -2,8 +2,7 @@ export type NotionArticle = {
   id: string;
   thumbnail: string;
   title: string;
-  description: string;
-  slug: string;
+  description?: string;
   publishedAt: string;
   tags?: {
     id: string;

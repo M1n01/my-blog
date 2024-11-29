@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getArticleBySlug } from "../../../../lib/notion";
+import { getArticleContent } from "../../../../lib/notion";
 
 export async function GET(
   request: Request,
@@ -7,9 +7,9 @@ export async function GET(
 ) {
   try {
     const slug = (await params).slug;
-    const response = await getArticleBySlug(slug);
+    const response = await getArticleContent(slug);
 
-    console.log("Fetched post:", response);
+    console.debug("Fetched post:", response);
 
     return new NextResponse(JSON.stringify(response), {
       status: 200,
