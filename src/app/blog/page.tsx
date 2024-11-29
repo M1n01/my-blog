@@ -29,27 +29,10 @@ const BlogList: FC = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        })
-          .then((res) => res.json())
-          .then((data) => data.results);
-        console.debug("data.results:", fetchedArticles);
+        }).then((res) => res.json());
+        console.debug("fetchedArticles:", fetchedArticles);
 
-        const articles = fetchedArticles.map((post: any) => {
-          return {
-            id: post.id,
-            thumbnail: post.cover?.external.url,
-            title: post.properties.title.title[0].plain_text,
-            description: post.properties.description.rich_text[0]?.plain_text,
-            publishedAt: post.properties.publishedAt.date.start,
-            tags: post.properties.tags.multi_select.map((tag: any) => ({
-              id: tag.id,
-              name: tag.name,
-              color: tag.color,
-            })),
-          };
-        });
-        console.debug("Fetched articles:", articles);
-        setPosts(articles);
+        setPosts(fetchedArticles);
       } catch (error) {
         console.error("Failed to fetch articles:", error);
         setPosts([]); // エラー時は空配列を設定
