@@ -18,6 +18,7 @@
     ]
   },
   "dependencies": {
+    "@mantine/code-highlight": "^7.14.3",
     "@mantine/core": "^7.14.1",
     "@mantine/hooks": "^7.14.1",
     "@notionhq/client": "^2.2.15",
