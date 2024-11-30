@@ -5,6 +5,7 @@ import { CodeHighlight } from "@mantine/code-highlight";
 import Layout from "../_layout";
 import { type NotionArticle } from "../../../types/notionArticle";
 import { MdBlock } from "notion-to-md/build/types";
+import { useSearchParams } from "next/navigation";
 
 function convertContent(contentBlocks: MdBlock[]) {
   return contentBlocks
@@ -46,10 +47,20 @@ function convertContent(contentBlocks: MdBlock[]) {
 const BlogContents: FC = () => {
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState<NotionArticle | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchContent = async () => {
       try {
+        const postParam = searchParams.get("post");
+        if (postParam) {
+          const postData = JSON.parse(postParam) as NotionArticle;
+          setContent(postData);
+          setLoading(false);
+          return;
+        }
+
+        // クエリパラメータがない場合は従来通りAPIから取得
         console.log("Fetching contents...");
         const id = window.location.pathname.split("/").pop();
         console.debug("articleID:", id);
@@ -70,7 +81,7 @@ const BlogContents: FC = () => {
       }
     };
     fetchContent();
-  }, []);
+  }, [searchParams]);
 
   return (
     <Layout>
