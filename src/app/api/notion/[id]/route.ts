@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getArticleContent } from "../../../../lib/notion";
 
 import { type Article } from "../../../../types/notion/Article";
-import { type ArticleInfo } from "@/types/notion/ArticleInfo";
 
 export async function GET(
   request: Request,
@@ -15,7 +14,7 @@ export async function GET(
 
     // 一覧ページからの流入の場合
     if (post) {
-      const postData: ArticleInfo = JSON.parse(post);
+      const postData: Article = JSON.parse(post);
       response = await getArticleContent(postData.id, postData);
     } else {
       const id = (await params).id;

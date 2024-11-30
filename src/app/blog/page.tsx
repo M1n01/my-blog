@@ -12,10 +12,10 @@ import {
 import { BadgeCard } from "../../components/blog";
 
 import Layout from "./_layout";
-import { type ArticleInfo } from "../../types/notion/ArticleInfo";
+import { type Article } from "../../types/notion/Article";
 
 const BlogList: FC = () => {
-  const [posts, setPosts] = useState<ArticleInfo[]>([]);
+  const [posts, setPosts] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const postsPerPage = 9;

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Anchor, Badge, Card, Image, Text, Title, Group } from "@mantine/core";
-import { ArticleInfo } from "../../../types/notion/ArticleInfo";
+import { Article } from "../../../types/notion/Article";
 import classes from "./BadgeCard.module.css";
 
-export function BadgeCard({ post }: { post: ArticleInfo }) {
+export function BadgeCard({ post }: { post: Article }) {
   const { id, thumbnail, title, description, publishedAt, tags } = post;
   console.log("post:", post);
   console.log("tags:", tags);

@@ -1,10 +1,16 @@
-import { ArticleInfo } from "./ArticleInfo";
+import { type Tag } from "./Tag";
 import {
+  type PartialBlockObjectResponse,
   BlockObjectResponse,
-  PartialBlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
 export type Article = {
-  info: ArticleInfo | null;
-  contents: (PartialBlockObjectResponse | BlockObjectResponse)[];
+  id: string;
+  thumbnail?: string;
+  title: string;
+  description?: string;
+  publishedAt: string;
+  updatedAt: string;
+  tags: Tag[];
+  content?: (PartialBlockObjectResponse | BlockObjectResponse)[];
 };

@@ -4,10 +4,9 @@ import {
   ClientErrorCode,
   APIErrorCode,
 } from "@notionhq/client/build/src/errors";
-
-import { type ArticleInfo } from "@/types/notion/ArticleInfo";
-import { type Article } from "@/types/notion/Article";
 import { GetPageResponse } from "@notionhq/client/build/src/api-endpoints";
+
+import { type Article } from "../types/notion/Article";
 
 // NotionClientのインスタンスを作成
 const notion = new Client({
@@ -35,8 +34,12 @@ export async function getAllArticles() {
         },
       ],
     });
-    console.debug("Fetched articles in getAllArticles:", response);
-    return response;
+    if (response) {
+      console.debug("Fetched articles in getAllArticles:", response);
+      return response;
+    } else {
+      throw new Error("Failed to fetch articles");
+    }
   } catch (error: unknown) {
     if (isNotionClientError(error)) {
       switch (error.code) {
@@ -59,10 +62,11 @@ export async function getAllArticles() {
           console.error("Notion APIのリクエストに失敗しました。", error);
       }
     }
+    throw error; // Add this line to propagate the error
   }
 }
 
-async function getArticleInfo(id: string) {
+export async function getArticle(id: string) {
   const response: GetPageResponse = await notion.pages.retrieve({
     page_id: id,
   });
@@ -85,6 +89,7 @@ async function getArticleInfo(id: string) {
         response.properties.publishedAt.type === "date"
           ? (response.properties.publishedAt.date?.start ?? "")
           : "", // date型でないまたはnullの場合は空文字を返す
+      updatedAt: response.last_edited_time,
       tags:
         response.properties.tags?.type === "multi_select"
           ? response.properties.tags.multi_select.map((tag) => ({
@@ -94,34 +99,42 @@ async function getArticleInfo(id: string) {
             }))
           : [],
     };
+  } else {
+    return null;
   }
 }
 
 export const getArticleContent = async (
   id: string,
-  info: ArticleInfo | null,
+  article: Article | null,
 ) => {
-  if (info === null) {
-    const info = (await getArticleInfo(id)) ?? null;
-    if (info === null) {
+  let articleData = article;
+
+  // query paramsがない場合
+  if (articleData === null) {
+    articleData = await getArticle(id);
+    if (articleData === null) {
       throw new Error("Article not found");
     }
-    console.debug("info:\n", info);
+    console.debug("articleInfo:\n", articleData);
   }
+
   try {
     const res = await notion.blocks.children.list({
       block_id: id,
     });
     console.debug("[Fetched blocks in getArticleContent]:\n", res);
 
-    const article: Article = {
-      info: info,
-      contents: res.results,
-    };
+    if (res.results) {
+      articleData.content = res.results;
+    }
 
-    return article;
-  } catch (error) {
+    return articleData;
+  } catch (error: unknown) {
     console.error("Failed to fetch article content:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
     throw new Error("Failed to fetch article content");
   }
 };

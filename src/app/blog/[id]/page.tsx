@@ -3,13 +3,12 @@ import { FC, useEffect, useState } from "react";
 import { Container, Skeleton, Text, Title, Image } from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
 import Layout from "../_layout";
-import { type ArticleInfo } from "../../../types/notion/ArticleInfo";
 import { type Article } from "../../../types/notion/Article";
 import { useSearchParams } from "next/navigation";
 
 function convertContent(article: Article): React.ReactNode {
   console.log("Converting content:", article);
-  return <Title>{article.info?.title}</Title>;
+  return <Title>{article.title}</Title>;
 }
 
 const BlogContents: FC = () => {
@@ -25,7 +24,7 @@ const BlogContents: FC = () => {
         const postParam = searchParams.get("post");
         let fetchedArticle: Article;
         if (postParam) {
-          const postData = JSON.parse(postParam) as ArticleInfo;
+          const postData = JSON.parse(postParam) as Article;
           fetchedArticle = await fetch(
             `/api/notion/${postData.id}?post=${postParam}`,
             {
