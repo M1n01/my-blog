@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { Container, Skeleton, Text, Title, Image } from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
 import Layout from "../_layout";
-import { type ArticleInfo } from "../../../types/ArticleInfo";
+import { type ArticleInfo } from "../../../types/notion/ArticleInfo";
 import { MdBlock } from "notion-to-md/build/types";
 import { useSearchParams } from "next/navigation";
 

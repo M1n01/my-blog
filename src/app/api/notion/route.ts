@@ -1,7 +1,7 @@
 import { corsHeaders } from "../cors";
 import { NextResponse } from "next/server";
 import { getAllArticles } from "../../../lib/notion";
-import { ArticleInfo } from "../../../types/ArticleInfo";
+import { ArticleInfo } from "../../../types/notion/ArticleInfo";
 
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });

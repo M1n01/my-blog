@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Anchor, Badge, Card, Image, Text, Title, Group } from "@mantine/core";
-import { ArticleInfo } from "../../../types/ArticleInfo";
+import { ArticleInfo } from "../../../types/notion/ArticleInfo";
 import classes from "./BadgeCard.module.css";
 
 export function BadgeCard({ post }: { post: ArticleInfo }) {

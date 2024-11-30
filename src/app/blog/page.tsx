@@ -12,7 +12,7 @@ import {
 import { BadgeCard } from "../../components/blog";
 
 import Layout from "./_layout";
-import { type ArticleInfo } from "../../types/ArticleInfo";
+import { type ArticleInfo } from "../../types/notion/ArticleInfo";
 
 const BlogList: FC = () => {
   const [posts, setPosts] = useState<ArticleInfo[]>([]);
