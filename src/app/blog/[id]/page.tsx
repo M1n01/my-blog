@@ -53,6 +53,7 @@ const BlogContents: FC = () => {
     const fetchContent = async () => {
       try {
         // クエリパラメータがある場合はそれを使う
+        console.log("Fetching contents with query params...");
         const postParam = searchParams.get("post");
         if (postParam) {
           const postData = JSON.parse(postParam) as ArticleInfo;
@@ -70,7 +71,7 @@ const BlogContents: FC = () => {
         }
         // クエリパラメータがない場合は従来通りAPIから取得
         else {
-          console.log("Fetching contents...");
+          console.log("Fetching contents without query params...");
           const id = window.location.pathname.split("/").pop();
           console.debug("articleID:", id);
 
