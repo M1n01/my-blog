@@ -1,4 +1,4 @@
-export type NotionArticle = {
+export type ArticleInfo = {
   id: string;
   thumbnail: string;
   title: string;
@@ -9,5 +9,4 @@ export type NotionArticle = {
     name: string;
     color?: string;
   }[];
-  content: string;
 };

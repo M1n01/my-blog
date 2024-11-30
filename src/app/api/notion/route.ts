@@ -1,7 +1,7 @@
 import { corsHeaders } from "../cors";
 import { NextResponse } from "next/server";
 import { getAllArticles } from "../../../lib/notion";
-import { NotionArticle } from "@/types/notionArticle";
+import { ArticleInfo } from "../../../types/ArticleInfo";
 
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
@@ -11,7 +11,7 @@ export async function GET() {
   try {
     const response = await getAllArticles();
 
-    const articles: NotionArticle[] = response.results.map((post: any) => {
+    const articles: ArticleInfo[] = response.results.map((post: any) => {
       return {
         id: post.id,
         thumbnail: post.cover?.external.url,
@@ -23,7 +23,6 @@ export async function GET() {
           name: tag.name,
           color: tag.color,
         })),
-        content: "", // あとで取得する
       };
     });
 
