@@ -14,9 +14,19 @@ import Layout from "../_layout";
 import { type Article } from "../../../types/notion/Article";
 import { useSearchParams } from "next/navigation";
 import { isFullBlock } from "@notionhq/client";
+import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
 
-const renderRichText = (text: any) => {
-  const props: Record<string, any> = {
+type TextProps = {
+  component: "span";
+  fw?: 400 | 700;
+  fs?: "italic" | "normal";
+  td?: "line-through" | "underline" | "none";
+  ff?: "monospace";
+  c?: string;
+};
+
+const renderRichText = (text: RichTextItemResponse) => {
+  const props: TextProps = {
     component: "span",
     fw: text.annotations.bold ? 700 : 400,
     fs: text.annotations.italic ? "italic" : "normal",
@@ -32,7 +42,15 @@ const renderRichText = (text: any) => {
 
   if (text.href) {
     return (
-      <Anchor href={text.href} target="_blank" {...props}>
+      <Anchor
+        href={text.href}
+        target="_blank"
+        fw={props.fw}
+        fs={props.fs}
+        td={props.td}
+        ff={props.ff}
+        c={props.c}
+      >
         {text.plain_text}
       </Anchor>
     );
@@ -47,6 +65,7 @@ function convertContent(article: Article): React.ReactNode {
     <Container size="md" py="xl">
       <Image
         src={article.thumbnail}
+        alt={article.title}
         w="auto"
         fit="contain"
         radius="md"
