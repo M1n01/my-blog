@@ -3,10 +3,7 @@ import { FC, useState } from "react";
 import { AppShell, Burger, Container, Group, Title } from "@mantine/core";
 import classes from "./Header.module.css";
 
-const links = [
-  { link: "/", label: "Home" },
-  { link: "/blog", label: "Blog" },
-];
+const links = [{ link: "/", label: "TOP" }];
 
 const Header: FC<{ opened: boolean; toggle: () => void }> = ({
   opened,
@@ -28,8 +25,8 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
 
   return (
     <AppShell.Header p="md" className={classes.header}>
-      <Container size="md" className={classes.inner}>
-        <Title>Minato&apos;s page</Title>
+      <Container size="xl" className={classes.inner} mb="xs">
+        <Title mb="lg">Minato&apos;s page</Title>
         <Group gap={5} visibleFrom="xs" className={classes.links}>
           {items}
         </Group>

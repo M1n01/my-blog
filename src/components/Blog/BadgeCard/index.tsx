@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Anchor, Badge, Card, Image, Text, Title, Group } from "@mantine/core";
+import { Badge, Card, Image, Text, Group } from "@mantine/core";
 import { Article } from "../../../types/notion/Article";
 import classes from "./BadgeCard.module.css";
 
@@ -17,7 +17,7 @@ export function BadgeCard({ post }: { post: Article }) {
     <Card withBorder shadow="sm" radius="md" p="md" className={classes.card}>
       <Link
         href={{
-          pathname: `/blog/${id}`,
+          pathname: `/${id}`,
           query: { post: JSON.stringify(post) },
         }}
       >
