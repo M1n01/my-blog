@@ -61,6 +61,24 @@ function convertContent(article: Article): React.ReactNode {
         {article.content?.map((block, index) => {
           if (!isFullBlock(block)) return null;
           switch (block.type) {
+            case "heading_1":
+              return (
+                <Title key={index} order={2} mb="md">
+                  {block.heading_1.rich_text[0].plain_text}
+                </Title>
+              );
+            case "heading_2":
+              return (
+                <Title key={index} order={3} mb="md">
+                  {block.heading_2.rich_text[0].plain_text}
+                </Title>
+              );
+            case "heading_3":
+              return (
+                <Title key={index} order={4} mb="md">
+                  {block.heading_3.rich_text[0].plain_text}
+                </Title>
+              );
             case "paragraph":
               return (
                 <Text key={index}>
