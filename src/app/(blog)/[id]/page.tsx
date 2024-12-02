@@ -146,7 +146,7 @@ const BlogContents: FC = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // クエリパラメータがある場合はそれ��使う
+        // クエリパラメータがある場合はそれを使う
         console.log("Fetching contents with query params...");
         const postParam = searchParams.get("post");
         let fetchedArticle: Article;
