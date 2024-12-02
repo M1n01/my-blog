@@ -102,19 +102,25 @@ function convertContent(article: Article): React.ReactNode {
                   mb="md"
                 />
               );
-            // case "image":
-            //   return (
-            //     <Image
-            //       key={index}
-            //       src={block.image.url}
-            //       alt={block.image.caption}
-            //       w="auto"
-            //       fit="contain"
-            //       radius="md"
-            //       h={450}
-            //       mb="md"
-            //     />
-            //   );
+            case "image":
+              return (
+                <Image
+                  key={index}
+                  src={
+                    block.image.type === "external"
+                      ? block.image.external.url
+                      : block.image.file.url
+                  }
+                  alt={block.image.caption
+                    .map((text) => text.plain_text)
+                    .join(" ")}
+                  w="auto"
+                  fit="contain"
+                  radius="md"
+                  h={450}
+                  mb="md"
+                />
+              );
             default:
               return null;
           }
