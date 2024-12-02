@@ -1,10 +1,45 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-import { Container, Skeleton, Text, Title, Image, Stack } from "@mantine/core";
+import React, { FC, useEffect, useState } from "react";
+import {
+  Container,
+  Skeleton,
+  Text,
+  Title,
+  Image,
+  Stack,
+  Anchor,
+} from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
 import Layout from "../_layout";
 import { type Article } from "../../../types/notion/Article";
 import { useSearchParams } from "next/navigation";
+import { isFullBlock } from "@notionhq/client";
+
+const renderRichText = (text: any) => {
+  const props: Record<string, any> = {
+    component: "span",
+    fw: text.annotations.bold ? 700 : 400,
+    fs: text.annotations.italic ? "italic" : "normal",
+    td: text.annotations.strikethrough
+      ? "line-through"
+      : text.annotations.underline
+        ? "underline"
+        : "none",
+    ff: text.annotations.code ? "monospace" : undefined,
+    c:
+      text.annotations.color !== "default" ? text.annotations.color : undefined,
+  };
+
+  if (text.href) {
+    return (
+      <Anchor href={text.href} target="_blank" {...props}>
+        {text.plain_text}
+      </Anchor>
+    );
+  }
+
+  return <Text {...props}>{text.plain_text}</Text>;
+};
 
 function convertContent(article: Article): React.ReactNode {
   console.log("Converting content:", article);
@@ -23,16 +58,23 @@ function convertContent(article: Article): React.ReactNode {
       </Title>
       <Text mb="md">{article.description}</Text>
       <Stack gap="md">
-        {/* {article.content?.map((block, index) => {
+        {article.content?.map((block, index) => {
+          if (!isFullBlock(block)) return null;
           switch (block.type) {
             case "paragraph":
               return (
                 <Text key={index}>
-                  {block.paragraph.text.map((text) => text.plain_text).join("")}
+                  {block.paragraph.rich_text.map((text, i) => (
+                    <React.Fragment key={i}>
+                      {renderRichText(text)}
+                    </React.Fragment>
+                  ))}
                 </Text>
               );
+            default:
+              return null;
           }
-        })} */}
+        })}
       </Stack>
     </Container>
   );
@@ -46,7 +88,7 @@ const BlogContents: FC = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // クエリパラメータがある場合はそれを使う
+        // クエリパラメータがある場合はそれ��使う
         console.log("Fetching contents with query params...");
         const postParam = searchParams.get("post");
         let fetchedArticle: Article;
