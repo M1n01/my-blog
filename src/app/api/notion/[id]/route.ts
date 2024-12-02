@@ -12,11 +12,13 @@ export async function GET(
     const post = searchParams.get("post");
     let response: Article;
 
-    // 一覧ページからの流入の場合
+    // 一覧ページから流入した場合
     if (post) {
       const postData: Article = JSON.parse(post);
-      response = await getArticleContent(postData.id, postData);
-    } else {
+      response = await getArticleContent(postData.id, postData); // query paramsを使って記事情報を取得
+    }
+    // 記事ページから直接流入した場合
+    else {
       const id = (await params).id;
       response = await getArticleContent(id, null);
     }
