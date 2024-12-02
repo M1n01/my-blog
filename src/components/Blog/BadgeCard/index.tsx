@@ -17,7 +17,7 @@ export function BadgeCard({ post }: { post: Article }) {
     <Card withBorder shadow="sm" radius="md" p="md" className={classes.card}>
       <Link
         href={{
-          pathname: `/${id}`,
+          pathname: `/blog/${id}`,
           query: { post: JSON.stringify(post) },
         }}
       >

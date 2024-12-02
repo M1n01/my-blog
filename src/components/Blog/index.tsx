@@ -1,3 +1,1 @@
-import { BadgeCard } from "./BadgeCard";
-
-export { BadgeCard };
+export { BadgeCard } from "./BadgeCard";
