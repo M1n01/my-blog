@@ -89,6 +89,32 @@ function convertContent(article: Article): React.ReactNode {
                   ))}
                 </Text>
               );
+            case "code":
+              return (
+                <CodeHighlight
+                  key={index}
+                  code={block.code.rich_text
+                    .map((text) => text.plain_text)
+                    .join("")}
+                  copyLabel="Copy button code"
+                  copiedLabel="Copied!"
+                  language={block.code.language}
+                  mb="md"
+                />
+              );
+            // case "image":
+            //   return (
+            //     <Image
+            //       key={index}
+            //       src={block.image.url}
+            //       alt={block.image.caption}
+            //       w="auto"
+            //       fit="contain"
+            //       radius="md"
+            //       h={450}
+            //       mb="md"
+            //     />
+            //   );
             default:
               return null;
           }
