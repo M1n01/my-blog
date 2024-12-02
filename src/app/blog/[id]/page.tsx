@@ -121,6 +121,14 @@ function convertContent(article: Article): React.ReactNode {
                   mb="md"
                 />
               );
+            case "bulleted_list_item":
+              return null;
+            case "numbered_list_item":
+              return null;
+            case "quote":
+              return null;
+            case "embed":
+              return null;
             default:
               return null;
           }
