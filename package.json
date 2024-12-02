@@ -19,29 +19,29 @@
   },
   "dependencies": {
     "@mantine/code-highlight": "^7.14.3",
-    "@mantine/core": "^7.14.1",
-    "@mantine/hooks": "^7.14.1",
+    "@mantine/core": "^7.14.3",
+    "@mantine/hooks": "^7.14.3",
     "@notionhq/client": "^2.2.15",
-    "@tabler/icons-react": "^3.22.0",
-    "husky": "^9.1.6",
+    "@tabler/icons-react": "^3.23.0",
+    "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "next": "15.0.3",
     "notion-to-md": "^3.1.1",
-    "pnpm": "^9.14.2",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "pnpm": "^9.14.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "^20.17.9",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.49",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
-    "prettier": "^3.3.3",
-    "typescript": "^5"
+    "prettier": "^3.4.1",
+    "typescript": "^5.7.2"
   }
 }
