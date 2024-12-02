@@ -1,6 +1,6 @@
 "use client";
 import { FC, useEffect, useState } from "react";
-import { Container, Skeleton, Text, Title, Image } from "@mantine/core";
+import { Container, Skeleton, Text, Title, Image, Stack } from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
 import Layout from "../_layout";
 import { type Article } from "../../../types/notion/Article";
@@ -8,7 +8,34 @@ import { useSearchParams } from "next/navigation";
 
 function convertContent(article: Article): React.ReactNode {
   console.log("Converting content:", article);
-  return <Title>{article.title}</Title>;
+  return (
+    <Container size="md" py="xl">
+      <Image
+        src={article.thumbnail}
+        w="auto"
+        fit="contain"
+        radius="md"
+        h={450}
+        mb="md"
+      />
+      <Title order={1} mb="xs">
+        {article.title}
+      </Title>
+      <Text mb="md">{article.description}</Text>
+      <Stack gap="md">
+        {/* {article.content?.map((block, index) => {
+          switch (block.type) {
+            case "paragraph":
+              return (
+                <Text key={index}>
+                  {block.paragraph.text.map((text) => text.plain_text).join("")}
+                </Text>
+              );
+          }
+        })} */}
+      </Stack>
+    </Container>
+  );
 }
 
 const BlogContents: FC = () => {
@@ -65,9 +92,10 @@ const BlogContents: FC = () => {
     <Layout>
       {loading ? (
         <Container size="md" py="xl">
+          <Skeleton height={450} />
           <Skeleton height={50} mb="xl" />
           <Skeleton height={30} mb="md" />
-          <Skeleton height={400} />
+          <Skeleton height={300} mb="md" />
         </Container>
       ) : (
         content
