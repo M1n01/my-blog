@@ -48,5 +48,3 @@ export function BadgeCard({ post }: { post: Article }) {
     </Card>
   );
 }
-
-export default BadgeCard;
