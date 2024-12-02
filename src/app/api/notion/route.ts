@@ -4,12 +4,6 @@ import { getAllArticles } from "../../../lib/notion";
 import { Article } from "../../../types/notion/Article";
 import { type Tag } from "../../../types/notion/Tag";
 import { isFullPageOrDatabase } from "@notionhq/client";
-import {
-  type PageObjectResponse,
-  PartialPageObjectResponse,
-  PartialDatabaseObjectResponse,
-  DatabaseObjectResponse,
-} from "@notionhq/client/build/src/api-endpoints";
 
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
