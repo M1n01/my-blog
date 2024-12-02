@@ -1,14 +1,6 @@
 "use client";
 import { FC, useEffect, useState } from "react";
-import {
-  Container,
-  Title,
-  Grid,
-  Skeleton,
-  Group,
-  Pagination,
-  GridCol,
-} from "@mantine/core";
+import { Container, Title, Grid, Skeleton, GridCol } from "@mantine/core";
 import { BadgeCard } from "../../components/blog";
 
 import Layout from "./_layout";
@@ -17,8 +9,8 @@ import { type Article } from "../../types/notion/Article";
 const BlogList: FC = () => {
   const [posts, setPosts] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activePage, setActivePage] = useState(1);
-  const postsPerPage = 9;
+  // const [activePage, setActivePage] = useState(1);
+  // const postsPerPage = 9;
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -43,10 +35,10 @@ const BlogList: FC = () => {
     fetchArticles();
   }, []);
 
-  const paginatedPosts = posts.slice(
-    (activePage - 1) * postsPerPage,
-    activePage * postsPerPage,
-  );
+  // const paginatedPosts = posts.slice(
+  //   (activePage - 1) * postsPerPage,
+  //   activePage * postsPerPage,
+  // );
 
   return (
     <Layout>
@@ -71,7 +63,7 @@ const BlogList: FC = () => {
               ))}
         </Grid>
 
-        {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
+        {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
           <Group justify="center" mt="xl">
             <Pagination
               value={activePage}
@@ -79,7 +71,7 @@ const BlogList: FC = () => {
               total={Math.ceil(posts.length / postsPerPage)}
             />
           </Group>
-        )}
+        )} */}
       </Container>
     </Layout>
   );
