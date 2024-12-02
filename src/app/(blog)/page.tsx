@@ -1,7 +1,7 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import { Container, Title, Grid, Skeleton, GridCol } from "@mantine/core";
-import { BadgeCard } from "../../components/blog";
+import { BadgeCard } from "@/components/blog";
 
 import Layout from "./_layout";
 import { type Article } from "../../types/notion/Article";
