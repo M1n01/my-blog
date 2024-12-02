@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# my-blog
 
-## Getting Started
+## table of contents
 
-First, run the development server:
+- [my-blog](#my-blog)
+  - [table of contents](#table-of-contents)
+  - [1. Getting Started](#1-getting-started)
+    - [how to run](#how-to-run)
+    - [how to get Notion token and database id](#how-to-get-notion-token-and-database-id)
+    - [how to access](#how-to-access)
+  - [2. Tech Stack](#2-tech-stack)
+  - [3. Git Commit Message prefix](#3-git-commit-message-prefix)
+
+## 1. Getting Started
+
+### how to run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# clone the project
+$ git clone git@github.com:M1n01/my-blog.git
+
+# install dependencies
+$ cd my-blog
+$ pnpm install
+
+# create .env file
+$ touch .env.local
+$ echo "NEXT_PUBLIC_NOTION_TOKEN=<your-notion-token>\nNEXT_PUBLIC_DATABASE_ID=<your-notion-database-id>" > .env.local
+
+# start the development server
+$ pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### how to get Notion token and database id
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Document](https://developers.notion.com/docs/create-a-notion-integration#step-3-save-the-database-id)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### how to access
 
-## Learn More
+```
+# open the browser and visit
+http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+<p align="right">(<a href="#top">トップへ</a>)</p>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 2. Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js
+- Notion API
+- Mantine
+- cloudflare # for deployment
 
-## Deploy on Vercel
+<p align="right">(<a href="#top">トップへ</a>)</p>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 3. Git Commit Message prefix
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+fix: バグ修正
+feat: 新機能追加
+update: 機能更新
+change: 仕様変更
+perf: パフォーマンス改善
+refactor: コードのリファクタリング
+docs: ドキュメントのみの変更
+style: コードのフォーマットに関する変更
+test: テストコードの変更
+revert: 変更の取り消し
+chore: その他の変更
+```
+
+<p align="right">(<a href="#top">トップへ</a>)</p>
