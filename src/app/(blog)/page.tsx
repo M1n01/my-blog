@@ -9,7 +9,7 @@ import {
   Pagination,
   GridCol,
 } from "@mantine/core";
-import { BadgeCard } from "../../components/blog/BadgeCard";
+import { BadgeCard } from "@/components/blog/BadgeCard";
 
 import Layout from "./_layout";
 import { type Article } from "../../types/notion/Article";
