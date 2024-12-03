@@ -1,10 +1,11 @@
 "use client";
+import { FC } from "react";
 import Link from "next/link";
 import { Badge, Card, Image, Text, Group } from "@mantine/core";
 import { Article } from "../../../types/notion/Article";
 import classes from "./BadgeCard.module.css";
 
-export function BadgeCard({ post }: { post: Article }) {
+const BadgeCard: FC<{ post: Article }> = ({ post }) => {
   const { id, thumbnail, title, description, publishedAt, tags } = post;
   console.log("post:", post);
   console.log("tags:", tags);
@@ -48,4 +49,6 @@ export function BadgeCard({ post }: { post: Article }) {
       </Card.Section>
     </Card>
   );
-}
+};
+
+export default BadgeCard;
