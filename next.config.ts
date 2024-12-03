@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
   },
+  webpack: (config, { dev }) => {
+    if (!dev) {
+      config.cache = false;
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
