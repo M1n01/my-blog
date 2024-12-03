@@ -5,8 +5,6 @@ import { Article } from "../../../types/notion/Article";
 import { type Tag } from "../../../types/notion/Tag";
 import { isFullPageOrDatabase } from "@notionhq/client";
 
-export const dynamic = "force-static";
-
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }

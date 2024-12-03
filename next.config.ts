@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  output: "export",
   compress: true,
   productionBrowserSourceMaps: false,
   swcMinify: true,
