@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  output: "standalone",
+  output: "export",
   compress: true,
   productionBrowserSourceMaps: false,
   swcMinify: true,
