@@ -2,7 +2,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { Badge, Card, Image, Text, Group } from "@mantine/core";
-import { Article } from "../../../types/notion/Article";
+import { type Article } from "../../types/notion/Article";
 import classes from "./BadgeCard.module.css";
 
 const BadgeCard: FC<{ post: Article }> = ({ post }) => {
