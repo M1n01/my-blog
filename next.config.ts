@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  output: "standalone",
+  compress: true,
+  productionBrowserSourceMaps: false,
+  swcMinify: true,
+  experimental: {
+    optimizeCss: true,
+  },
 };
 
 export default nextConfig;
