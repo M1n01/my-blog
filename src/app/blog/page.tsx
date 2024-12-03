@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { headers } from "next/headers";
 import { Container, Title, Grid, GridCol } from "@mantine/core";
-import BadgeCard from "../../components/blog/BadgeCard/index";
+import BadgeCard from "./BadgeCard";
 
 import Layout from "./_layout";
 import LoadingGrid from "./loading";
