@@ -167,7 +167,7 @@ const BlogContents: FC = () => {
       try {
         // クエリパラメータがある場合はそれを使う
         console.log("Fetching contents with query params...");
-        const postParam = searchParams.get("post");
+        const postParam = searchParams?.get("post");
         let fetchedArticle: Article;
         if (postParam) {
           const postData = JSON.parse(postParam) as Article;

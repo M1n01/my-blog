@@ -15,6 +15,11 @@ export async function GET() {
     if (response) {
       const articles: Article[] = response.map((post) => {
         if (isFullPageOrDatabase(post)) {
+          console.log(
+            "isFullPageOrDatabase(post): ",
+            isFullPageOrDatabase(post),
+          );
+          console.log("post:\n", post);
           return {
             id: post.id,
             thumbnail:

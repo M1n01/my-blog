@@ -1,39 +1,43 @@
-"use client";
-import { FC, useEffect, useState } from "react";
-import { Container, Title, Grid, Skeleton, GridCol } from "@mantine/core";
+import { Suspense } from "react";
+import { headers } from "next/headers";
+import { Container, Title, Grid, GridCol } from "@mantine/core";
 import { BadgeCard } from "@/components/blog";
 
 import Layout from "./_layout";
-import { type Article } from "../../types/notion/Article";
+import LoadingGrid from "./loading";
+import { Article } from "@/types/notion/Article";
 
-const BlogList: FC = () => {
-  const [posts, setPosts] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
+async function getArticles() {
+  const headersData = await headers();
+  const host = headersData.get("host");
+  const protocol = headersData.get("x-forwarded-proto") || "http";
+  const origin = `${protocol}://${host}`;
+
+  try {
+    const res = await fetch(`${origin}/api/notion`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch articles");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error("Failed to fetch articles:", error);
+    return [];
+  }
+}
+
+export default async function BlogList() {
   // const [activePage, setActivePage] = useState(1);
   // const postsPerPage = 9;
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        console.log("Fetching posts...");
-        const fetchedArticles = await fetch("/api/notion", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => res.json());
-        console.debug("fetchedArticles:", fetchedArticles);
-
-        setPosts(fetchedArticles);
-      } catch (error) {
-        console.error("Failed to fetch articles:", error);
-        setPosts([]); // エラー時は空配列を設定
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchArticles();
-  }, []);
+  const posts = await getArticles();
+  console.log("posts:\n", posts);
 
   // const paginatedPosts = posts.slice(
   //   (activePage - 1) * postsPerPage,
@@ -44,23 +48,13 @@ const BlogList: FC = () => {
     <Layout>
       <Container size="lg" py="xl">
         <Title order={1}>Blog</Title>
+        <Suspense fallback={<LoadingGrid />} />
         <Grid>
-          {loading
-            ? Array(3)
-                .fill(0)
-                .map((_, index) => (
-                  <GridCol
-                    key={`skeleton-${index}`}
-                    span={{ base: 12, sm: 6, md: 4 }}
-                  >
-                    <Skeleton height={200} radius="md" mb="xl" />
-                  </GridCol>
-                ))
-            : posts.map((post) => (
-                <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
-                  <BadgeCard post={post} />
-                </GridCol>
-              ))}
+          {posts.map((post: Article) => (
+            <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
+              <BadgeCard post={post} />
+            </GridCol>
+          ))}
         </Grid>
 
         {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
@@ -75,6 +69,4 @@ const BlogList: FC = () => {
       </Container>
     </Layout>
   );
-};
-
-export default BlogList;
+}
