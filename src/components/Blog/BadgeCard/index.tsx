@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Badge, Card, Image, Text, Group } from "@mantine/core";
 import { Article } from "../../../types/notion/Article";
