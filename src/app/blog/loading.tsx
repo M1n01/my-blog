@@ -1,3 +1,4 @@
+"use client";
 import { Grid, GridCol, Skeleton } from "@mantine/core";
 
 export default function LoadingGrid() {
