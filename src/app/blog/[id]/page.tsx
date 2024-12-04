@@ -16,6 +16,8 @@ import { useSearchParams } from "next/navigation";
 import { isFullBlock } from "@notionhq/client";
 import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
 
+export const runtime = "edge";
+
 type TextProps = {
   component: "span";
   fw?: 400 | 700;

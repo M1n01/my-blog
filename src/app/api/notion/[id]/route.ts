@@ -3,6 +3,8 @@ import { getArticleContent } from "../../../../lib/notion";
 
 import { type Article } from "../../../../types/notion/Article";
 
+export const runtime = "edge";
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> },

@@ -7,6 +7,8 @@ import Layout from "./_layout";
 import LoadingGrid from "./loading";
 import { Article } from "@/types/notion/Article";
 
+export const runtime = "edge";
+
 async function getArticles() {
   const headersData = await headers();
   const host = headersData.get("host");
