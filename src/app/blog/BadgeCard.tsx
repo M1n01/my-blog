@@ -6,7 +6,7 @@ import { type Article } from "../../types/notion/Article";
 import classes from "./BadgeCard.module.css";
 
 const BadgeCard: FC<{ post: Article }> = ({ post }) => {
-  const { id, thumbnail, title, description, tags } = post;
+  const { id, thumbnail, title, description, publishedAt, tags } = post;
   console.log("post:", post);
   console.log("tags:", tags);
   const labels = tags?.map((tag) => (
@@ -31,9 +31,9 @@ const BadgeCard: FC<{ post: Article }> = ({ post }) => {
             <Text fz="lg" fw={500}>
               {title}
             </Text>
-            {/* <Badge size="sm" variant="light">
+            <Badge size="sm" variant="light">
               {publishedAt}
-            </Badge> */}
+            </Badge>
           </Group>
           <Text fz="sm" mt="xs">
             {description}
