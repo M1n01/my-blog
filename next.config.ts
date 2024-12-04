@@ -1,5 +1,5 @@
-// next.config.ts
 import { NextConfig } from "next";
+import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
 
 const nextConfig: NextConfig = {
   async redirects() {
@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
   },
   compress: true,
   productionBrowserSourceMaps: false,
-  swcMinify: true,
   experimental: {
     optimizeCss: true,
   },
@@ -24,5 +23,9 @@ const nextConfig: NextConfig = {
     return config;
   },
 };
+
+if (process.env.NODE_ENV === "development") {
+  await setupDevPlatform();
+}
 
 export default nextConfig;
