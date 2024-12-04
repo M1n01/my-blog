@@ -3,19 +3,9 @@ import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import { Navbar, Header, Footer } from "../../components/layout";
-import "../globals.css";
 import "@mantine/core/styles.css";
 
-export const metadata = {
-  title: "My Mantine app",
-  description: "I have followed setup instructions carefully",
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure(false);
 
   return (
