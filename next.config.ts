@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   experimental: {
     optimizeCss: true,
+    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
   webpack: (config, { dev }) => {
     if (!dev) {
