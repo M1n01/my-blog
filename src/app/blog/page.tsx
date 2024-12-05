@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import { headers } from "next/headers";
 import { Container, Title, Grid, GridCol } from "@mantine/core";
 import BadgeCard from "./BadgeCard";
 
 import Layout from "./_layout";
+import LoadingGrid from "./loading";
 import { Article } from "@/types/notion/Article";
 
 export const runtime = "edge";
@@ -48,13 +50,15 @@ export default async function BlogList() {
     <Layout>
       <Container size="lg" py="xl">
         <Title order={1}>Blog</Title>
-        <Grid>
-          {posts.map((post: Article) => (
-            <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
-              <BadgeCard post={post} />
-            </GridCol>
-          ))}
-        </Grid>
+        <Suspense fallback={<LoadingGrid />}>
+          <Grid>
+            {posts.map((post: Article) => (
+              <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
+                <BadgeCard post={post} />
+              </GridCol>
+            ))}
+          </Grid>
+        </Suspense>
 
         {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
           <Group justify="center" mt="xl">
