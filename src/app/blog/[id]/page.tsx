@@ -151,17 +151,19 @@ function convertContent(article: Article): React.ReactNode {
   );
 }
 
-export default async function BlogContent({
-  searchParams,
-}: {
-  searchParams: { post: string };
-}) {
-  const postParam = searchParams?.post;
+interface PageProps {
+  searchParams: Promise<{ post: string }>;
+}
+
+export default async function BlogContent({ searchParams }: PageProps) {
+  const { post: postParam } = await searchParams;
   let fetchedArticle: Article;
 
   // 一覧ページから流入した場合
   if (postParam) {
-    const postData = JSON.parse(postParam) as Article;
+    const postData = JSON.parse(
+      Array.isArray(postParam) ? postParam[0] : postParam,
+    ) as Article;
     fetchedArticle = await getArticleContent(postData.id, postData);
   }
   // クエリパラメータがない場合は従来通りAPIから取得
