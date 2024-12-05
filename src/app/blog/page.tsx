@@ -24,7 +24,9 @@ export default async function BlogList() {
   return (
     <Layout>
       <Container size="lg" py="xl">
-        <Title order={1}>Blog</Title>
+        <Title order={1} mb="lg">
+          Blog
+        </Title>
         <Suspense fallback={<LoadingGrid />}>
           <Grid gutter="lg">
             {posts.map((post: Article) => (

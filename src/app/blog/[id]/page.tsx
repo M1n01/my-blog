@@ -66,29 +66,29 @@ function convertContent(article: Article): React.ReactNode {
         h={450}
         mb="md"
       />
-      <Title order={1} mb="xs">
+      <Title order={1} mb="md">
         {article.title}
       </Title>
-      <Text mb="md">{article.description}</Text>
-      <Stack gap="md">
+      <Text mb="lg">{article.description}</Text>
+      <Stack gap="xs">
         {article.content?.map((block, index) => {
           if (!isFullBlock(block)) return null;
           switch (block.type) {
             case "heading_1":
               return (
-                <Title key={index} order={2} mb="md">
+                <Title key={index} order={2} mb="xs">
                   {block.heading_1.rich_text[0].plain_text}
                 </Title>
               );
             case "heading_2":
               return (
-                <Title key={index} order={3} mb="md">
+                <Title key={index} order={3} mb="xs">
                   {block.heading_2.rich_text[0].plain_text}
                 </Title>
               );
             case "heading_3":
               return (
-                <Title key={index} order={4} mb="md">
+                <Title key={index} order={4} mb="xs">
                   {block.heading_3.rich_text[0].plain_text}
                 </Title>
               );
