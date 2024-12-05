@@ -24,7 +24,7 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
         <Stack align="center" gap="xs">
           <Avatar
             size="lg"
-            src="https://25d59b79ccab3afef5147a08b2b1c1fe.r2.cloudflarestorage.com/min-blog/IMG_8359.jpg"
+            src={`${process.env.NEXT_R2_PUBLIC_URL}/IMG_8359.jpg`}
           />
           <Title order={3}>Abe Minato</Title>
           <Text size="sm" c="dimmed">
@@ -35,8 +35,10 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
         {/* Bio Section */}
         <Stack gap="xs">
           <Text size="sm">
-            I&apos;m a frontend developer who loves to build web applications
-            with React and TypeScript.
+            I am an engineer from 42 Tokyo. I&apos;m interested in Rust and
+            TypeScript, and I&apos;m also passionate about Web3.0 technologies.
+            I plan to write technical articles about programming, as well as
+            columns about my personal interests and hobbies.
           </Text>
         </Stack>
 
