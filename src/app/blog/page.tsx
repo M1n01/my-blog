@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { headers } from "next/headers";
-import { Container, Title, Grid } from "@mantine/core";
+import { Container, Title, Grid, GridCol } from "@mantine/core";
+import BadgeCard from "./BadgeCard";
 
 import Layout from "./_layout";
 import LoadingGrid from "./loading";
@@ -52,9 +53,9 @@ export default async function BlogList() {
         <Suspense fallback={<LoadingGrid />}>
           <Grid>
             {posts.map((post: Article) => (
-              <Title key={post.id} order={2}>
-                {post.title}
-              </Title>
+              <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
+                <BadgeCard post={post} />
+              </GridCol>
             ))}
           </Grid>
         </Suspense>
