@@ -26,7 +26,7 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
   return (
     <AppShell.Header p="md" className={classes.header}>
       <Container size="xl" className={classes.inner} mb="xs">
-        <Title mb="lg">Minato&apos;s page</Title>
+        <Title mb="lg">minabe&apos;s Blog</Title>
         <Group gap={5} visibleFrom="xs" className={classes.links}>
           {items}
         </Group>

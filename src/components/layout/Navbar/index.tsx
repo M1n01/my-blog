@@ -28,7 +28,7 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
           />
           <Title order={3}>Abe Minato</Title>
           <Text size="sm" c="dimmed">
-            Frontend Developer
+            Beginer Developer
           </Text>
         </Stack>
 
@@ -37,8 +37,6 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
           <Text size="sm">
             I am an engineer from 42 Tokyo. I&apos;m interested in Rust and
             TypeScript, and I&apos;m also passionate about Web3.0 technologies.
-            I plan to write technical articles about programming, as well as
-            columns about my personal interests and hobbies.
           </Text>
         </Stack>
 
