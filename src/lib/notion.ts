@@ -35,8 +35,47 @@ export async function getAllArticles() {
       ],
     });
     if (response) {
-      console.debug("Fetched articles in getAllArticles:", response);
-      return response;
+      const articles: Article[] = response.results.map((post) => {
+        if (isFullPage(post)) {
+          return {
+            id: post.id,
+            thumbnail:
+              post.cover?.type === "external" ? post.cover.external.url : "",
+            title:
+              post.properties.title.type === "title"
+                ? post.properties.title.title[0].plain_text
+                : "",
+            description:
+              post.properties.description?.type === "rich_text"
+                ? post.properties.description.rich_text[0].plain_text
+                : "",
+            publishedAt:
+              post.properties.publishedAt.type === "date"
+                ? (post.properties.publishedAt.date?.start ?? "")
+                : "", // date型でないまたはnullの場合は空文字を返す
+            updatedAt: post.last_edited_time,
+            tags:
+              post.properties.tags?.type === "multi_select"
+                ? post.properties.tags.multi_select.map((tag) => ({
+                    id: tag.id,
+                    name: tag.name,
+                    color: tag.color,
+                  }))
+                : [],
+          };
+        } else {
+          return {
+            id: post.id,
+            thumbnail: "",
+            title: "",
+            description: "",
+            publishedAt: "",
+            updatedAt: "",
+            tags: [],
+          };
+        }
+      });
+      return articles;
     } else {
       throw new Error("Failed to fetch articles");
     }
