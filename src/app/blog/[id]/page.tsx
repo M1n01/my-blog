@@ -63,7 +63,7 @@ function convertContent(article: Article): React.ReactNode {
         w="auto"
         fit="contain"
         radius="md"
-        h={450}
+        h={300}
         mb="md"
       />
       <Title order={1} mb="md">
