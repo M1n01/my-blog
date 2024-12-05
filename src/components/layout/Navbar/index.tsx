@@ -24,7 +24,7 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
         <Stack align="center" gap="xs">
           <Avatar
             size="lg"
-            src="https://avatars.githubusercontent.com/u/139426"
+            src="https://25d59b79ccab3afef5147a08b2b1c1fe.r2.cloudflarestorage.com/min-blog/IMG_8359.jpg"
           />
           <Title order={3}>Abe Minato</Title>
           <Text size="sm" c="dimmed">
