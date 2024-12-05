@@ -1,5 +1,6 @@
 "use client";
-import { AppShell } from "@mantine/core";
+import { usePathname } from "next/navigation";
+import { AppShell, Breadcrumbs, Anchor } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import { Navbar, Header, Footer } from "../../components/layout";
@@ -7,6 +8,24 @@ import "@mantine/core/styles.css";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure(false);
+
+  const pathname = usePathname();
+  const breadcrumbs = pathname
+    .split("/")
+    .filter(Boolean)
+    .map((path, index, array) => {
+      const href = "/" + array.slice(0, index + 1).join("/");
+      if (path === "blog") {
+        path = "Top page";
+      } else if (path.length === 36) {
+        return "Article";
+      }
+      return (
+        <Anchor href={href} key={index}>
+          {path}
+        </Anchor>
+      );
+    });
 
   return (
     <AppShell
@@ -26,7 +45,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     >
       <Header opened={opened} toggle={toggle} />
       <Navbar opened={opened} toggle={toggle} />
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Breadcrumbs>{breadcrumbs}</Breadcrumbs>
+        {children}
+      </AppShell.Main>
       <Footer />
     </AppShell>
   );
