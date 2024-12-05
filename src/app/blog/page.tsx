@@ -14,10 +14,10 @@ async function getArticles() {
   const host = headersData.get("host");
   const protocol = headersData.get("x-forwarded-proto") || "http";
   const origin = `${protocol}://${host}`;
+  const url = `${origin}/api/notion`;
+  console.log("url:", url);
 
   try {
-    const url = `${origin}/api/notion`;
-    console.log("url:", url);
     const res = await fetch(url, {
       method: "GET",
       headers: {
