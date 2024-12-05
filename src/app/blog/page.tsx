@@ -53,10 +53,10 @@ export default async function BlogList() {
       <Container size="lg" py="xl">
         <Title order={1}>Blog</Title>
         <Suspense fallback={<LoadingGrid />}>
-          <Grid>
+          <Grid gutter="lg">
             {posts.map((post: Article) => (
-              <GridCol key={post.id} span={{ base: 12, sm: 6, md: 4 }}>
-                <BadgeCard post={post} />
+              <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
+                <BadgeCard key={post.id} post={post} />
               </GridCol>
             ))}
           </Grid>
