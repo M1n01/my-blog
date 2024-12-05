@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import { AppShell, Breadcrumbs, Anchor } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { Navbar, Header, Footer } from "../../components/layout";
+import { Navbar, Header } from "../../components/layout";
 import "@mantine/core/styles.css";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -49,7 +49,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Breadcrumbs>{breadcrumbs}</Breadcrumbs>
         {children}
       </AppShell.Main>
-      <Footer />
     </AppShell>
   );
 }
