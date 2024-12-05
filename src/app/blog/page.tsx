@@ -16,7 +16,9 @@ async function getArticles() {
   const origin = `${protocol}://${host}`;
 
   try {
-    const res = await fetch(`${origin}/api/notion`, {
+    const url = `${origin}/api/notion`;
+    console.log("url:", url);
+    const res = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
