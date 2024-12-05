@@ -28,7 +28,7 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
           />
           <Title order={3}>Abe Minato</Title>
           <Text size="sm" c="dimmed">
-            Beginer Developer
+            Beginner Developer
           </Text>
         </Stack>
 
