@@ -69,8 +69,9 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
             color="pink"
             leftSection={<IconHeart size={20} />}
             justify="center"
-            onClick={() => window.open("your-donation-link", "_blank")} // Add your donation link
-            disabled
+            onClick={() =>
+              window.open("https://buymeacoffee.com/m1n01", "_blank")
+            }
           >
             Support My Work
           </Button>
