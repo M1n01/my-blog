@@ -1,20 +1,12 @@
-"use client";
-import React, { FC, useEffect, useState } from "react";
-import {
-  Container,
-  Skeleton,
-  Text,
-  Title,
-  Image,
-  Stack,
-  Anchor,
-} from "@mantine/core";
+import React, { Suspense } from "react";
+import { Container, Text, Title, Image, Stack, Anchor } from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
 import Layout from "../_layout";
 import { type Article } from "../../../types/notion/Article";
-import { useSearchParams } from "next/navigation";
 import { isFullBlock } from "@notionhq/client";
 import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
+import LoadingContent from "./loading";
+import { getArticleContent } from "@/lib/notion";
 
 export const runtime = "edge";
 
@@ -159,70 +151,31 @@ function convertContent(article: Article): React.ReactNode {
   );
 }
 
-const BlogContents: FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [content, setContent] = useState<React.ReactNode | null>(null);
-  const searchParams = useSearchParams();
+export default async function BlogContent({
+  searchParams,
+}: {
+  searchParams: { post: string };
+}) {
+  const postParam = searchParams?.post;
+  let fetchedArticle: Article;
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        // クエリパラメータがある場合はそれを使う
-        console.log("Fetching contents with query params...");
-        const postParam = searchParams?.get("post");
-        let fetchedArticle: Article;
-        if (postParam) {
-          const postData = JSON.parse(postParam) as Article;
-          fetchedArticle = await fetch(
-            `/api/notion/${postData.id}?post=${postParam}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            },
-          ).then((res) => res.json());
-        }
-        // クエリパラメータがない場合は従来通りAPIから取得
-        else {
-          console.log("Fetching contents without query params...");
-          const id = window.location.pathname.split("/").pop();
-          console.debug("articleID:", id);
+  // 一覧ページから流入した場合
+  if (postParam) {
+    const postData = JSON.parse(postParam) as Article;
+    fetchedArticle = await getArticleContent(postData.id, postData);
+  }
+  // クエリパラメータがない場合は従来通りAPIから取得
+  else {
+    const id = window.location.pathname.split("/").pop() || "";
 
-          fetchedArticle = await fetch(`/api/notion/${id}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((res) => res.json());
-        }
-
-        console.info("Fetched content:", fetchedArticle);
-        setContent(convertContent(fetchedArticle));
-      } catch (error) {
-        console.error("Failed to fetch contents:", error);
-        setContent(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchContent();
-  }, [searchParams]);
+    fetchedArticle = await getArticleContent(id, null);
+  }
 
   return (
     <Layout>
-      {loading ? (
-        <Container size="md" py="xl">
-          <Skeleton height={450} mb="xl" />
-          <Skeleton height={50} mb="xl" />
-          <Skeleton height={30} mb="md" />
-          <Skeleton height={300} mb="md" />
-        </Container>
-      ) : (
-        content
-      )}
+      <Suspense fallback={<LoadingContent />}>
+        {convertContent(fetchedArticle)}
+      </Suspense>
     </Layout>
   );
-};
-
-export default BlogContents;
+}
