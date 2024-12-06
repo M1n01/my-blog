@@ -1,4 +1,5 @@
 import { Client, isFullPage } from "@notionhq/client";
+import { cache } from "react";
 import {
   isNotionClientError,
   ClientErrorCode,
@@ -60,7 +61,7 @@ async function getNotionArticles() {
   }
 }
 
-export async function getAllArticles() {
+export const getAllArticles = cache(async () => {
   try {
     const response = await getNotionArticles();
 
@@ -103,7 +104,7 @@ export async function getAllArticles() {
     console.error("Failed to fetch articles:", error);
     throw error;
   }
-}
+});
 
 export async function getArticle(id: string) {
   const response = await notion.pages.retrieve({
