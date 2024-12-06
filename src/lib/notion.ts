@@ -4,7 +4,6 @@ import {
   ClientErrorCode,
   APIErrorCode,
 } from "@notionhq/client/build/src/errors";
-import { GetPageResponse } from "@notionhq/client/build/src/api-endpoints";
 
 import { type Article } from "../types/notion/Article";
 
@@ -13,7 +12,7 @@ const notion = new Client({
   auth: process.env.NEXT_PUBLIC_NOTION_TOKEN,
 });
 
-export async function getAllArticles() {
+async function getNotionArticles() {
   if (!process.env.NEXT_PUBLIC_DATABASE_ID) {
     throw new Error("NEXT_PUBLIC_DATABASE_IDが設定されていません。");
   }
@@ -34,51 +33,7 @@ export async function getAllArticles() {
         },
       ],
     });
-    if (response) {
-      const articles: Article[] = response.results.map((post) => {
-        if (isFullPage(post)) {
-          return {
-            id: post.id,
-            thumbnail:
-              post.cover?.type === "external" ? post.cover.external.url : "",
-            title:
-              post.properties.title.type === "title"
-                ? post.properties.title.title[0].plain_text
-                : "",
-            description:
-              post.properties.description?.type === "rich_text"
-                ? post.properties.description.rich_text[0].plain_text
-                : "",
-            publishedAt:
-              post.properties.publishedAt.type === "date"
-                ? (post.properties.publishedAt.date?.start ?? "")
-                : "", // date型でないまたはnullの場合は空文字を返す
-            updatedAt: post.last_edited_time,
-            tags:
-              post.properties.tags?.type === "multi_select"
-                ? post.properties.tags.multi_select.map((tag) => ({
-                    id: tag.id,
-                    name: tag.name,
-                    color: tag.color,
-                  }))
-                : [],
-          };
-        } else {
-          return {
-            id: post.id,
-            thumbnail: "",
-            title: "",
-            description: "",
-            publishedAt: "",
-            updatedAt: "",
-            tags: [],
-          };
-        }
-      });
-      return articles;
-    } else {
-      throw new Error("Failed to fetch articles");
-    }
+    return response;
   } catch (error: unknown) {
     if (isNotionClientError(error)) {
       switch (error.code) {
@@ -105,8 +60,53 @@ export async function getAllArticles() {
   }
 }
 
+export async function getAllArticles() {
+  try {
+    const response = await getNotionArticles();
+
+    const articles: Article[] = response.results.map((post) => {
+      if (isFullPage(post)) {
+        return {
+          id: post.id,
+          thumbnail:
+            post.cover?.type === "external" ? post.cover.external.url : "",
+          title:
+            post.properties.title.type === "title"
+              ? post.properties.title.title[0].plain_text
+              : "",
+          description:
+            post.properties.description?.type === "rich_text"
+              ? post.properties.description.rich_text[0].plain_text
+              : "",
+          publishedAt:
+            post.properties.publishedAt.type === "date"
+              ? (post.properties.publishedAt.date?.start ?? "")
+              : "", // date型でないまたはnullの場合は空文字を返す
+          updatedAt: post.last_edited_time,
+          tags:
+            post.properties.tags?.type === "multi_select"
+              ? post.properties.tags.multi_select.map((tag) => ({
+                  id: tag.id,
+                  name: tag.name,
+                  color: tag.color,
+                }))
+              : [],
+        };
+      }
+      // ページがFullPageでない場合はerrorを投げる
+      else {
+        throw new Error("Notion APIのレスポンスが不正です。");
+      }
+    });
+    return articles;
+  } catch (error) {
+    console.error("Failed to fetch articles:", error);
+    throw error;
+  }
+}
+
 export async function getArticle(id: string) {
-  const response: GetPageResponse = await notion.pages.retrieve({
+  const response = await notion.pages.retrieve({
     page_id: id,
   });
   console.debug("[Fetched article in getArticle]:\n", response);
