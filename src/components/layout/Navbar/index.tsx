@@ -22,10 +22,7 @@ const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
       <Stack gap="xl">
         {/* Profile Section */}
         <Stack align="center" gap="xs">
-          <Avatar
-            size="lg"
-            src={`${process.env.NEXT_R2_PUBLIC_URL}/IMG_8359.jpg`}
-          />
+          <Avatar size="lg" src="/assets/avatar.jpg" />
           <Title order={3}>Abe Minato</Title>
           <Text size="sm" c="dimmed">
             Beginner Developer
