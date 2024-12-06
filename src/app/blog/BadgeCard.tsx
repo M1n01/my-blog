@@ -43,7 +43,7 @@ const BadgeCard: FC<{ post: Article }> = ({ post }) => {
 
       <Card.Section className={classes.section}>
         <Text mt="md" mb="md" className={classes.label} c="dimmed">
-          Labels
+          Tags
         </Text>
         <Group gap={7}>{labels}</Group>
       </Card.Section>
