@@ -4,8 +4,8 @@ import "./globals.css";
 import "@mantine/core/styles.css";
 
 export const metadata = {
-  title: "My Mantine app",
-  description: "I have followed setup instructions carefully",
+  title: "minabe's blog",
+  description: "This site is a technical blog by minabe.",
 };
 
 export default function RootLayout({
