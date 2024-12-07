@@ -6,18 +6,9 @@ import { type Article } from "../../../types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
 import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
 import LoadingContent from "./loading";
-import { getAllArticles, getArticleContent } from "@/lib/notion";
+import { getArticleContent } from "@/lib/notion";
 
-export const revalidate = 86400;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const posts: Article[] = await getAllArticles();
-  console.log("Generating static params:", posts);
-  return posts.map((post) => ({
-    id: String(post.id),
-  }));
-}
+export const runtime = "edge";
 
 type TextProps = {
   component: "span";
