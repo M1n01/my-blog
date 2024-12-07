@@ -8,6 +8,7 @@ import LoadingGrid from "./loading";
 import { Article } from "@/types/notion/Article";
 
 export const runtime = "edge";
+export const revalidate = 86400;
 
 export default async function BlogList() {
   // const [activePage, setActivePage] = useState(1);
