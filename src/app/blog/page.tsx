@@ -39,7 +39,7 @@ export default async function BlogList() {
           </Alert>
         ) : (
           <>
-            <Title order={1} mb="lg">
+            <Title order={2} mb="lg">
               Articles
             </Title>
             <Suspense fallback={<LoadingGrid />}>
