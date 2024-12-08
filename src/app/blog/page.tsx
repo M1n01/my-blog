@@ -40,7 +40,7 @@ export default async function BlogList() {
         ) : (
           <>
             <Title order={1} mb="lg">
-              Blog
+              Articles
             </Title>
             <Suspense fallback={<LoadingGrid />}>
               <Grid gutter="lg">
