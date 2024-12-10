@@ -3,7 +3,6 @@ import { Alert, Container, Title, Grid, GridCol } from "@mantine/core";
 import BadgeCard from "./BadgeCard";
 import { getAllArticles } from "@/lib/notion";
 
-import Layout from "./_layout";
 import LoadingGrid from "./loading";
 import { Article } from "@/types/notion/Article";
 
@@ -31,30 +30,29 @@ export default async function BlogList() {
   //   activePage * postsPerPage,
   // );
   return (
-    <Layout>
-      <Container size="lg" py="xl">
-        {error ? (
-          <Alert color="red" title="Error">
-            {error}
-          </Alert>
-        ) : (
-          <>
-            <Title order={2} mb="lg">
-              Articles
-            </Title>
-            <Suspense fallback={<LoadingGrid />}>
-              <Grid gutter="lg">
-                {posts?.map((post: Article) => (
-                  <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
-                    <BadgeCard post={post} />
-                  </GridCol>
-                ))}
-              </Grid>
-            </Suspense>
-          </>
-        )}
+    <Container size="lg" py="xl">
+      {error ? (
+        <Alert color="red" title="Error">
+          {error}
+        </Alert>
+      ) : (
+        <>
+          <Title order={2} mb="lg">
+            Articles
+          </Title>
+          <Suspense fallback={<LoadingGrid />}>
+            <Grid gutter="lg">
+              {posts?.map((post: Article) => (
+                <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
+                  <BadgeCard post={post} />
+                </GridCol>
+              ))}
+            </Grid>
+          </Suspense>
+        </>
+      )}
 
-        {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
+      {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
           <Group justify="center" mt="xl">
             <Pagination
               value={activePage}
@@ -63,7 +61,6 @@ export default async function BlogList() {
             />
           </Group>
         )} */}
-      </Container>
-    </Layout>
+    </Container>
   );
 }

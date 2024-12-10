@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { Container, Text, Title, Image, Stack, Anchor } from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
-import Layout from "../_layout";
 import { type Article } from "../../../types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
 import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
@@ -174,10 +173,8 @@ export default async function BlogContent({ searchParams }: PageProps) {
   }
 
   return (
-    <Layout>
-      <Suspense fallback={<LoadingContent />}>
-        {convertContent(fetchedArticle)}
-      </Suspense>
-    </Layout>
+    <Suspense fallback={<LoadingContent />}>
+      {convertContent(fetchedArticle)}
+    </Suspense>
   );
 }

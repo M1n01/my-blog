@@ -2,9 +2,10 @@
 import { usePathname } from "next/navigation";
 import { AppShell, Breadcrumbs, Anchor } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-
-import { Navbar, Header } from "../../components/layout";
 import "@mantine/core/styles.css";
+
+import Navbar from "./Navbar";
+import Header from "./Header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure(false);
