@@ -4,14 +4,13 @@ import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const defaultPages: MetadataRoute.Sitemap = [
-    {
-      url: "https://minabe.work",
-    },
     // {
     //   url: "https://minabe.work/about",
     // },
     {
       url: "https://minabe.work/blog",
+      changeFrequency: "daily",
+      priority: 0.5,
     },
   ];
 
