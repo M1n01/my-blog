@@ -1,5 +1,14 @@
 import React, { Suspense } from "react";
-import { Container, Text, Title, Image, Stack, Anchor } from "@mantine/core";
+import {
+  Container,
+  Text,
+  Title,
+  Image,
+  Stack,
+  Anchor,
+  ActionIcon,
+} from "@mantine/core";
+import { IconHeart } from "@tabler/icons-react";
 import { CodeHighlight } from "@mantine/code-highlight";
 import { type Article } from "../../../types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
@@ -55,14 +64,14 @@ const renderRichText = (text: RichTextItemResponse) => {
 function convertContent(article: Article): React.ReactNode {
   console.log("Converting content:", article);
   return (
-    <Container size="md" py="xl">
+    <Stack>
       <Image
         src={article.thumbnail}
         alt={article.title}
         w="auto"
         fit="contain"
         radius="md"
-        h={300}
+        h={100}
         mb="md"
       />
       <Title order={1} mb="md">
@@ -146,7 +155,7 @@ function convertContent(article: Article): React.ReactNode {
           }
         })}
       </Stack>
-    </Container>
+    </Stack>
   );
 }
 
@@ -174,7 +183,14 @@ export default async function BlogContent({ searchParams }: PageProps) {
 
   return (
     <Suspense fallback={<LoadingContent />}>
-      {convertContent(fetchedArticle)}
+      <Container size="md" py="xl">
+        {convertContent(fetchedArticle)}
+        <Stack mt="lg">
+          <ActionIcon variant="outline" c="red" radius="xl">
+            <IconHeart size={18} stroke={1.5} />
+          </ActionIcon>
+        </Stack>
+      </Container>
     </Suspense>
   );
 }
