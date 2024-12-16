@@ -24,6 +24,7 @@
     "@mantine/code-highlight": "^7.14.3",
     "@mantine/core": "^7.14.3",
     "@mantine/hooks": "^7.14.3",
+    "@next/third-parties": "^15.1.0",
     "@notionhq/client": "^2.2.15",
     "@tabler/icons-react": "^3.23.0",
     "critters": "^0.0.25",

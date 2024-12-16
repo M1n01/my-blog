@@ -1,4 +1,5 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 import "./globals.css";
 import "@mantine/core/styles.css";
@@ -19,14 +20,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* <!-- Google tag (gtag.js) --> */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-TTXM2GDB9V"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-TTXM2GDB9V');
-        </script>
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GA_ID || ""} />
         <ColorSchemeScript />
       </head>
       <body>
