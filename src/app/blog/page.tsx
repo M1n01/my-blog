@@ -1,10 +1,11 @@
-import { Suspense } from "react";
-import { Alert, Container, Title, Grid, GridCol } from "@mantine/core";
-import BadgeCard from "./BadgeCard";
-import { getAllArticles } from "@/lib/notion";
+// import { Suspense } from "react";
+// import { Alert, Container, Title, Grid, GridCol } from "@mantine/core";
+// import BadgeCard from "./BadgeCard";
+// import { getAllArticles } from "@/lib/notion";
+import { Container } from "@mantine/core";
 
 import LoadingGrid from "./loading";
-import { Article } from "@/types/notion/Article";
+// import { Article } from "@/types/notion/Article";
 
 export const runtime = "edge";
 export const revalidate = 86400;
@@ -13,17 +14,17 @@ export default async function BlogList() {
   // const [activePage, setActivePage] = useState(1);
   // const postsPerPage = 9;
 
-  let posts;
-  let error;
+  // let posts;
+  // let error;
 
-  try {
-    posts = await getAllArticles();
-  } catch (e) {
-    error =
-      e instanceof Error
-        ? e.message
-        : "An error occurred while fetching articles.";
-  }
+  // try {
+  //   posts = await getAllArticles();
+  // } catch (e) {
+  //   error =
+  //     e instanceof Error
+  //       ? e.message
+  //       : "An error occurred while fetching articles.";
+  // }
 
   // const paginatedPosts = posts.slice(
   //   (activePage - 1) * postsPerPage,
@@ -31,7 +32,7 @@ export default async function BlogList() {
   // );
   return (
     <Container size="lg" py="xl">
-      {error ? (
+      {/* {error ? (
         <Alert color="red" title="Error">
           {error}
         </Alert>
@@ -50,7 +51,8 @@ export default async function BlogList() {
             </Grid>
           </Suspense>
         </>
-      )}
+      )} */}
+      <LoadingGrid />
 
       {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
           <Group justify="center" mt="xl">
