@@ -4,7 +4,7 @@ import { AppShell, Breadcrumbs, Anchor } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import "@mantine/core/styles.css";
 
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
 import Header from "./Header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -45,7 +45,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       padding="md"
     >
       <Header opened={opened} toggle={toggle} />
-      <Navbar opened={opened} toggle={toggle} />
       <AppShell.Main>
         <Breadcrumbs>{breadcrumbs}</Breadcrumbs>
         {children}
