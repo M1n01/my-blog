@@ -59,8 +59,6 @@ function convertContent(article: Article): React.ReactNode {
       <Image
         src={article.thumbnail}
         alt={article.title}
-        w="auto"
-        fit="contain"
         radius="md"
         h={300}
         mb="md"

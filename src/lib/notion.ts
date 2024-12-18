@@ -117,7 +117,9 @@ export async function getArticle(id: string) {
     return {
       id: response.id,
       thumbnail:
-        response.cover?.type === "external" ? response.cover.external.url : "",
+        response.cover?.type === "external"
+          ? response.cover.external.url
+          : (response.cover?.file?.url ?? ""), // defaultを設定したい。
       title:
         response.properties.title.type === "title"
           ? response.properties.title.title[0].plain_text
