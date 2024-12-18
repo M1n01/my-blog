@@ -11,12 +11,7 @@ import {
 } from "@mantine/core";
 import { IconBrandGithub, IconBrandX, IconHeart } from "@tabler/icons-react";
 
-const Navbar: FC<{ opened: boolean; toggle: () => void }> = ({
-  opened,
-  toggle,
-}) => {
-  console.log(toggle);
-
+const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
   return (
     <AppShell.Navbar p="md" hidden={!opened}>
       <Stack gap="xl">

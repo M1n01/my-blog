@@ -45,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       padding="md"
     >
       <Header opened={opened} toggle={toggle} />
-      <Navbar opened={opened} toggle={toggle} />
+      <Navbar opened={opened} />
       <AppShell.Main>
         <Breadcrumbs>{breadcrumbs}</Breadcrumbs>
         {children}
