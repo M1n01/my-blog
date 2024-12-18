@@ -1,13 +1,11 @@
-"use client";
 import { FC } from "react";
-import { Badge, Card, Image, Text, Group } from "@mantine/core";
+import { Badge, Card, CardSection, Image, Text, Group } from "@mantine/core";
 import { type Article } from "../../types/notion/Article";
 import classes from "./BadgeCard.module.css";
 
 const BadgeCard: FC<{ post: Article }> = ({ post }) => {
   const { id, thumbnail, title, description, publishedAt, tags } = post;
   console.log("post:", post);
-  console.log("tags:", tags);
   const labels = tags?.map((tag) => (
     <Badge key={`${tag.id}`} color={`${tag.color!}`} variant="light">
       {tag.name}
@@ -24,10 +22,10 @@ const BadgeCard: FC<{ post: Article }> = ({ post }) => {
       component="a"
       href={`/blog/${id}`}
     >
-      <Card.Section>
+      <CardSection>
         <Image src={thumbnail} alt={title} height={180} />
-      </Card.Section>
-      <Card.Section className={classes.section} mt="md" style={{ height: 200 }}>
+      </CardSection>
+      <CardSection className={classes.section} mt="md" style={{ height: 200 }}>
         <Group justify="space-between">
           <Text fz="lg" fw={500}>
             {title}
@@ -39,14 +37,14 @@ const BadgeCard: FC<{ post: Article }> = ({ post }) => {
         <Text fz="sm" mt="xs">
           {description}
         </Text>
-      </Card.Section>
+      </CardSection>
 
-      <Card.Section className={classes.section}>
+      <CardSection className={classes.section}>
         <Text mt="md" mb="md" className={classes.label} c="dimmed">
           Tags
         </Text>
         <Group gap={7}>{labels}</Group>
-      </Card.Section>
+      </CardSection>
     </Card>
   );
 };
