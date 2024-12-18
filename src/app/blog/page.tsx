@@ -10,25 +10,19 @@ export const runtime = "edge";
 export const revalidate = 86400;
 
 export default async function BlogList() {
-  // const [activePage, setActivePage] = useState(1);
-  // const postsPerPage = 9;
-
-  let posts;
-  let error;
+  let articles: Article[] = [];
+  let error: string | null = null;
 
   try {
-    posts = await getAllArticles();
-  } catch (e) {
-    error =
-      e instanceof Error
-        ? e.message
-        : "An error occurred while fetching articles.";
+    articles = await getAllArticles();
+  } catch (err) {
+    if (err instanceof Error) {
+      error = err.message;
+    } else {
+      error = String(err);
+    }
   }
 
-  // const paginatedPosts = posts.slice(
-  //   (activePage - 1) * postsPerPage,
-  //   activePage * postsPerPage,
-  // );
   return (
     <Container size="lg" py="xl">
       {error ? (
@@ -42,7 +36,7 @@ export default async function BlogList() {
           </Title>
           <Suspense fallback={<LoadingGrid />}>
             <Grid gutter="lg">
-              {posts?.map((post: Article) => (
+              {articles?.map((post: Article) => (
                 <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
                   <ArticleCard post={post} />
                 </GridCol>
@@ -51,16 +45,6 @@ export default async function BlogList() {
           </Suspense>
         </>
       )}
-
-      {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
-          <Group justify="center" mt="xl">
-            <Pagination
-              value={activePage}
-              onChange={setActivePage}
-              total={Math.ceil(posts.length / postsPerPage)}
-            />
-          </Group>
-        )} */}
     </Container>
   );
 }
