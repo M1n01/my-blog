@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Alert, Container, Title, Grid, GridCol } from "@mantine/core";
-import BadgeCard from "./BadgeCard";
+import ArticleCard from "./ArticleCard";
 import { getAllArticles } from "@/lib/notion";
 
 import LoadingGrid from "./loading";
@@ -44,7 +44,7 @@ export default async function BlogList() {
             <Grid gutter="lg">
               {posts?.map((post: Article) => (
                 <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
-                  <BadgeCard post={post} />
+                  <ArticleCard post={post} />
                 </GridCol>
               ))}
             </Grid>
