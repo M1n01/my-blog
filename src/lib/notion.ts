@@ -69,7 +69,9 @@ export async function getAllArticles() {
         return {
           id: post.id,
           thumbnail:
-            post.cover?.type === "external" ? post.cover.external.url : "",
+            post.cover?.type === "external"
+              ? post.cover.external.url
+              : (post.cover?.file?.url ?? ""), // defaultを設定したい。
           title:
             post.properties.title.type === "title"
               ? post.properties.title.title[0].plain_text
