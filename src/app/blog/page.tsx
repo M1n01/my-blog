@@ -14,7 +14,9 @@ export default async function BlogList() {
   let error: string | null = null;
 
   try {
+    console.log("Fetching articles...");
     articles = await getAllArticles();
+    console.log("Fetched articles:", articles);
   } catch (err) {
     if (err instanceof Error) {
       error = err.message;
