@@ -1,10 +1,9 @@
 import { Suspense } from "react";
-import { Container, Title, Grid, GridCol } from "@mantine/core";
-import ArticleCard from "./ArticleCard";
+import { Container, Title } from "@mantine/core";
+import ArticleCards from "./ArticleCards";
 import { getAllArticles } from "@/lib/notion";
 
 import LoadingGrid from "./loading";
-import { Article } from "@/types/notion/Article";
 
 export const runtime = "edge";
 export const revalidate = 86400;
@@ -25,13 +24,7 @@ export default async function BlogList() {
         Articles
       </Title>
       <Suspense fallback={<LoadingGrid />}>
-        <Grid gutter="lg">
-          {posts?.map((post: Article) => (
-            <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
-              <ArticleCard post={post} />
-            </GridCol>
-          ))}
-        </Grid>
+        <ArticleCards posts={posts} />
       </Suspense>
 
       {/* {!loading && Math.ceil(posts.length / postsPerPage) > 1 && (
