@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { Badge, Card, CardSection, Image, Text, Group } from "@mantine/core";
+import { Badge, Card, CardSection, Text, Group } from "@mantine/core";
 import { type Article } from "../../types/notion/Article";
 import classes from "./ArticleCard.module.css";
 
 const ArticleCard: FC<{ post: Article }> = ({ post }) => {
-  const { id, thumbnail, title, description, publishedAt, tags } = post;
+  const { id, title, description, publishedAt, tags } = post;
   console.log("post:", post);
   const labels = tags?.map((tag) => (
     <Badge key={`${tag.id}`} color={`${tag.color!}`} variant="light">
@@ -22,9 +22,9 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
       component="a"
       href={`/blog/${id}`}
     >
-      <CardSection>
+      {/* <CardSection>
         <Image src={thumbnail} alt={title} height={180} />
-      </CardSection>
+      </CardSection> */}
       <CardSection className={classes.section} mt="md" style={{ height: 200 }}>
         <Group justify="space-between">
           <Text fz="lg" fw={500}>
