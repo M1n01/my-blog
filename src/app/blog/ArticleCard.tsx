@@ -5,7 +5,7 @@ import classes from "./ArticleCard.module.css";
 import { type Article } from "../../types/notion/Article";
 
 const ArticleCard: FC<{ post: Article }> = ({ post }) => {
-  const { id, title, description, publishedAt, tags } = post;
+  const { title, description, publishedAt, tags } = post;
   console.log("post:", post);
   const labels = tags?.map((tag) => (
     <span key={`${tag.id}`} style={{ backgroundColor: tag.color }}>
