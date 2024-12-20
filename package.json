@@ -46,6 +46,10 @@
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.4.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vercel": "39.1.1"
+  },
+  "overrides": {
+    "vercel": "$vercel"
   }
 }
