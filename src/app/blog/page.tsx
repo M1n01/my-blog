@@ -1,5 +1,5 @@
-import { Container, GridCol } from "@mantine/core";
-import ArticleCard from "./ArticleCard";
+import { Container, Text, Stack } from "@mantine/core";
+// import ArticleCard from "./ArticleCard";g
 import { getAllArticles } from "@/lib/notion";
 import { Article } from "@/types/notion/Article";
 
@@ -21,9 +21,9 @@ export default async function BlogList() {
       {posts?.map((post: Article) => {
         console.log("Passing post to ArticleCard:", post); // 👈  追加
         return (
-          <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
-            <ArticleCard post={post} />
-          </GridCol>
+          <Stack gap="lg" key={post.id}>
+            <Text>{post.title}</Text>
+          </Stack>
         );
       })}
 
