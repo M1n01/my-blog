@@ -1,13 +1,15 @@
-"use client";
-import { Text, Container } from "@mantine/core";
+import { getAllArticles } from "@/lib/notion";
+import { Text, Container, Title } from "@mantine/core";
 
-export default function Page() {
+export default async function Page() {
+  const articles = await getAllArticles();
+  console.log(articles);
   return (
     <Container>
-      <Text size="sm">
-        I am an engineer from 42 Tokyo. I&apos;m interested in Rust and
-        TypeScript, and I&apos;m also passionate about Web3.0 technologies
-      </Text>
+      <Title order={1}>Blog</Title>
+      {articles.map((article) => (
+        <Text key={article.id}>{article.title}</Text>
+      ))}
     </Container>
   );
 }
