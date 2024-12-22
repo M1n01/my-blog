@@ -1,6 +1,6 @@
 "use client";
 import { FC, useState } from "react";
-import { AppShell, Burger, Container, Group, Title } from "@mantine/core";
+import { AppShell, Burger, Flex, Group, Title } from "@mantine/core";
 import classes from "./Header.module.css";
 
 const links = [{ link: "/", label: "TOP" }];
@@ -24,8 +24,15 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
   ));
 
   return (
-    <AppShell.Header p="md" className={classes.header}>
-      <Container size="xl" className={classes.inner} mb="xs">
+    <AppShell.Header className={classes.header} style={{ padding: "5px" }}>
+      <Flex
+        justify="space-between"
+        align="center"
+        mih={40}
+        gap="sm"
+        direction="row"
+        wrap="wrap"
+      >
         <Title mb="lg" ff={"Oswald"}>
           minabe&apos;s Blog
         </Title>
@@ -34,7 +41,7 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
         </Group>
 
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-      </Container>
+      </Flex>
     </AppShell.Header>
   );
 };
