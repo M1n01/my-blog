@@ -1,20 +1,13 @@
 import React, { Suspense } from "react";
-import {
-  Container,
-  Text,
-  Title,
-  Image,
-  Stack,
-  Anchor,
-  ActionIcon,
-} from "@mantine/core";
-import { IconHeart } from "@tabler/icons-react";
+import { Container, Text, Title, Image, Stack, Anchor } from "@mantine/core";
+
 import { CodeHighlight } from "@mantine/code-highlight";
 import { type Article } from "../../../types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
 import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
 import LoadingContent from "./loading";
 import { getArticleContent } from "@/lib/notion";
+import { Likes } from "./Likes";
 
 export const runtime = "edge";
 
@@ -185,9 +178,8 @@ export default async function BlogContent({
       <Container size="md" py="xl">
         {convertContent(fetchedArticle)}
         <Stack mt="lg">
-          <ActionIcon variant="outline" c="red" radius="xl">
-            <IconHeart size={18} stroke={1.5} />
-          </ActionIcon>
+          {/* <Likes likes={fetchedArticle.likes} /> */}
+          <Likes />
         </Stack>
       </Container>
     </Suspense>
