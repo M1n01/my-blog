@@ -1,4 +1,5 @@
 import { type Tag } from "./Tag";
+import { type Category } from "./Category";
 import {
   type PartialBlockObjectResponse,
   BlockObjectResponse,
@@ -11,6 +12,9 @@ export type Article = {
   description?: string;
   publishedAt: string;
   updatedAt: string;
+  category: Category;
   tags: Tag[];
   content?: (PartialBlockObjectResponse | BlockObjectResponse)[];
+  likes: number;
+  noindex_nofollow: boolean;
 };
