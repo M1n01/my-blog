@@ -1,5 +1,13 @@
 import React, { Suspense } from "react";
-import { Container, Text, Title, Image, Stack, Anchor } from "@mantine/core";
+import {
+  Container,
+  Text,
+  Title,
+  Image,
+  Stack,
+  Anchor,
+  Blockquote,
+} from "@mantine/core";
 import { CodeHighlight } from "@mantine/code-highlight";
 import { type Article } from "../../../types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
@@ -136,7 +144,11 @@ function convertContent(article: Article): React.ReactNode {
             case "numbered_list_item":
               return null;
             case "quote":
-              return null;
+              return (
+                <Blockquote key={index} color="violet">
+                  {block.quote.rich_text.map((text) => text.plain_text)}
+                </Blockquote>
+              );
             case "embed":
               return null;
             default:
