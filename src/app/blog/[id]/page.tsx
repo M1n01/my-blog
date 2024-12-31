@@ -60,7 +60,7 @@ function convertContent(article: Article): React.ReactNode {
         src={article.thumbnail}
         alt={article.title}
         radius="md"
-        h={300}
+        mah={350}
         mb="md"
       />
       <Title order={1} mb="md">
@@ -79,7 +79,7 @@ function convertContent(article: Article): React.ReactNode {
               );
             case "heading_2":
               return (
-                <Title key={index} order={3} mb="xs" mt="lg">
+                <Title key={index} order={3} mb="xs" mt="lg" td="underline">
                   {block.heading_2.rich_text[0].plain_text}
                 </Title>
               );
@@ -127,7 +127,7 @@ function convertContent(article: Article): React.ReactNode {
                   w="auto"
                   fit="contain"
                   radius="md"
-                  h={450}
+                  mah={300}
                   mb="md"
                 />
               );
