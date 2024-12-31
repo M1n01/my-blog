@@ -85,6 +85,19 @@ export async function getAllArticles() {
               ? (post.properties.publishedAt.date?.start ?? "")
               : "", // date型でないまたはnullの場合は空文字を返す
           updatedAt: post.last_edited_time,
+          category:
+            post.properties.category?.type === "select" &&
+            post.properties.category.select !== null
+              ? {
+                  id: post.properties.category.select.id,
+                  name: post.properties.category.select.name,
+                  color: post.properties.category.select.color,
+                }
+              : {
+                  id: "",
+                  name: "",
+                  color: "",
+                },
           tags:
             post.properties.tags?.type === "multi_select"
               ? post.properties.tags.multi_select.map((tag) => ({
@@ -93,6 +106,15 @@ export async function getAllArticles() {
                   color: tag.color,
                 }))
               : [],
+          likes:
+            post.properties.likes?.type === "number" &&
+            post.properties.likes.number !== null
+              ? post.properties.likes.number
+              : 0,
+          noindex_nofollow:
+            post.properties.noindex_nofollow?.type === "checkbox"
+              ? post.properties.noindex_nofollow.checkbox
+              : false,
         };
       }
       // ページがFullPageでない場合はerrorを投げる
@@ -133,6 +155,19 @@ export async function getArticle(id: string) {
           ? (response.properties.publishedAt.date?.start ?? "")
           : "", // date型でないまたはnullの場合は空文字を返す
       updatedAt: response.last_edited_time,
+      category:
+        response.properties.category?.type === "select" &&
+        response.properties.category.select !== null
+          ? {
+              id: response.properties.category.select.id,
+              name: response.properties.category.select.name,
+              color: response.properties.category.select.color,
+            }
+          : {
+              id: "",
+              name: "",
+              color: "",
+            },
       tags:
         response.properties.tags?.type === "multi_select"
           ? response.properties.tags.multi_select.map((tag) => ({
@@ -141,6 +176,15 @@ export async function getArticle(id: string) {
               color: tag.color,
             }))
           : [],
+      likes:
+        response.properties.likes?.type === "number" &&
+        response.properties.likes.number !== null
+          ? response.properties.likes.number
+          : 0,
+      noindex_nofollow:
+        response.properties.noindex_nofollow?.type === "checkbox"
+          ? response.properties.noindex_nofollow.checkbox
+          : false,
     };
   } else {
     return null;
