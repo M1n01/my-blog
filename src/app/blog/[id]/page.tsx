@@ -7,7 +7,10 @@ import {
   Stack,
   Anchor,
   Blockquote,
+  Badge,
+  Group,
 } from "@mantine/core";
+import { IconBadge4k } from "@tabler/icons-react";
 import { CodeHighlight } from "@mantine/code-highlight";
 import { type Article } from "../../../types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
@@ -61,7 +64,8 @@ const renderRichText = (text: RichTextItemResponse) => {
 };
 
 function convertContent(article: Article): React.ReactNode {
-  console.log("Converting content:", article);
+  const isUpdated = article.publishedAt !== article.updatedAt;
+
   return (
     <Container size="md" py="xl">
       <Image
@@ -74,7 +78,42 @@ function convertContent(article: Article): React.ReactNode {
       <Title order={1} mb="md">
         {article.title}
       </Title>
-      <Text mb="lg">{article.description}</Text>
+      <Stack mb="lg">
+        {isUpdated ? (
+          <Group gap="xs">
+            <Text size="sm">公開日</Text>
+            <Text td="underline">{article.updatedAt}</Text>
+          </Group>
+        ) : (
+          <Group gap="xs">
+            <Text size="sm">
+              <IconBadge4k />
+              更新日
+            </Text>
+            <Text>{article.publishedAt}</Text>
+          </Group>
+        )}
+        <Group gap="xs">
+          <Text size="sm">カテゴリー</Text>
+          <Badge color="violet" variant="filled">
+            {article.category.name}
+          </Badge>
+        </Group>
+        {article.tags.length > 0 && (
+          <Group gap="xs">
+            <Text size="sm">タグ</Text>
+            {article.tags.map((tag) => (
+              <Badge key={tag.id} color={tag.color} variant="filled">
+                {tag.name}
+              </Badge>
+            ))}
+          </Group>
+        )}
+        <Stack gap="xs">
+          <Text size="sm">詳細</Text>
+        </Stack>
+        <Text mb="lg">{article.description}</Text>
+      </Stack>
       <Stack gap="xs">
         {article.content?.map((block, index) => {
           if (!isFullBlock(block)) return null;
