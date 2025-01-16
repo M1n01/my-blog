@@ -2,6 +2,7 @@
 import { FC, useState } from "react";
 import { AppShell, Burger, Flex, Group, Title } from "@mantine/core";
 import classes from "./Header.module.css";
+import Link from "next/link";
 
 const links = [{ link: "/", label: "TOP" }];
 
@@ -33,9 +34,11 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
         direction="row"
         wrap="wrap"
       >
-        <Title mb="lg" ff={"Oswald"}>
-          minabe&apos;s Blog
-        </Title>
+        <Link href="/">
+          <Title mb="lg" ff={"Oswald"}>
+            minabe&apos;s Blog
+          </Title>
+        </Link>
         <Group gap={5} visibleFrom="xs" className={classes.links}>
           {items}
         </Group>
