@@ -37,11 +37,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         breakpoint: "sm",
         collapsed: { mobile: !opened },
       }}
-      aside={{
-        width: 300,
-        breakpoint: "md",
-        collapsed: { desktop: false, mobile: true },
-      }}
       padding="md"
     >
       <Header opened={opened} toggle={toggle} />
