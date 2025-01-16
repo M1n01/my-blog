@@ -65,6 +65,10 @@ const renderRichText = (text: RichTextItemResponse) => {
 
 function convertContent(article: Article): React.ReactNode {
   const isUpdated = article.publishedAt !== article.updatedAt;
+  const publishedDate = new Date(article.publishedAt).toLocaleDateString();
+  const updatedDate = new Date(article.updatedAt).toLocaleDateString();
+  console.log(article.publishedAt, publishedDate);
+  console.log(article.updatedAt, updatedDate);
 
   return (
     <Container size="md" py="xl">
@@ -82,7 +86,7 @@ function convertContent(article: Article): React.ReactNode {
         {isUpdated ? (
           <Group gap="xs">
             <Text size="sm">公開日</Text>
-            <Text td="underline">{article.updatedAt}</Text>
+            <Text td="underline">{updatedDate}</Text>
           </Group>
         ) : (
           <Group gap="xs">
@@ -90,7 +94,7 @@ function convertContent(article: Article): React.ReactNode {
               <IconBadge4k />
               更新日
             </Text>
-            <Text>{article.publishedAt}</Text>
+            <Text>{publishedDate}</Text>
           </Group>
         )}
         <Group gap="xs">
