@@ -43,8 +43,8 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
         </Text>
       </CardSection>
 
-      <CardSection className={classes.section}>
-        <Text mt="md" mb="md" className={classes.label} c="dimmed">
+      <CardSection className={classes.section} mih={90}>
+        <Text mt="md" mb="lg" className={classes.label} c="dimmed">
           Tags
         </Text>
         <Group gap={7}>{labels}</Group>
