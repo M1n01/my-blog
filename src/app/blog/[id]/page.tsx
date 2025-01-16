@@ -69,8 +69,6 @@ function convertContent(article: Article): React.ReactNode {
     "ja-JP",
   );
   const updatedDate = new Date(article.updatedAt).toLocaleDateString("ja-JP");
-  console.log(article.publishedAt, publishedDate);
-  console.log(article.updatedAt, updatedDate);
 
   return (
     <Container size="md" py="xl">
