@@ -10,7 +10,12 @@ import {
   Badge,
   Group,
 } from "@mantine/core";
-import { IconBadge4k } from "@tabler/icons-react";
+import {
+  IconCalendarTime,
+  IconRefresh,
+  IconCategory,
+  IconTags,
+} from "@tabler/icons-react";
 import { CodeHighlight } from "@mantine/code-highlight";
 import { type Article } from "../../../types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
@@ -64,11 +69,11 @@ const renderRichText = (text: RichTextItemResponse) => {
 };
 
 function convertContent(article: Article): React.ReactNode {
-  const isUpdated = article.publishedAt !== article.updatedAt;
   const publishedDate = new Date(article.publishedAt).toLocaleDateString(
     "ja-JP",
   );
   const updatedDate = new Date(article.updatedAt).toLocaleDateString("ja-JP");
+  const isUpdated = article.publishedAt < article.updatedAt;
 
   return (
     <Container size="md" py="xl">
@@ -83,29 +88,30 @@ function convertContent(article: Article): React.ReactNode {
         {article.title}
       </Title>
       <Stack mb="lg">
-        {isUpdated ? (
-          <Group gap="xs">
-            <Text size="sm">公開日</Text>
-            <Text td="underline">{updatedDate}</Text>
-          </Group>
-        ) : (
-          <Group gap="xs">
-            <Text size="sm">
-              <IconBadge4k />
-              更新日
-            </Text>
-            <Text>{publishedDate}</Text>
-          </Group>
-        )}
         <Group gap="xs">
-          <Text size="sm">カテゴリー</Text>
+          <Text size="sm">
+            <IconCalendarTime size={20} /> 公開日 {publishedDate}
+            {isUpdated && (
+              <>
+                {" "}
+                / <IconRefresh size={20} /> 更新日 {updatedDate}
+              </>
+            )}
+          </Text>
+        </Group>
+        <Group gap="xs">
+          <Text size="sm">
+            <IconCategory size={20} /> カテゴリー
+          </Text>
           <Badge color="violet" variant="filled">
             {article.category.name}
           </Badge>
         </Group>
         {article.tags.length > 0 && (
           <Group gap="xs">
-            <Text size="sm">タグ</Text>
+            <Text size="sm">
+              <IconTags size={20} /> タグ
+            </Text>
             {article.tags.map((tag) => (
               <Badge key={tag.id} color={tag.color} variant="filled">
                 {tag.name}
