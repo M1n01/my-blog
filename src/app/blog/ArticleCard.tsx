@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { type Article } from "../../types/notion/Article";
 import classes from "./ArticleCard.module.css";
-import { IconCalendarTime } from "@tabler/icons-react";
+import { IconCalendarTime, IconCategory, IconTags } from "@tabler/icons-react";
 
 const ArticleCard: FC<{ post: Article }> = ({ post }) => {
   const { id, thumbnail, title, description, publishedAt, category, tags } =
@@ -46,7 +46,7 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
             variant="transparent"
             color={category.color || "blue"}
           >
-            {category.name}
+            <IconCategory size={12} /> {category.name}
           </Badge>
         </Group>
         <Title order={4} mt="xs" mb="sm">
@@ -62,7 +62,7 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
 
       <CardSection className={classes.section} mih={90}>
         <Text mb="lg" className={classes.label} c="dimmed">
-          Tags
+          <IconTags size={15} /> Tags
         </Text>
         <Group gap={7}>{labels}</Group>
       </CardSection>
