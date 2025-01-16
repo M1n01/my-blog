@@ -109,10 +109,6 @@ function convertContent(article: Article): React.ReactNode {
             ))}
           </Group>
         )}
-        <Stack gap="xs">
-          <Text size="sm">詳細</Text>
-        </Stack>
-        <Text mb="lg">{article.description}</Text>
       </Stack>
       <Stack gap="xs">
         {article.content?.map((block, index) => {
