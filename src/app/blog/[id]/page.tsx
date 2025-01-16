@@ -65,8 +65,10 @@ const renderRichText = (text: RichTextItemResponse) => {
 
 function convertContent(article: Article): React.ReactNode {
   const isUpdated = article.publishedAt !== article.updatedAt;
-  const publishedDate = new Date(article.publishedAt).toLocaleDateString();
-  const updatedDate = new Date(article.updatedAt).toLocaleDateString();
+  const publishedDate = new Date(article.publishedAt).toLocaleDateString(
+    "ja-JP",
+  );
+  const updatedDate = new Date(article.updatedAt).toLocaleDateString("ja-JP");
   console.log(article.publishedAt, publishedDate);
   console.log(article.updatedAt, updatedDate);
 
