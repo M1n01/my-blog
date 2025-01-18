@@ -1,12 +1,12 @@
 "use client";
 
 import { AppShell } from "@mantine/core";
-import { TableOfContent } from "./TableOfContents";
+import { TableOfContents } from "@mantine/core";
 
 export default function BlogContentAside() {
   return (
     <AppShell.Aside>
-      <TableOfContent />
+      <TableOfContents></TableOfContents>
     </AppShell.Aside>
   );
 }
