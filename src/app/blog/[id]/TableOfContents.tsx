@@ -2,6 +2,6 @@
 
 import { TableOfContents } from "@mantine/core";
 
-export const TableOfContent = ({ children }: { children: React.ReactNode }) => {
-  return <TableOfContents>{children}</TableOfContents>;
+export const TableOfContent = () => {
+  return <TableOfContents></TableOfContents>;
 };
