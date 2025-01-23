@@ -78,7 +78,7 @@ export async function getAllArticles() {
               : "",
           description:
             post.properties.description?.type === "rich_text"
-              ? post.properties.description.rich_text[0].plain_text
+              ? post.properties.description.rich_text[0]?.plain_text
               : "",
           publishedAt:
             post.properties.publishedAt.type === "date"
