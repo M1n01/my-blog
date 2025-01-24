@@ -12,7 +12,7 @@ const notion = new Client({
   auth: process.env.NEXT_PUBLIC_NOTION_TOKEN,
 });
 
-async function getNotionArticles() {
+export async function getNotionArticles() {
   if (!process.env.NEXT_PUBLIC_DATABASE_ID) {
     throw new Error("NEXT_PUBLIC_DATABASE_IDが設定されていません。");
   }
