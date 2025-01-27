@@ -35,7 +35,7 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
         {/* Bio Section */}
         <Stack gap="xs">
           <Text size="sm">
-            42Tokyo出身のエンジニア。札幌出身。フロントエンドを主に触っています。
+            42Tokyo出身のエンジニア。札幌生まれ。主にフロントエンドを触っています。
           </Text>
           <Text size="sm">
             趣味は、野球観戦、読書、アニメ・マンガ、映画、美術館、コーヒーなど。好きな動物はテッポウエビ。飼いたい動物はユーラシアワシミミズクとボールパイソン。
