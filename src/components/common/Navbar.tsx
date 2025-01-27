@@ -14,6 +14,7 @@ import {
   IconBrandX,
   IconHeart,
   IconMapPin,
+  IconScript,
 } from "@tabler/icons-react";
 
 const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
@@ -63,6 +64,17 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
             rel="noopener noreferrer"
           >
             X
+          </Button>
+
+          <Button
+            variant="subtle"
+            leftSection={<IconScript size={20} />}
+            component="a"
+            href="https://forms.gle/goGXqgtbeSGJo1QS9"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            お問い合わせフォーム
           </Button>
 
           {/* Donation Button */}
