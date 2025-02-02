@@ -35,19 +35,18 @@ type TextProps = {
 };
 
 const renderRichText = (text: RichTextItemResponse) => {
+  const underlineEnabled = text.annotations.underline;
   const props: TextProps = {
     component: "span",
     fw: text.annotations.bold ? 700 : 400,
     fs: text.annotations.italic ? "italic" : "normal",
-    td: text.annotations.strikethrough
-      ? "line-through"
-      : text.annotations.underline
-        ? "underline"
-        : "none",
+    td: text.annotations.strikethrough ? "line-through" : "none",
     ff: text.annotations.code ? "monospace" : undefined,
     c:
       text.annotations.color !== "default" ? text.annotations.color : undefined,
   };
+
+  const customStyle = underlineEnabled ? { borderBottom: "1px dashed" } : {};
 
   if (text.href) {
     return (
@@ -59,13 +58,18 @@ const renderRichText = (text: RichTextItemResponse) => {
         td={props.td}
         ff={props.ff}
         c={props.c}
+        style={customStyle}
       >
         {text.plain_text}
       </Anchor>
     );
   }
 
-  return <Text {...props}>{text.plain_text}</Text>;
+  return (
+    <Text {...props} style={customStyle}>
+      {text.plain_text}
+    </Text>
+  );
 };
 
 function convertContent(article: Article): React.ReactNode {
@@ -132,7 +136,13 @@ function convertContent(article: Article): React.ReactNode {
               );
             case "heading_2":
               return (
-                <Title key={index} order={3} mb="xs" mt="lg" td="underline">
+                <Title
+                  key={index}
+                  order={3}
+                  mb="xs"
+                  mt="lg"
+                  style={{ borderBottom: "4px dashed", display: "inline" }}
+                >
                   {block.heading_2.rich_text[0].plain_text}
                 </Title>
               );
