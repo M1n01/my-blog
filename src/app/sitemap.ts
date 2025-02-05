@@ -14,10 +14,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     },
     {
+      url: "http://minabe.work",
+      changeFrequency: "yearly",
+      lastModified: new Date(),
+      priority: 0.5,
+    },
+    {
       url: `${baseUrl}/blog`,
       changeFrequency: "weekly",
       lastModified: new Date(),
       priority: 1,
+    },
+    {
+      url: `${baseUrl}/favicon.ico`,
+      changeFrequency: "yearly",
+      priority: 0.1,
     },
   ];
   try {
