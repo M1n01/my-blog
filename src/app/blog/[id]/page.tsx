@@ -57,7 +57,7 @@ const renderRichText = (text: RichTextItemResponse) => {
         fs={props.fs}
         td={props.td}
         ff={props.ff}
-        c={props.c}
+        c="gray"
         style={customStyle}
       >
         {text.plain_text}
