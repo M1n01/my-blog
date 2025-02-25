@@ -1,19 +1,10 @@
 import React from "react";
-import { type Block } from "@/types/notion/Article";
+import { type Block, TextProps } from "@/types/notion/Article";
 import { isFullBlock } from "@notionhq/client";
 
 import { CodeHighlight } from "@mantine/code-highlight";
 import { Anchor, Image, Title, Text, Blockquote } from "@mantine/core";
 import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
-
-type TextProps = {
-  component: "span";
-  fw?: 400 | 700;
-  fs?: "italic" | "normal";
-  td?: "line-through" | "underline" | "none";
-  ff?: "monospace";
-  c?: string;
-};
 
 const renderRichText = (text: RichTextItemResponse) => {
   const underlineEnabled = text.annotations.underline;

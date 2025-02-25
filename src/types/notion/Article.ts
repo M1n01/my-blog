@@ -20,3 +20,12 @@ export type Article = {
 };
 
 export type Block = PartialBlockObjectResponse | BlockObjectResponse;
+
+export type TextProps = {
+  component: "span";
+  fw?: 400 | 700;
+  fs?: "italic" | "normal";
+  td?: "line-through" | "underline" | "none";
+  ff?: "monospace";
+  c?: string;
+};
