@@ -5,3 +5,4 @@ export * from "./ImageBlock";
 export * from "./QuoteBlock";
 export * from "./BulletedListItem";
 export * from "./NumberedListItem";
+export * from "./Lists";
