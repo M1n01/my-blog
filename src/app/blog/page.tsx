@@ -8,6 +8,8 @@ import { Article } from "@/types/notion/Article";
 
 export const runtime = "edge";
 export const revalidate = 86400;
+// 動的レンダリングを使用
+export const dynamic = "force-dynamic";
 
 // 1ページあたりの記事数
 const ITEMS_PER_PAGE = 9;
@@ -15,9 +17,12 @@ const ITEMS_PER_PAGE = 9;
 export default async function BlogList({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
+  // searchParamsが非同期データを含む可能性があるため、安全に取り出す
+  const pageParam = await searchParams;
+  const currentPage = pageParam?.page ? parseInt(pageParam.page as string) : 1;
+
   let articles: Article[] = [];
   let error: string | null = null;
   let totalArticles = 0;
