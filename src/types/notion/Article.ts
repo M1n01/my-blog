@@ -18,3 +18,5 @@ export type Article = {
   likes: number;
   noindex_nofollow: boolean;
 };
+
+export type Block = PartialBlockObjectResponse | BlockObjectResponse;
