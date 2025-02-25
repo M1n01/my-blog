@@ -1,6 +1,7 @@
 import React from "react";
 import { CodeHighlight } from "@mantine/code-highlight";
 import { CodeBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import "@mantine/code-highlight/styles.css";
 
 export const CodeBlock = ({
   block,
