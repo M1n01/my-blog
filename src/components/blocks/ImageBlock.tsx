@@ -22,7 +22,8 @@ export const ImageBlock = ({
       fit="contain"
       radius="md"
       mah={300}
-      mb="md"
+      mb="lg"
+      mt="lg"
     />
   );
 };
