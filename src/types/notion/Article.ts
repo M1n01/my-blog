@@ -14,7 +14,7 @@ export type Article = {
   updatedAt: string;
   category: Category;
   tags: Tag[];
-  content?: (PartialBlockObjectResponse | BlockObjectResponse)[];
+  content?: Block[];
   likes: number;
   noindex_nofollow: boolean;
 };
