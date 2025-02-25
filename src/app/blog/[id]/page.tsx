@@ -15,10 +15,11 @@ import {
   IconTags,
 } from "@tabler/icons-react";
 import { type Article } from "../../../types/notion/Article";
+import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
 import LoadingContent from "./loading";
 import { getArticleContent } from "@/lib/notion";
-import { blockToJsx } from "@/lib/blocks";
+import { renderBlocks } from "@/lib/blocks";
 
 export const runtime = "edge";
 
@@ -76,9 +77,13 @@ function convertContent(article: Article): React.ReactNode {
       </Stack>
       {/* コンテンツ */}
       <Stack gap="xs">
-        {article.content?.map((block, index) => {
-          return blockToJsx(block, index);
-        })}
+        {article.content &&
+          renderBlocks(
+            article.content.filter(
+              (block): block is BlockObjectResponse =>
+                "type" in block && block.type !== undefined,
+            ),
+          )}
       </Stack>
     </Container>
   );
