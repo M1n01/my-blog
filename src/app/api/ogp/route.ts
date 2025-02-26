@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import { JSDOM } from "jsdom";
 
+export const runtime = "edge";
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const targetUrl = searchParams.get("url");
