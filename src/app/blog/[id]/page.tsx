@@ -7,6 +7,7 @@ import {
   Stack,
   Badge,
   Group,
+  Divider,
 } from "@mantine/core";
 import {
   IconCalendarTime,
@@ -24,6 +25,7 @@ import { Metadata } from "next";
 import LoadingContent from "./loading";
 import { getArticleContent } from "@/lib/notion";
 import { renderBlocks } from "@/lib/blocks";
+import { ShareButtons } from "@/components/common/ShareButtons";
 
 export const runtime = "edge";
 
@@ -126,6 +128,10 @@ function convertContent(article: Article): React.ReactNode {
   const updatedDate = new Date(article.updatedAt).toLocaleDateString("ja-JP");
   const isUpdated = article.publishedAt < article.updatedAt;
 
+  // 現在のURLを取得（クライアントサイドで実行される部分用）
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+  const articleUrl = `${baseUrl}/blog/${article.id}`;
+
   return (
     <Container size="md" py="xl">
       <Image
@@ -181,6 +187,14 @@ function convertContent(article: Article): React.ReactNode {
             ),
           )}
       </Stack>
+
+      {/* SNSシェアボタン */}
+      <Divider my="xl" />
+      <ShareButtons
+        url={articleUrl}
+        title={article.title}
+        description={article.description || ""}
+      />
     </Container>
   );
 }
