@@ -33,7 +33,7 @@ const blockToJsx = (block: BlockObjectResponse, index: number) => {
       return <ImageBlock block={block} index={index} />;
     case "quote":
       return <QuoteBlock block={block} index={index} />;
-    case "embed":
+    case "bookmark":
       return null;
     default:
       return null;
