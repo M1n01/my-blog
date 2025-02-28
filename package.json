@@ -10,6 +10,7 @@
     "pages:build": "pnpm dlx @cloudflare/next-on-pages",
     "preview": "pnpm run pages:build && wrangler pages dev",
     "deploy": "pnpm run pages:build && wrangler deploy",
+    "type-check": "wrangler types --experimental-include-runtime && tsc",
     "prepare": "husky"
   },
   "lint-staged": {

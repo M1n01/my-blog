@@ -20,8 +20,18 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["./.wrangler/types/runtime"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "functions/helloworld.ts"
+  ],
+  "exclude": ["node_modules"],
+  "overrides": {
+    "@types/node": "20.8.3"
+  }
 }
