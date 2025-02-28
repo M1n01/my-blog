@@ -9,7 +9,6 @@ import {
   CodeBlock,
   ImageBlock,
   QuoteBlock,
-  BookmarkBlock,
 } from "@/components/blocks";
 import { BulletedList, NumberedList } from "@/components/blocks/Lists";
 import {
@@ -35,7 +34,7 @@ const blockToJsx = (block: BlockObjectResponse, index: number) => {
     case "quote":
       return <QuoteBlock block={block} index={index} />;
     case "bookmark":
-      return <BookmarkBlock block={block} index={index} />;
+      return null;
     default:
       return null;
   }
