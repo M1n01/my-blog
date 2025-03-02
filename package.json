@@ -14,7 +14,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
+    "src/**/*.{js,ts,jsx,tsx}": [
       "eslint --fix"
     ],
     "*.{js,ts,jsx,tsx,json,css,scss,md}": [
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.6",
+    "@cloudflare/workers-types": "^4.20250224.0",
     "@mantine/code-highlight": "^7.14.3",
     "@mantine/core": "^7.14.3",
     "@mantine/hooks": "^7.14.3",
@@ -31,8 +32,8 @@
     "@tabler/icons-react": "^3.23.0",
     "critters": "^0.0.25",
     "google": "link:@next/third-parties/google",
+    "hono": "^4.7.2",
     "husky": "^9.1.7",
-    "jsdom": "^26.0.0",
     "lint-staged": "^15.2.10",
     "next": "15.0.3",
     "pnpm": "^9.14.4",
@@ -42,7 +43,6 @@
     "vercel": "39.1.1"
   },
   "devDependencies": {
-    "@types/jsdom": "^21.1.7",
     "@types/node": "^20.17.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
