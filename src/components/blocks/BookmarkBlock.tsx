@@ -24,11 +24,11 @@ export const BookmarkBlock = ({
     const fetchOGPData = async () => {
       try {
         const response = await fetch(
-          `/api/ogp?url=${encodeURIComponent(block.bookmark.url)}`,
+          `/ogp?url=${encodeURIComponent(block.bookmark.url)}`,
         );
         if (!response.ok) throw new Error("OGP取得に失敗しました");
-        const data = await response.json();
-        setOgpData(data);
+        const ogpObj: OGPData = await response.json();
+        setOgpData(ogpObj);
       } catch (error) {
         console.error("OGP取得エラー:", error);
       } finally {
