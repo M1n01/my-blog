@@ -2,6 +2,7 @@ export async function onRequestGet(context: EventContext) {
   const { request } = context;
   const url = new URL(request.url);
   const targetUrl = url.searchParams.get("url");
+  const decodedUrl = decodeURIComponent(targetUrl || "");
 
   if (!targetUrl) {
     return new Response(JSON.stringify({ error: "URLパラメータが必要です" }), {
@@ -13,7 +14,7 @@ export async function onRequestGet(context: EventContext) {
   }
 
   try {
-    const response = await fetch(targetUrl);
+    const response = await fetch(decodedUrl);
     const contentType = response.headers.get("content-type") || "";
 
     if (!contentType.includes("text/html")) {
