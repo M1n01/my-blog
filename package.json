@@ -22,6 +22,7 @@
     ]
   },
   "dependencies": {
+    "@cloudflare/next-on-pages": "^1.13.6",
     "@cloudflare/workers-types": "^4.20250224.0",
     "@mantine/code-highlight": "^7.14.3",
     "@mantine/core": "^7.14.3",
@@ -41,7 +42,6 @@
     "vercel": "39.1.1"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.13.6",
     "@types/node": "^20.17.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
