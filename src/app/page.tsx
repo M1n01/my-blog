@@ -9,6 +9,8 @@ import { Article } from "@/types/notion/Article";
 export const runtime = "edge";
 export const revalidate = 86400;
 
+export const dynamic = "force-dynamic";
+
 // 1ページあたりの記事数
 const ITEMS_PER_PAGE = 9;
 
