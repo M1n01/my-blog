@@ -17,6 +17,7 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
   const { id, thumbnail, title, description, publishedAt, category, tags } =
     post;
   // console.log("post:", post); // デバッグ目的以外では削除推奨
+
   const labels = tags?.map((tag) => (
     <Badge key={`${tag.id}`} color={`${tag.color!}`} variant="dot">
       {tag.name}

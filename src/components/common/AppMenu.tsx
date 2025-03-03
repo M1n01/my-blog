@@ -16,9 +16,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     .filter(Boolean)
     .map((path, index, array) => {
       const href = "/" + array.slice(0, index + 1).join("/");
-      if (path === "blog") {
-        path = "Top page";
-      } else if (path.length === 36) {
+      // ルートページには特別な表示をせず、記事ページのIDは「Article」として表示
+      if (path.length === 36) {
         return "Article";
       }
       return (

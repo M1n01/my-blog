@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import { Alert, Container, Title, Grid, GridCol, Center } from "@mantine/core";
-import ArticleCard from "./ArticleCard";
+import ArticleCard from "./blog/ArticleCard";
 import { getAllArticles } from "@/lib/notion";
-import PaginationControl from "./PaginationControl";
-import LoadingGrid from "./loading";
+import PaginationControl from "./blog/PaginationControl";
+import LoadingGrid from "./blog/loading";
 import { Article } from "@/types/notion/Article";
 
 export const runtime = "edge";
@@ -12,7 +12,7 @@ export const revalidate = 86400;
 // 1ページあたりの記事数
 const ITEMS_PER_PAGE = 9;
 
-export default async function BlogList({
+export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

@@ -1,5 +1,5 @@
-import type { MetadataRoute } from "next";
 import { getNotionArticles } from "@/lib/notion";
+import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
@@ -10,20 +10,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}`,
       lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.5,
+      changeFrequency: "weekly",
+      priority: 1,
     },
     {
       url: "http://minabe.work",
       changeFrequency: "yearly",
       lastModified: new Date(),
       priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      changeFrequency: "weekly",
-      lastModified: new Date(),
-      priority: 1,
     },
     {
       url: `${baseUrl}/favicon.ico`,
@@ -42,9 +36,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
     return [...defaultPages, ...blogPages];
-  } catch (error: unknown) {
-    console.error("Failed to fetch articles for sitemap", error);
-
+  } catch (error) {
+    console.error("Error generating sitemap:", error);
     return defaultPages;
   }
 }
