@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Card, Image, Text, Group, Stack, Skeleton } from "@mantine/core";
+import React from "react";
+import { Card, Text, Group, Stack } from "@mantine/core";
 import { BookmarkBlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
-interface OGPData {
-  title: string;
-  description: string;
-  image: string;
-}
-
+/**
+ * ブックマークブロックコンポーネント
+ *
+ * NotionのブックマークブロックをMantineのCardコンポーネントとして表示します。
+ * 現在はOGP取得を行わず、URLとホスト名のみ表示するシンプルな実装です。
+ */
 export const BookmarkBlock = ({
   block,
   index,
@@ -17,27 +17,8 @@ export const BookmarkBlock = ({
   block: BookmarkBlockObjectResponse;
   index: number;
 }) => {
-  const [ogpData, setOgpData] = useState<OGPData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchOGPData = async () => {
-      try {
-        const response = await fetch(
-          `/ogp?url=${encodeURIComponent(block.bookmark.url)}`,
-        );
-        if (!response.ok) throw new Error("OGP取得に失敗しました");
-        const ogpObj: OGPData = await response.json();
-        setOgpData(ogpObj);
-      } catch (error) {
-        console.error("OGP取得エラー:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOGPData();
-  }, [block.bookmark.url]);
+  // URLからホスト名を取得
+  const hostname = new URL(block.bookmark.url).hostname;
 
   return (
     <Card
@@ -51,40 +32,17 @@ export const BookmarkBlock = ({
       rel="noopener noreferrer"
     >
       <Group align="flex-start" style={{ gap: "1rem" }}>
-        {loading ? (
-          <>
-            <Stack style={{ flex: 1 }}>
-              <Skeleton height={20} radius="sm" />
-              <Skeleton height={40} radius="sm" />
-              <Skeleton height={15} width="70%" radius="sm" />
-            </Stack>
-            <Skeleton height={90} width={90} radius="sm" />
-          </>
-        ) : (
-          <>
-            <Stack style={{ flex: 1 }}>
-              <Text size="sm" c="dimmed">
-                {new URL(block.bookmark.url).hostname}
-              </Text>
-              <Text size="lg" fw={500} lineClamp={2}>
-                {ogpData?.title || "無題"}
-              </Text>
-              <Text size="sm" c="dimmed" lineClamp={2}>
-                {ogpData?.description || "No description"}
-              </Text>
-            </Stack>
-            {ogpData?.image && (
-              <Image
-                src={ogpData.image}
-                alt={ogpData.title || ""}
-                width={90}
-                height={90}
-                radius="sm"
-                fit="cover"
-              />
-            )}
-          </>
-        )}
+        <Stack style={{ flex: 1 }}>
+          <Text size="sm" c="dimmed">
+            {hostname}
+          </Text>
+          <Text size="lg" fw={500} lineClamp={2}>
+            {block.bookmark.url}
+          </Text>
+          <Text size="sm" c="dimmed" lineClamp={2}>
+            {hostname}からのリンク
+          </Text>
+        </Stack>
       </Group>
     </Card>
   );
