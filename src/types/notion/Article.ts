@@ -29,3 +29,9 @@ export type TextProps = {
   ff?: "monospace";
   c?: string;
 };
+
+export type TableOfContentsItem = {
+  id: string;
+  text: string;
+  level: 1 | 2 | 3;
+};

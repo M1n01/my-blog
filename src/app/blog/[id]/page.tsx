@@ -21,6 +21,9 @@ import {
   ParagraphBlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import { Metadata } from "next";
+import Script from "next/script";
+import { BlogProvider } from "@/app/context/article.context";
+import { TableOfContentsItem } from "@/types/notion/Article";
 
 import LoadingContent from "./loading";
 import { getArticleContent } from "@/lib/notion";
@@ -121,6 +124,27 @@ export async function generateMetadata({
   }
 }
 
+function extractTableOfContents(article: Article): TableOfContentsItem[] {
+  if (!article.content) return [];
+
+  return article.content
+    .filter(
+      (block): block is BlockObjectResponse =>
+        ("type" in block && block.type === "heading_1") ||
+        block.type === "heading_2" ||
+        block.type === "heading_3",
+    )
+    .map((block) => {
+      const headingLevel = parseInt(block.type.slice(-1)) as 1 | 2 | 3;
+      const text = block[block.type].rich_text[0]?.plain_text || "";
+      return {
+        id: block.id,
+        text,
+        level: headingLevel,
+      };
+    });
+}
+
 function convertContent(article: Article): React.ReactNode {
   const publishedDate = new Date(article.publishedAt).toLocaleDateString(
     "ja-JP",
@@ -181,10 +205,23 @@ function convertContent(article: Article): React.ReactNode {
       <Stack gap="xs">
         {article.content &&
           renderBlocks(
-            article.content.filter(
-              (block): block is BlockObjectResponse =>
-                "type" in block && block.type !== undefined,
-            ),
+            article.content
+              .filter(
+                (block): block is BlockObjectResponse =>
+                  "type" in block && block.type !== undefined,
+              )
+              .map((block) => {
+                if (block.type.startsWith("heading_")) {
+                  return {
+                    ...block,
+                    [block.type]: {
+                      ...block[block.type],
+                      id: block.id, // 見出しにIDを追加
+                    },
+                  };
+                }
+                return block;
+              }),
           )}
       </Stack>
 
@@ -222,9 +259,16 @@ export default async function BlogContent({
     fetchedArticle = await getArticleContent(slug, null);
   }
 
+  const tableOfContents = extractTableOfContents(fetchedArticle);
+
   return (
-    <Suspense fallback={<LoadingContent />}>
-      {convertContent(fetchedArticle)}
-    </Suspense>
+    <BlogProvider>
+      <Script id="toc-init">
+        {`window.initialTableOfContents = ${JSON.stringify(tableOfContents)}`}
+      </Script>
+      <Suspense fallback={<LoadingContent />}>
+        {convertContent(fetchedArticle)}
+      </Suspense>
+    </BlogProvider>
   );
 }

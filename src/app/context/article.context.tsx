@@ -1,20 +1,32 @@
 "use client";
 
-import { Article } from "@/types/notion/Article";
+import { Article, TableOfContentsItem } from "@/types/notion/Article";
 import React, { createContext, useContext, useState, Dispatch } from "react";
 
-export const BlogContext = createContext<{
+type BlogContextType = {
   articles: Article[] | null;
   setArticles: Dispatch<React.SetStateAction<Article[] | null>>;
-}>({
+  tableOfContents: TableOfContentsItem[];
+  setTableOfContents: Dispatch<React.SetStateAction<TableOfContentsItem[]>>;
+};
+
+export const BlogContext = createContext<BlogContextType>({
   articles: null,
   setArticles: () => {},
+  tableOfContents: [],
+  setTableOfContents: () => {},
 });
 
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   const [articles, setArticles] = useState<Article[] | null>(null);
+  const [tableOfContents, setTableOfContents] = useState<TableOfContentsItem[]>(
+    [],
+  );
+
   return (
-    <BlogContext.Provider value={{ articles, setArticles }}>
+    <BlogContext.Provider
+      value={{ articles, setArticles, tableOfContents, setTableOfContents }}
+    >
       {children}
     </BlogContext.Provider>
   );
