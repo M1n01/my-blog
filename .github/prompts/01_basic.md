@@ -21,17 +21,36 @@
 
 ## 技術スタック
 
-- Frontend: Next.js with TypeScript
-- Style Framework: Mantine
-- CMS: Notion
-- Deploy: Cloudflare Pages
+### Frontend
+
+- Next.js v15.0.3 (App Router) with TypeScript v5.7.2
+- Style: Mantine v7.14.3
+- React v18.3.1
+- React DOM v18.3.1
+
+### CMS and Deployment
+
+- CMS: Notion (@notionhq/client v2.2.15)
+- Deploy: Cloudflare Pages (Wrangler v3.96.0, @cloudflare/next-on-pages v1.13.6)
 - CI/CD: GitHub Actions
 - Testing: Jest
-- Lint: ESLint
-- Formatter: Prettier
-- Package Manager: PNPM
+- Lint: ESLint v8.57.1
+- Formatter: Prettier v3.4.1
+- Package Manager: PNPM v9.14.4
 - Version Control: Git
 - Repository: GitHub
+
+### その他の依存関係
+
+- @tabler/icons-react v3.23.0
+- @next/third-parties v15.1.7
+- react-share v5.2.2
+- vercel v39.1.1
+
+### プロジェクト情報
+
+- バージョン: 0.1.0
+- プライベートパッケージ: true
 
 ## 仕様
 
