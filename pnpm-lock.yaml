@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@cloudflare/next-on-pages':
-        specifier: ^1.13.6
-        version: 1.13.6(@cloudflare/workers-types@4.20250224.0)(vercel@39.1.1)(wrangler@3.96.0(@cloudflare/workers-types@4.20250224.0))
       '@cloudflare/workers-types':
         specifier: ^4.20250224.0
         version: 4.20250224.0
@@ -66,6 +63,9 @@ importers:
         specifier: 39.1.1
         version: 39.1.1
     devDependencies:
+      '@cloudflare/next-on-pages':
+        specifier: ^1.13.6
+        version: 1.13.6(@cloudflare/workers-types@4.20250224.0)(vercel@39.1.1)(wrangler@3.96.0(@cloudflare/workers-types@4.20250224.0))
       '@types/node':
         specifier: ^20.17.9
         version: 20.17.9
@@ -84,6 +84,9 @@ importers:
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.57.1)
+      eslint-plugin-next-on-pages:
+        specifier: ^1.13.8
+        version: 1.13.8(eslint@8.57.1)
       postcss:
         specifier: ^8.4.49
         version: 8.4.49
@@ -689,6 +692,12 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
+  '@types/estree-jsx@1.0.5':
+    resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
+
+  '@types/estree@1.0.6':
+    resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -1124,6 +1133,10 @@ packages:
   commander@12.1.0:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
     engines: {node: '>=18'}
+
+  comment-parser@1.4.1:
+    resolution: {integrity: sha512-buhp5kePrmda3vhc5B9t7pUQXAb2Tnd0qgpkIhPhkHXxJpiPJ11H0ZEU0oBpJ2QztSbzG/ZxMj/CHsYJqRHmyg==}
+    engines: {node: '>= 12.0.0'}
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
@@ -1677,6 +1690,11 @@ packages:
     engines: {node: '>=4.0'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
+
+  eslint-plugin-next-on-pages@1.13.8:
+    resolution: {integrity: sha512-zQS2dlStpT7lUqaB4+wFByf4Z/HuXY56s+T9UqR07WKkILlMOibAvPyw+trwOhp043DEr78uRI8dmodD//TA6A==}
+    peerDependencies:
+      eslint: ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
 
   eslint-plugin-react-hooks@5.0.0:
     resolution: {integrity: sha512-hIOwI+5hYGpJEc4uPRmz2ulCjAGD/N13Lukkh8cLV0i2IRk/bdZDYjgLVHj+U9Z704kLIdIO6iueGvxNur0sgw==}
@@ -3811,6 +3829,12 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
+  '@types/estree-jsx@1.0.5':
+    dependencies:
+      '@types/estree': 1.0.6
+
+  '@types/estree@1.0.6': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
@@ -4370,6 +4394,8 @@ snapshots:
   commander@11.1.0: {}
 
   commander@12.1.0: {}
+
+  comment-parser@1.4.1: {}
 
   concat-map@0.0.1: {}
 
@@ -4943,6 +4969,12 @@ snapshots:
       object.fromentries: 2.0.8
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.1
+
+  eslint-plugin-next-on-pages@1.13.8(eslint@8.57.1):
+    dependencies:
+      '@types/estree-jsx': 1.0.5
+      comment-parser: 1.4.1
+      eslint: 8.57.1
 
   eslint-plugin-react-hooks@5.0.0(eslint@8.57.1):
     dependencies:

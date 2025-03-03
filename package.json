@@ -9,7 +9,7 @@
     "lint": "next lint",
     "pages:build": "pnpm dlx @cloudflare/next-on-pages",
     "preview": "pnpm run pages:build && wrangler pages dev",
-    "deploy": "pnpm run pages:build && wrangler deploy",
+    "deploy": "pnpm run pages:build && wrangler pages deploy",
     "type-check": "wrangler types --experimental-include-runtime && tsc",
     "prepare": "husky"
   },
@@ -22,7 +22,6 @@
     ]
   },
   "dependencies": {
-    "@cloudflare/next-on-pages": "^1.13.6",
     "@cloudflare/workers-types": "^4.20250224.0",
     "@mantine/code-highlight": "^7.14.3",
     "@mantine/core": "^7.14.3",
@@ -43,12 +42,14 @@
     "vercel": "39.1.1"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.6",
     "@types/node": "^20.17.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-next-on-pages": "^1.13.8",
     "postcss": "^8.4.49",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
