@@ -16,7 +16,7 @@ import { IconCalendarTime, IconCategory, IconTags } from "@tabler/icons-react";
 const ArticleCard: FC<{ post: Article }> = ({ post }) => {
   const { id, thumbnail, title, description, publishedAt, category, tags } =
     post;
-  console.log("post:", post);
+  // console.log("post:", post); // デバッグ目的以外では削除推奨
   const labels = tags?.map((tag) => (
     <Badge key={`${tag.id}`} color={`${tag.color!}`} variant="dot">
       {tag.name}
@@ -52,9 +52,18 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
         <Title order={4} mt="xs" mb="sm">
           {title}
         </Title>
-        <Stack mt="sm" gap="xs">
+        <Stack
+          mt="sm"
+          gap="xs"
+          style={{ overflow: "hidden", maxHeight: "120px" }}
+        >
           <Text size="xs">【内容】</Text>
-          <Text size="xs" fz="sm">
+          <Text
+            size="xs"
+            fz="sm"
+            lineClamp={4}
+            style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+          >
             {description}
           </Text>
         </Stack>

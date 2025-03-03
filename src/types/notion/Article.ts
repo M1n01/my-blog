@@ -14,7 +14,18 @@ export type Article = {
   updatedAt: string;
   category: Category;
   tags: Tag[];
-  content?: (PartialBlockObjectResponse | BlockObjectResponse)[];
+  content?: Block[];
   likes: number;
   noindex_nofollow: boolean;
+};
+
+export type Block = PartialBlockObjectResponse | BlockObjectResponse;
+
+export type TextProps = {
+  component: "span";
+  fw?: 400 | 700;
+  fs?: "italic" | "normal";
+  td?: "line-through" | "underline" | "none";
+  ff?: "monospace";
+  c?: string;
 };

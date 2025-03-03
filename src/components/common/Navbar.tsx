@@ -9,7 +9,13 @@ import {
   Group,
   Button,
 } from "@mantine/core";
-import { IconBrandGithub, IconBrandX, IconHeart } from "@tabler/icons-react";
+import {
+  IconBrandGithub,
+  IconBrandX,
+  IconHeart,
+  IconMapPin,
+  IconScript,
+} from "@tabler/icons-react";
 
 const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
   return (
@@ -20,15 +26,20 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
           <Avatar size="lg" src="/assets/avatar.jpg" />
           <Title order={3}>Abe Minato</Title>
           <Text size="sm" c="dimmed">
-            Beginner Developer
+            Developer
+          </Text>
+          <Text size="md" c="">
+            <IconMapPin size={15} /> Tokyo
           </Text>
         </Stack>
 
         {/* Bio Section */}
         <Stack gap="xs">
           <Text size="sm">
-            I am an engineer from 42 Tokyo. I&apos;m interested in Rust and
-            TypeScript, and I&apos;m also passionate about Web3.0 technologies.
+            42Tokyo出身のエンジニア。札幌生まれ。主にフロントエンドを触っています。
+          </Text>
+          <Text size="sm">
+            趣味は、野球観戦、読書、アニメ・マンガ、映画、美術館、コーヒーなど。好きな動物はテッポウエビ。飼いたい動物はユーラシアワシミミズクとボールパイソン。
           </Text>
         </Stack>
 
@@ -53,6 +64,17 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
             rel="noopener noreferrer"
           >
             X
+          </Button>
+
+          <Button
+            variant="subtle"
+            leftSection={<IconScript size={20} />}
+            component="a"
+            href="https://forms.gle/goGXqgtbeSGJo1QS9"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            お問い合わせフォーム
           </Button>
 
           {/* Donation Button */}

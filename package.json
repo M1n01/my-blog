@@ -9,11 +9,12 @@
     "lint": "next lint",
     "pages:build": "pnpm dlx @cloudflare/next-on-pages",
     "preview": "pnpm run pages:build && wrangler pages dev",
-    "deploy": "pnpm run pages:build && wrangler deploy",
+    "deploy": "pnpm run pages:build && wrangler pages deploy",
+    "type-check": "wrangler types --experimental-include-runtime && tsc",
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
+    "src/**/*.{js,ts,jsx,tsx}": [
       "eslint --fix"
     ],
     "*.{js,ts,jsx,tsx,json,css,scss,md}": [
@@ -22,12 +23,15 @@
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.7",
+    "@cloudflare/workers-types": "^4.20250224.0",
     "@mantine/code-highlight": "^7.16.0",
     "@mantine/core": "^7.16.0",
     "@mantine/hooks": "^7.16.0",
+    "@next/third-parties": "^15.1.7",
     "@notionhq/client": "^2.2.15",
     "@tabler/icons-react": "^3.28.1",
     "critters": "^0.0.25",
+    "google": "link:@next/third-parties/google",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.1",
     "next": "15.0.3",
@@ -43,6 +47,7 @@
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-next-on-pages": "^1.13.8",
     "postcss": "^8.5.1",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",

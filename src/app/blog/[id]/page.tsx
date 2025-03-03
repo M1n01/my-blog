@@ -5,10 +5,9 @@ import {
   Title,
   Image,
   Stack,
-  Anchor,
-  Blockquote,
   Badge,
   Group,
+  Divider,
 } from "@mantine/core";
 import {
   IconCalendarTime,
@@ -16,57 +15,111 @@ import {
   IconCategory,
   IconTags,
 } from "@tabler/icons-react";
-import { CodeHighlight } from "@mantine/code-highlight";
 import { type Article } from "../../../types/notion/Article";
-import { isFullBlock } from "@notionhq/client";
-import { type RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
+import {
+  BlockObjectResponse,
+  ParagraphBlockObjectResponse,
+} from "@notionhq/client/build/src/api-endpoints";
+import { Metadata } from "next";
+
 import LoadingContent from "./loading";
 import { getArticleContent } from "@/lib/notion";
+import { renderBlocks } from "@/lib/blocks";
+import { ShareButtons } from "@/components/common/ShareButtons";
 
 export const runtime = "edge";
 
-type TextProps = {
-  component: "span";
-  fw?: 400 | 700;
-  fs?: "italic" | "normal";
-  td?: "line-through" | "underline" | "none";
-  ff?: "monospace";
-  c?: string;
-};
+// 動的メタデータを生成する関数
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  // IDからスラッグを取得
+  const resolvedParams = await params;
+  const slug = resolvedParams.id;
 
-const renderRichText = (text: RichTextItemResponse) => {
-  const props: TextProps = {
-    component: "span",
-    fw: text.annotations.bold ? 700 : 400,
-    fs: text.annotations.italic ? "italic" : "normal",
-    td: text.annotations.strikethrough
-      ? "line-through"
-      : text.annotations.underline
-        ? "underline"
-        : "none",
-    ff: text.annotations.code ? "monospace" : undefined,
-    c:
-      text.annotations.color !== "default" ? text.annotations.color : undefined,
-  };
+  try {
+    // 記事データを取得
+    const article = await getArticleContent(slug, null);
 
-  if (text.href) {
-    return (
-      <Anchor
-        href={text.href}
-        target="_blank"
-        fw={props.fw}
-        fs={props.fs}
-        td={props.td}
-        ff={props.ff}
-        c={props.c}
-      >
-        {text.plain_text}
-      </Anchor>
-    );
+    // 記事の最初の150文字を説明文として使用
+    let description = "";
+    if (article.content) {
+      const textBlocks = article.content.filter(
+        (block): block is ParagraphBlockObjectResponse =>
+          "type" in block &&
+          block.type === "paragraph" &&
+          block.paragraph?.rich_text?.length > 0,
+      );
+
+      if (textBlocks.length > 0) {
+        const firstBlock = textBlocks[0];
+        description = firstBlock.paragraph.rich_text
+          .map((text: { plain_text: string }) => text.plain_text)
+          .join("")
+          .slice(0, 150);
+
+        if (description.length === 150) {
+          description += "...";
+        }
+      }
+    }
+
+    // 現在のURLを生成
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+    const canonicalUrl = `${baseUrl}/blog/${slug}`;
+
+    return {
+      title: article.title,
+      description: description || article.title,
+      openGraph: {
+        title: article.title,
+        description: description || article.title,
+        url: canonicalUrl, // og:urlを追加
+        images: [
+          {
+            url: article.thumbnail || "/assets/avatar.jpg", // デフォルト画像をフォールバックとして使用
+            width: 1200,
+            height: 630,
+            alt: article.title,
+          },
+        ],
+        type: "article",
+        publishedTime: article.publishedAt,
+        modifiedTime: article.updatedAt,
+        // 記事のカテゴリとタグを追加
+        tags: article.tags.map((tag) => tag.name),
+        // articlesは配列として定義されているのでsectionとしてカテゴリを設定
+        section: article.category.name,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: article.title,
+        description: description || article.title,
+        images: [article.thumbnail || "/assets/avatar.jpg"],
+      },
+      // noindex_nofollow が true の場合、robots に noindex, nofollow を設定
+      robots: article.noindex_nofollow
+        ? {
+            index: false,
+            follow: false,
+          }
+        : undefined,
+      // 正規URLを設定
+      alternates: {
+        canonical: canonicalUrl,
+      },
+    };
+  } catch (error) {
+    console.error("メタデータの生成に失敗しました:", error);
+    // エラー時のフォールバックメタデータ
+    return {
+      title: "記事",
+      description: "ブログ記事",
+    };
   }
-
-  return <Text {...props}>{text.plain_text}</Text>;
-};
+}
 
 function convertContent(article: Article): React.ReactNode {
   const publishedDate = new Date(article.publishedAt).toLocaleDateString(
@@ -74,6 +127,10 @@ function convertContent(article: Article): React.ReactNode {
   );
   const updatedDate = new Date(article.updatedAt).toLocaleDateString("ja-JP");
   const isUpdated = article.publishedAt < article.updatedAt;
+
+  // 現在のURLを取得（クライアントサイドで実行される部分用）
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+  const articleUrl = `${baseUrl}/blog/${article.id}`;
 
   return (
     <Container size="md" py="xl">
@@ -120,87 +177,24 @@ function convertContent(article: Article): React.ReactNode {
           </Group>
         )}
       </Stack>
+      {/* コンテンツ */}
       <Stack gap="xs">
-        {article.content?.map((block, index) => {
-          if (!isFullBlock(block)) return null;
-          switch (block.type) {
-            case "heading_1":
-              return (
-                <Title key={index} order={2} mb="xs" mt="lg">
-                  {block.heading_1.rich_text[0].plain_text}
-                </Title>
-              );
-            case "heading_2":
-              return (
-                <Title key={index} order={3} mb="xs" mt="lg" td="underline">
-                  {block.heading_2.rich_text[0].plain_text}
-                </Title>
-              );
-            case "heading_3":
-              return (
-                <Title key={index} order={4} mb="xs" mt="lg">
-                  {block.heading_3.rich_text[0].plain_text}
-                </Title>
-              );
-            case "paragraph":
-              return (
-                <Text key={index}>
-                  {block.paragraph.rich_text.map((text, i) => (
-                    <React.Fragment key={i}>
-                      {renderRichText(text)}
-                    </React.Fragment>
-                  ))}
-                </Text>
-              );
-            case "code":
-              return (
-                <CodeHighlight
-                  key={index}
-                  code={block.code.rich_text
-                    .map((text) => text.plain_text)
-                    .join("")}
-                  copyLabel="Copy button code"
-                  copiedLabel="Copied!"
-                  language={block.code.language}
-                  mb="md"
-                />
-              );
-            case "image":
-              return (
-                <Image
-                  key={index}
-                  src={
-                    block.image.type === "external"
-                      ? block.image.external.url
-                      : block.image.file.url
-                  }
-                  alt={block.image.caption
-                    .map((text) => text.plain_text)
-                    .join(" ")}
-                  w="auto"
-                  fit="contain"
-                  radius="md"
-                  mah={300}
-                  mb="md"
-                />
-              );
-            case "bulleted_list_item":
-              return null;
-            case "numbered_list_item":
-              return null;
-            case "quote":
-              return (
-                <Blockquote key={index} color="violet">
-                  {block.quote.rich_text.map((text) => text.plain_text)}
-                </Blockquote>
-              );
-            case "embed":
-              return null;
-            default:
-              return null;
-          }
-        })}
+        {article.content &&
+          renderBlocks(
+            article.content.filter(
+              (block): block is BlockObjectResponse =>
+                "type" in block && block.type !== undefined,
+            ),
+          )}
       </Stack>
+
+      {/* SNSシェアボタン */}
+      <Divider my="xl" />
+      <ShareButtons
+        url={articleUrl}
+        title={article.title}
+        description={article.description || ""}
+      />
     </Container>
   );
 }

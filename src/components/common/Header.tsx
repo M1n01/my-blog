@@ -35,8 +35,8 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
         wrap="wrap"
       >
         <Link href="/">
-          <Title mb="lg" ff={"Oswald"}>
-            minabe&apos;s Blog
+          <Title mb="lg" ff={"Butler"}>
+            Minabe&apos;s Blog
           </Title>
         </Link>
         <Group gap={5} visibleFrom="xs" className={classes.links}>

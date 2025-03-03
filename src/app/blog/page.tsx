@@ -1,22 +1,44 @@
 import { Suspense } from "react";
-import { Alert, Container, Title, Grid, GridCol } from "@mantine/core";
+import { Alert, Container, Title, Grid, GridCol, Center } from "@mantine/core";
 import ArticleCard from "./ArticleCard";
 import { getAllArticles } from "@/lib/notion";
-
+import PaginationControl from "./PaginationControl";
 import LoadingGrid from "./loading";
 import { Article } from "@/types/notion/Article";
 
 export const runtime = "edge";
 export const revalidate = 86400;
 
-export default async function BlogList() {
+// 1ページあたりの記事数
+const ITEMS_PER_PAGE = 9;
+
+export default async function BlogList({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  // searchParamsが非同期データを含む可能性があるため、安全に取り出す
+  const pageParam = await searchParams;
+  const currentPage = pageParam?.page ? parseInt(pageParam.page as string) : 1;
+
   let articles: Article[] = [];
   let error: string | null = null;
+  let totalArticles = 0;
+  let totalPages = 0;
 
   try {
     console.log("Fetching articles...");
-    articles = await getAllArticles();
-    console.log("Fetched articles:", articles);
+    // 最初にトータル記事数を取得（実際のAPIリクエストでは必要に応じて実装）
+    const allArticlesResult = await getAllArticles();
+    totalArticles = allArticlesResult.articles.length;
+    totalPages = Math.ceil(totalArticles / ITEMS_PER_PAGE);
+
+    // 現在のページに表示する記事を取得
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    articles = allArticlesResult.articles.slice(startIndex, endIndex);
+
+    console.log(`Fetched articles for page ${currentPage}:`, articles);
   } catch (err) {
     if (err instanceof Error) {
       error = err.message;
@@ -34,7 +56,7 @@ export default async function BlogList() {
       ) : (
         <>
           <Title order={2} mb="lg">
-            Articles
+            記事一覧
           </Title>
           <Suspense fallback={<LoadingGrid />}>
             <Grid gutter="lg">
@@ -44,6 +66,15 @@ export default async function BlogList() {
                 </GridCol>
               ))}
             </Grid>
+
+            {totalPages > 1 && (
+              <Center mt="xl">
+                <PaginationControl
+                  total={totalPages}
+                  currentPage={currentPage}
+                />
+              </Center>
+            )}
           </Suspense>
         </>
       )}

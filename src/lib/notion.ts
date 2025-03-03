@@ -12,7 +12,10 @@ const notion = new Client({
   auth: process.env.NEXT_PUBLIC_NOTION_TOKEN,
 });
 
-async function getNotionArticles() {
+export async function getNotionArticles(
+  startCursor?: string,
+  pageSize: number = 9,
+) {
   if (!process.env.NEXT_PUBLIC_DATABASE_ID) {
     throw new Error("NEXT_PUBLIC_DATABASE_IDが設定されていません。");
   }
@@ -20,6 +23,8 @@ async function getNotionArticles() {
   try {
     const response = await notion.databases.query({
       database_id: process.env.NEXT_PUBLIC_DATABASE_ID,
+      start_cursor: startCursor,
+      page_size: pageSize,
       filter: {
         property: "publishedAt",
         date: {
@@ -60,9 +65,9 @@ async function getNotionArticles() {
   }
 }
 
-export async function getAllArticles() {
+export async function getAllArticles(startCursor?: string, pageSize?: number) {
   try {
-    const response = await getNotionArticles();
+    const response = await getNotionArticles(startCursor, pageSize);
 
     const articles: Article[] = response.results.map((post) => {
       if (isFullPage(post)) {
@@ -78,7 +83,7 @@ export async function getAllArticles() {
               : "",
           description:
             post.properties.description?.type === "rich_text"
-              ? post.properties.description.rich_text[0].plain_text
+              ? post.properties.description.rich_text[0]?.plain_text
               : "",
           publishedAt:
             post.properties.publishedAt.type === "date"
@@ -122,7 +127,12 @@ export async function getAllArticles() {
         throw new Error("Notion APIのレスポンスが不正です。");
       }
     });
-    return articles;
+
+    return {
+      articles,
+      nextCursor: response.next_cursor,
+      hasMore: response.has_more,
+    };
   } catch (error) {
     console.error("Failed to fetch articles:", error);
     throw error;
