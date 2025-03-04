@@ -6,20 +6,6 @@ import {
   Heading3BlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
-type HeadingProps = {
-  text: string;
-  level: 1 | 2 | 3;
-  id?: string;
-};
-
-export function Heading({ text, level, id }: HeadingProps) {
-  return (
-    <Title order={level} id={id} mt="md" mb="sm">
-      {text}
-    </Title>
-  );
-}
-
 export const Heading1 = ({
   block,
   index,
@@ -28,12 +14,9 @@ export const Heading1 = ({
   index: number;
 }) => {
   return (
-    <Heading
-      key={index}
-      level={1}
-      text={block.heading_1.rich_text[0].plain_text}
-      id={`heading-1-${index}`}
-    />
+    <Title key={index} order={2} mb="xs" mt="lg">
+      {block.heading_1.rich_text[0].plain_text}
+    </Title>
   );
 };
 
@@ -45,12 +28,15 @@ export const Heading2 = ({
   index: number;
 }) => {
   return (
-    <Heading
+    <Title
       key={index}
-      level={2}
-      text={block.heading_2.rich_text[0].plain_text}
-      id={`heading-2-${index}`}
-    />
+      order={3}
+      mb="xs"
+      mt="lg"
+      style={{ borderBottom: "4px dashed", display: "inline" }}
+    >
+      {block.heading_2.rich_text[0].plain_text}
+    </Title>
   );
 };
 
@@ -62,11 +48,8 @@ export const Heading3 = ({
   index: number;
 }) => {
   return (
-    <Heading
-      key={index}
-      level={3}
-      text={block.heading_3.rich_text[0].plain_text}
-      id={`heading-3-${index}`}
-    />
+    <Title key={index} order={4} mb="xs" mt="lg">
+      {block.heading_3.rich_text[0].plain_text}
+    </Title>
   );
 };
