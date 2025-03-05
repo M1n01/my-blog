@@ -58,23 +58,26 @@ export default async function BlogList({
           <Title order={2} mb="lg">
             記事一覧
           </Title>
-          <Suspense fallback={<LoadingGrid />}>
-            <Grid gutter="lg">
-              {articles?.map((post: Article) => (
-                <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
-                  <ArticleCard post={post} />
-                </GridCol>
-              ))}
-            </Grid>
 
-            {totalPages > 1 && (
-              <Center mt="xl">
-                <PaginationControl
-                  total={totalPages}
-                  currentPage={currentPage}
-                />
-              </Center>
-            )}
+          <Suspense fallback={<LoadingGrid />}>
+            <>
+              <Grid gutter="lg">
+                {articles?.map((post: Article) => (
+                  <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
+                    <ArticleCard post={post} />
+                  </GridCol>
+                ))}
+              </Grid>
+
+              {totalPages > 1 && (
+                <Center mt="xl">
+                  <PaginationControl
+                    total={totalPages}
+                    currentPage={currentPage}
+                  />
+                </Center>
+              )}
+            </>
           </Suspense>
         </>
       )}
