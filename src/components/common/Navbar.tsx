@@ -12,7 +12,6 @@ import {
 import {
   IconBrandGithub,
   IconBrandX,
-  IconHeart,
   IconMapPin,
   IconScript,
 } from "@tabler/icons-react";
@@ -75,19 +74,6 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
             rel="noopener noreferrer"
           >
             お問い合わせフォーム
-          </Button>
-
-          {/* Donation Button */}
-          <Button
-            variant="light"
-            color="pink"
-            leftSection={<IconHeart size={20} />}
-            justify="center"
-            onClick={() =>
-              window.open("https://buymeacoffee.com/m1n01", "_blank")
-            }
-          >
-            Support My Work
           </Button>
         </Group>
       </Stack>

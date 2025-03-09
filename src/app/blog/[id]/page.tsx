@@ -27,6 +27,7 @@ import LoadingContent from "./loading";
 import { getArticleContent } from "@/lib/notion";
 import { renderBlocks } from "@/lib/blocks";
 import { ShareButtons } from "@/components/common/ShareButtons";
+import { SupportButton } from "@/components/common/SupportButton";
 
 export const runtime = "edge";
 
@@ -198,6 +199,12 @@ function convertContent(article: Article): React.ReactNode {
         title={article.title}
         description={article.description || ""}
       />
+
+      {/* サポートボタン */}
+      <Divider my="xl" />
+      <Box pt="md" pb="xl">
+        <SupportButton />
+      </Box>
     </Container>
   );
 }
