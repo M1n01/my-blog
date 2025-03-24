@@ -7,7 +7,8 @@ import {
   BlockObjectResponse,
   NumberedListItemBlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import { renderRichText } from "./Paragraph";
+import { BulletedListItem } from "./BulletedListItem";
+import { NumberedListItem } from "./NumberedListItem";
 
 // リストブロックをグループ化するためのヘルパー関数
 export const groupListItems = (blocks: BlockObjectResponse[]) => {
@@ -67,12 +68,8 @@ export const BulletedList = ({
 }) => {
   return (
     <List withPadding>
-      {items.map((item, index) => (
-        <List.Item key={item.id || index}>
-          {item.bulleted_list_item.rich_text.map((text, i) => (
-            <React.Fragment key={i}>{renderRichText(text)}</React.Fragment>
-          ))}
-        </List.Item>
+      {items.map((item) => (
+        <BulletedListItem key={item.id} block={item} />
       ))}
     </List>
   );
@@ -86,12 +83,8 @@ export const NumberedList = ({
 }) => {
   return (
     <List type="ordered" withPadding>
-      {items.map((item, index) => (
-        <List.Item key={item.id || index}>
-          {item.numbered_list_item.rich_text.map((text, i) => (
-            <React.Fragment key={i}>{renderRichText(text)}</React.Fragment>
-          ))}
-        </List.Item>
+      {items.map((item) => (
+        <NumberedListItem key={item.id} block={item} />
       ))}
     </List>
   );

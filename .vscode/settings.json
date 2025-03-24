@@ -3,10 +3,13 @@
   "editor.formatOnSave": true,
   "github.copilot.chat.codeGeneration.instructions": [
     {
-      "file": ".github/prompts/01_basic.md"
+      "file": ".github/prompts/rules/00_basic.md"
     },
     {
-      "file": ".github/prompts/02_type_rules.md"
+      "file": ".github/prompts/rules/typescript.md"
+    },
+    {
+      "file": ".github/prompts/rules/tdd.md"
     }
-  ] // ファイル保存時にフォーマットを実行
+  ]
 }

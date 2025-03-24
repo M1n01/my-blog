@@ -8,6 +8,7 @@ import {
   Badge,
   Group,
   Divider,
+  Box,
 } from "@mantine/core";
 import {
   IconCalendarTime,
@@ -26,6 +27,7 @@ import LoadingContent from "./loading";
 import { getArticleContent } from "@/lib/notion";
 import { renderBlocks } from "@/lib/blocks";
 import { ShareButtons } from "@/components/common/ShareButtons";
+import { SupportButton } from "@/components/common/SupportButton";
 
 export const runtime = "edge";
 
@@ -177,16 +179,18 @@ function convertContent(article: Article): React.ReactNode {
           </Group>
         )}
       </Stack>
-      {/* コンテンツ */}
-      <Stack gap="xs">
-        {article.content &&
-          renderBlocks(
-            article.content.filter(
-              (block): block is BlockObjectResponse =>
-                "type" in block && block.type !== undefined,
-            ),
-          )}
-      </Stack>
+      {/* コンテンツ - article-contentクラスを追加 */}
+      <Box className="article-content">
+        <Stack gap="xs">
+          {article.content &&
+            renderBlocks(
+              article.content.filter(
+                (block): block is BlockObjectResponse =>
+                  "type" in block && block.type !== undefined,
+              ),
+            )}
+        </Stack>
+      </Box>
 
       {/* SNSシェアボタン */}
       <Divider my="xl" />
@@ -195,6 +199,12 @@ function convertContent(article: Article): React.ReactNode {
         title={article.title}
         description={article.description || ""}
       />
+
+      {/* サポートボタン */}
+      <Divider my="xl" />
+      <Box pt="md" pb="xl">
+        <SupportButton />
+      </Box>
     </Container>
   );
 }
