@@ -2,15 +2,6 @@ import { NextConfig } from "next";
 import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/blog",
-        permanent: true,
-      },
-    ];
-  },
   compress: true,
   productionBrowserSourceMaps: false,
   experimental: {
