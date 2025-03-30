@@ -17,7 +17,7 @@ export const Heading1 = ({
   const headingId = `heading-1-${index}`;
 
   return (
-    <Title key={index} order={2} mb="xs" mt="lg" id={headingId}>
+    <Title key={index} order={2} mb="xs" mt="lg" size="h1" id={headingId}>
       {text}
     </Title>
   );
@@ -37,6 +37,7 @@ export const Heading2 = ({
     <Title
       key={index}
       order={3}
+      size="h2"
       mb="xs"
       mt="lg"
       style={{ borderBottom: "4px dashed", display: "inline" }}
@@ -58,7 +59,7 @@ export const Heading3 = ({
   const headingId = `heading-3-${index}`;
 
   return (
-    <Title key={index} order={4} mb="xs" mt="lg" id={headingId}>
+    <Title key={index} order={4} size="h3" mb="xs" mt="lg" id={headingId}>
       {text}
     </Title>
   );
