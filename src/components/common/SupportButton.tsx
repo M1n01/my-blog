@@ -24,7 +24,7 @@ export const SupportButton = () => {
         fullWidth
         onClick={() => window.open("https://buymeacoffee.com/m1n01", "_blank")}
       >
-        おいしいコーヒー飲みたいです！
+        支援していただけると嬉しいです！
       </Button>
     </Tooltip>
   );
