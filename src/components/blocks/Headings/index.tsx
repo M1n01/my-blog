@@ -5,6 +5,7 @@ import {
   Heading2BlockObjectResponse,
   Heading3BlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import classes from "./Headings.module.css";
 
 export const Heading1 = ({
   block,
@@ -40,7 +41,7 @@ export const Heading2 = ({
       size="h2"
       mb="xs"
       mt="lg"
-      style={{ borderBottom: "4px dashed", display: "inline" }}
+      className={classes.h2}
       id={headingId}
     >
       {text}
@@ -59,7 +60,15 @@ export const Heading3 = ({
   const headingId = `heading-3-${index}`;
 
   return (
-    <Title key={index} order={4} size="h3" mb="xs" mt="lg" id={headingId}>
+    <Title
+      key={index}
+      order={4}
+      size="h3"
+      mb="xs"
+      mt="lg"
+      className={classes.h3}
+      id={headingId}
+    >
       {text}
     </Title>
   );
