@@ -1,6 +1,6 @@
 import React from "react";
 import { TextProps } from "@/types/notion/Article";
-import { Anchor, Text } from "@mantine/core";
+import { Anchor, Text, Code } from "@mantine/core";
 import {
   ParagraphBlockObjectResponse,
   type RichTextItemResponse,
@@ -13,12 +13,15 @@ export const renderRichText = (text: RichTextItemResponse) => {
     fw: text.annotations.bold ? 700 : 400,
     fs: text.annotations.italic ? "italic" : "normal",
     td: text.annotations.strikethrough ? "line-through" : "none",
-    ff: text.annotations.code ? "monospace" : undefined,
     c:
       text.annotations.color !== "default" ? text.annotations.color : undefined,
   };
 
   const customStyle = underlineEnabled ? { borderBottom: "1px dashed" } : {};
+
+  if (text.annotations.code) {
+    return <Code>{text.plain_text}</Code>;
+  }
 
   if (text.href) {
     return (
@@ -28,7 +31,6 @@ export const renderRichText = (text: RichTextItemResponse) => {
         fw={props.fw}
         fs={props.fs}
         td={props.td}
-        ff={props.ff}
         c="gray"
         style={customStyle}
       >
