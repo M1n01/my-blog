@@ -7,3 +7,4 @@ export * from "./BulletedListItem";
 export * from "./NumberedListItem";
 export * from "./Lists";
 export * from "./BookmarkBlock";
+export * from "./ToggleBlock";
