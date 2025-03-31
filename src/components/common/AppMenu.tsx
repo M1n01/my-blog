@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { AppShell, Breadcrumbs, Anchor } from "@mantine/core";
+import { AppShell, Breadcrumbs, Anchor, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import "@mantine/core/styles.css";
 
@@ -40,8 +40,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header opened={opened} toggle={toggle} />
       <Navbar opened={opened} />
       <AppShell.Main>
-        <Breadcrumbs>{breadcrumbs}</Breadcrumbs>
-        {children}
+        <Container size="md" py="xl">
+          <Breadcrumbs mb="lg">{breadcrumbs}</Breadcrumbs>
+          {children}
+        </Container>
       </AppShell.Main>
     </AppShell>
   );

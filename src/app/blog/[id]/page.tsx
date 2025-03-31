@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import {
-  Container,
   Text,
   Title,
   Image,
@@ -135,7 +134,7 @@ function convertContent(article: Article): React.ReactNode {
   const articleUrl = `${baseUrl}/blog/${article.id}`;
 
   return (
-    <Container size="md" py="xl">
+    <>
       <Image
         src={article.thumbnail}
         alt={article.title}
@@ -205,7 +204,7 @@ function convertContent(article: Article): React.ReactNode {
       <Box pt="md" pb="xl">
         <SupportButton />
       </Box>
-    </Container>
+    </>
   );
 }
 

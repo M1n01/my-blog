@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Alert, Container, Title, Grid, GridCol, Center } from "@mantine/core";
+import { Alert, Title, Grid, GridCol, Center } from "@mantine/core";
 import ArticleCard from "./blog/ArticleCard";
 import { getAllArticles } from "@/lib/notion";
 import PaginationControl from "./blog/PaginationControl";
@@ -50,7 +50,7 @@ export default async function HomePage({
   }
 
   return (
-    <Container size="lg" py="xl">
+    <>
       {error ? (
         <Alert color="red" title="Error">
           {error}
@@ -83,6 +83,6 @@ export default async function HomePage({
           </Suspense>
         </>
       )}
-    </Container>
+    </>
   );
 }
