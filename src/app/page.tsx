@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Alert, Title, Grid, GridCol, Center } from "@mantine/core";
-import ArticleCard from "./blog/ArticleCard";
-import PaginationControl from "./blog/PaginationControl";
+import ArticleCard from "./ArticleCard";
+import PaginationControl from "./PaginationControl";
 import LoadingGrid from "./loading";
 import { Article } from "@/types/notion/Article";
 import { getArticleService } from "@/lib/articles/singleton";
