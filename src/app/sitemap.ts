@@ -28,15 +28,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.1,
     },
   ];
-  const posts = await articleService.listArticles(null);
-  if (posts.isErr()) {
-    console.error("Failed to fetch posts:", posts.error);
+  const result = await articleService.listArticles(null);
+  if (result.isErr()) {
+    console.error("Failed to fetch posts:", result.error);
     return defaultPages;
   }
 
-  const blogPages: MetadataRoute.Sitemap = posts.value.results.map((post) => ({
+  const articles = result.value.articles;
+
+  const blogPages: MetadataRoute.Sitemap = articles.map((post) => ({
     url: `${baseUrl}/blog/${post.id}`,
-    lastModified: new Date(),
+    lastModified: new Date(post.updatedAt),
     changeFrequency: "weekly",
     priority: 0.7,
   }));
