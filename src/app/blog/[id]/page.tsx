@@ -8,6 +8,7 @@ import {
   Group,
   Divider,
   Box,
+  Alert,
 } from "@mantine/core";
 import {
   IconCalendarTime,
@@ -23,103 +24,99 @@ import {
 import { Metadata } from "next";
 
 import LoadingContent from "./loading";
-import { getArticleContent } from "@/lib/articles";
+import { getArticleService } from "@/lib/articles/singleton";
 import { renderBlocks } from "@/lib/blocks";
 import { ShareButtons } from "@/components/common/ShareButtons";
 import { SupportButton } from "@/components/common/SupportButton";
 
 export const runtime = "edge";
 
-// 動的メタデータを生成する関数
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  // IDからスラッグを取得
   const resolvedParams = await params;
   const slug = resolvedParams.id;
+  const articleService = getArticleService();
 
-  try {
-    // 記事データを取得
-    const article = await getArticleContent(slug, null);
+  // 記事データを取得
+  const result = await articleService.getArticleWithContent(slug, null);
 
-    // 記事の最初の150文字を説明文として使用
-    let description = "";
-    if (article.content) {
-      const textBlocks = article.content.filter(
-        (block): block is ParagraphBlockObjectResponse =>
-          "type" in block &&
-          block.type === "paragraph" &&
-          block.paragraph?.rich_text?.length > 0,
-      );
-
-      if (textBlocks.length > 0) {
-        const firstBlock = textBlocks[0];
-        description = firstBlock.paragraph.rich_text
-          .map((text: { plain_text: string }) => text.plain_text)
-          .join("")
-          .slice(0, 150);
-
-        if (description.length === 150) {
-          description += "...";
-        }
-      }
-    }
-
-    // 現在のURLを生成
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
-    const canonicalUrl = `${baseUrl}/blog/${slug}`;
-
-    return {
-      title: article.title,
-      description: description || article.title,
-      openGraph: {
-        title: article.title,
-        description: description || article.title,
-        url: canonicalUrl, // og:urlを追加
-        images: [
-          {
-            url: article.thumbnail || "/assets/avatar.jpg", // デフォルト画像をフォールバックとして使用
-            width: 1200,
-            height: 630,
-            alt: article.title,
-          },
-        ],
-        type: "article",
-        publishedTime: article.publishedAt,
-        modifiedTime: article.updatedAt,
-        // 記事のカテゴリとタグを追加
-        tags: article.tags.map((tag) => tag.name),
-        // articlesは配列として定義されているのでsectionとしてカテゴリを設定
-        section: article.category.name,
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: article.title,
-        description: description || article.title,
-        images: [article.thumbnail || "/assets/avatar.jpg"],
-      },
-      // noindex_nofollow が true の場合、robots に noindex, nofollow を設定
-      robots: article.noindex_nofollow
-        ? {
-            index: false,
-            follow: false,
-          }
-        : undefined,
-      // 正規URLを設定
-      alternates: {
-        canonical: canonicalUrl,
-      },
-    };
-  } catch (error) {
-    console.error("メタデータの生成に失敗しました:", error);
-    // エラー時のフォールバックメタデータ
+  // エラーの場合はデフォルトのメタデータを返す
+  if (result.isErr()) {
+    console.error("メタデータの生成に失敗しました:", result.error);
     return {
       title: "記事",
       description: "ブログ記事",
     };
   }
+
+  const article = result.value;
+  // 記事の最初の150文字を説明文として使用
+  let description = "";
+  if (article.content) {
+    const textBlocks = article.content.filter(
+      (block): block is ParagraphBlockObjectResponse =>
+        "type" in block &&
+        block.type === "paragraph" &&
+        block.paragraph?.rich_text?.length > 0,
+    );
+
+    if (textBlocks.length > 0) {
+      const firstBlock = textBlocks[0];
+      description = firstBlock.paragraph.rich_text
+        .map((text: { plain_text: string }) => text.plain_text)
+        .join("")
+        .slice(0, 150);
+
+      if (description.length === 150) {
+        description += "...";
+      }
+    }
+  }
+
+  // 現在のURLを生成
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const canonicalUrl = `${baseUrl}/blog/${slug}`;
+
+  return {
+    title: article.title,
+    description: description || article.title,
+    openGraph: {
+      title: article.title,
+      description: description || article.title,
+      url: canonicalUrl,
+      images: [
+        {
+          url: article.thumbnail || "/assets/avatar.jpg",
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+      type: "article",
+      publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
+      tags: article.tags.map((tag) => tag.name),
+      section: article.category.name,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: description || article.title,
+      images: [article.thumbnail || "/assets/avatar.jpg"],
+    },
+    robots: article.noindex_nofollow
+      ? {
+          index: false,
+          follow: false,
+        }
+      : undefined,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+  };
 }
 
 function convertContent(article: Article): React.ReactNode {
@@ -217,23 +214,33 @@ export default async function BlogContent({
 }) {
   const slug = (await params).id;
   const { post: postParam } = await searchParams;
-  let fetchedArticle: Article;
+  const articleService = getArticleService();
 
   // 一覧ページから流入した場合
+  let articleResult;
   if (postParam) {
     const postData = JSON.parse(
       Array.isArray(postParam) ? postParam[0] : postParam,
     ) as Article;
-    fetchedArticle = await getArticleContent(slug, postData);
+    articleResult = await articleService.getArticleWithContent(slug, postData);
+  } else {
+    // クエリパラメータがない場合は従来通りAPIから取得
+    articleResult = await articleService.getArticleWithContent(slug, null);
   }
-  // クエリパラメータがない場合は従来通りAPIから取得
-  else {
-    fetchedArticle = await getArticleContent(slug, null);
+
+  if (articleResult.isErr()) {
+    return (
+      <Alert color="red" title="エラーが発生しました">
+        {articleResult.error.type === "NOTION_ERROR"
+          ? articleResult.error.error.message
+          : articleResult.error.message}
+      </Alert>
+    );
   }
 
   return (
     <Suspense fallback={<LoadingContent />}>
-      {convertContent(fetchedArticle)}
+      {convertContent(articleResult.value)}
     </Suspense>
   );
 }
