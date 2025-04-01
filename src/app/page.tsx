@@ -29,7 +29,6 @@ export default async function HomePage({
   let totalPages = 0;
 
   try {
-    console.log("Fetching articles...");
     // 最初にトータル記事数を取得（実際のAPIリクエストでは必要に応じて実装）
     const allArticlesResult = await getAllArticles();
     totalArticles = allArticlesResult.articles.length;
@@ -39,8 +38,6 @@ export default async function HomePage({
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     articles = allArticlesResult.articles.slice(startIndex, endIndex);
-
-    console.log(`Fetched articles for page ${currentPage}:`, articles);
   } catch (err) {
     if (err instanceof Error) {
       error = err.message;
