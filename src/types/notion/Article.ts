@@ -1,7 +1,7 @@
 import { type Tag } from "./Tag";
 import { type Category } from "./Category";
-import {
-  type PartialBlockObjectResponse,
+import type {
+  PartialBlockObjectResponse,
   BlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 

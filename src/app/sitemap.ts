@@ -25,19 +25,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.1,
     },
   ];
-  try {
-    const posts = await getNotionArticles();
-
-    const blogPages: MetadataRoute.Sitemap = posts.results.map((post) => ({
-      url: `${baseUrl}/blog/${post.id}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    }));
-
-    return [...defaultPages, ...blogPages];
-  } catch (error) {
-    console.error("Error generating sitemap:", error);
+  const posts = await getNotionArticles();
+  if (posts.isErr()) {
+    console.error("Failed to fetch posts:", posts.error);
     return defaultPages;
   }
+
+  const blogPages: MetadataRoute.Sitemap = posts.value.results.map((post) => ({
+    url: `${baseUrl}/blog/${post.id}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  return [...defaultPages, ...blogPages];
 }
