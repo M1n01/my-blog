@@ -81,7 +81,10 @@ export const getNotionArticles = async (
   }
 };
 
-export async function getAllArticles(startCursor?: string, pageSize?: number) {
+export const getAllArticles = async (
+  startCursor?: string,
+  pageSize?: number,
+) => {
   const response = await getNotionArticles(startCursor, pageSize);
   if (response.isErr()) {
     throw response.error;
@@ -151,7 +154,7 @@ export async function getAllArticles(startCursor?: string, pageSize?: number) {
     nextCursor: response.value.next_cursor,
     hasMore: response.value.has_more,
   };
-}
+};
 
 export const getArticle = async (id: string) => {
   const response = await notion.pages.retrieve({

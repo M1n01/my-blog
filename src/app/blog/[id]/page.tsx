@@ -23,7 +23,7 @@ import {
 import { Metadata } from "next";
 
 import LoadingContent from "./loading";
-import { getArticleContent } from "@/lib/notion";
+import { getArticleContent } from "@/lib/articles";
 import { renderBlocks } from "@/lib/blocks";
 import { ShareButtons } from "@/components/common/ShareButtons";
 import { SupportButton } from "@/components/common/SupportButton";
