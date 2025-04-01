@@ -1,8 +1,11 @@
-import { getNotionArticles } from "@/lib/articles";
+import { getArticleService } from "@/lib/articles/singleton";
+
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+
+  const articleService = getArticleService();
   const defaultPages: MetadataRoute.Sitemap = [
     // {
     //   url: "https://minabe.work/about",
@@ -25,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.1,
     },
   ];
-  const posts = await getNotionArticles();
+  const posts = await articleService.listArticles(null);
   if (posts.isErr()) {
     console.error("Failed to fetch posts:", posts.error);
     return defaultPages;

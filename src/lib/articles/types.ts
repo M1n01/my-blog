@@ -31,7 +31,7 @@ export interface PaginationParams {
 
 export interface NotionRepositoryInterface {
   getArticles(
-    params: PaginationParams,
+    params: PaginationParams | null,
   ): Promise<Result<QueryDatabaseResponse, NotionError>>;
   getArticle(id: string): Promise<Result<PageObjectResponse, NotionError>>;
   getArticleBlocks(

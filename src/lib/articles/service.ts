@@ -22,7 +22,7 @@ export class ArticleService implements ArticleServiceInterface {
    * 記事のリストを取得する
    */
   async listArticles(
-    params: PaginationParams,
+    params: PaginationParams | null,
   ): Promise<Result<ArticleListResult, ApplicationError>> {
     const result = await this.repository.getArticles(params);
 

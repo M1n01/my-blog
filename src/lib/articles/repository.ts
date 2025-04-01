@@ -34,8 +34,28 @@ export class NotionRepository implements NotionRepositoryInterface {
    * Notionデータベースから記事リストを取得する
    */
   async getArticles(
-    params: PaginationParams,
+    params: PaginationParams | null,
   ): Promise<Result<QueryDatabaseResponse, NotionError>> {
+    // paramsがnullの場合は、全てのページを取得する
+    if (!params) {
+      const all = await this.client.databases.query({
+        database_id: this.databaseId!,
+        filter: {
+          property: "publishedAt",
+          date: {
+            is_not_empty: true,
+          },
+        },
+        sorts: [
+          {
+            property: "publishedAt",
+            direction: "descending",
+          },
+        ],
+      });
+      return ok(all);
+    }
+
     const { startCursor, pageSize = 9 } = params;
 
     if (!this.databaseId) {
