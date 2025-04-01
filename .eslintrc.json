@@ -4,5 +4,5 @@
     "next/typescript",
     "plugin:eslint-plugin-next-on-pages/recommended"
   ],
-  "plugins": ["eslint-plugin-next-on-pages"]
+  "plugins": ["eslint-plugin-next-on-pages", "eslint-plugin-neverthrow"]
 }
