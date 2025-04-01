@@ -36,10 +36,17 @@ export class NotionRepository implements NotionRepositoryInterface {
   async getArticles(
     params: PaginationParams | null,
   ): Promise<Result<QueryDatabaseResponse, NotionError>> {
+    if (!this.databaseId) {
+      return err({
+        type: "OBJECT_NOT_FOUND",
+        message:
+          "NEXT_PUBLIC_DATABASE_ID is not defined in environment variables",
+      });
+    }
     // paramsがnullの場合は、全てのページを取得する
     if (!params) {
       const all = await this.client.databases.query({
-        database_id: this.databaseId!,
+        database_id: this.databaseId,
         filter: {
           property: "publishedAt",
           date: {
