@@ -65,14 +65,6 @@ export class NotionRepository implements NotionRepositoryInterface {
 
     const { startCursor, pageSize = 9 } = params;
 
-    if (!this.databaseId) {
-      return err({
-        type: "OBJECT_NOT_FOUND",
-        message:
-          "NEXT_PUBLIC_DATABASE_ID is not defined in environment variables",
-      });
-    }
-
     try {
       const response = await this.client.databases.query({
         database_id: this.databaseId,
