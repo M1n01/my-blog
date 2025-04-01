@@ -143,7 +143,6 @@ export async function getArticle(id: string) {
   const response = await notion.pages.retrieve({
     page_id: id,
   });
-  console.debug("[Fetched article in getArticle]:\n", response);
 
   if (isFullPage(response)) {
     return {
@@ -201,6 +200,23 @@ export async function getArticle(id: string) {
   }
 }
 
+async function fetchBlockWithChildren(blockId: string) {
+  const block = await notion.blocks.children.list({
+    block_id: blockId,
+  });
+
+  const childBlocks = [];
+  for (const child of block.results) {
+    if ("has_children" in child && child.has_children) {
+      const children = await fetchBlockWithChildren(child.id);
+      Object.assign(child, { children });
+    }
+    childBlocks.push(child);
+  }
+
+  return childBlocks;
+}
+
 export const getArticleContent = async (
   id: string,
   article: Article | null,
@@ -213,17 +229,14 @@ export const getArticleContent = async (
     if (articleData === null) {
       throw new Error("Article not found");
     }
-    console.debug("articleInfo:\n", articleData);
   }
 
   try {
-    const res = await notion.blocks.children.list({
-      block_id: id,
-    });
-    console.debug("[Fetched blocks in getArticleContent]:\n", res);
+    const blocks = await fetchBlockWithChildren(id);
+    console.debug("[Fetched blocks in getArticleContent]:\n", blocks);
 
-    if (res.results) {
-      articleData.content = res.results;
+    if (blocks.length > 0) {
+      articleData.content = blocks;
     }
 
     return articleData;
