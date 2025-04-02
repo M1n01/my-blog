@@ -1,7 +1,7 @@
 "use client";
 
 import { AppShell } from "@mantine/core";
-import BlogContentAside from "./Aside";
+import BlogContentAside from "@/components/blog/BlogAside";
 
 export default function BlogContentLayout({
   children,

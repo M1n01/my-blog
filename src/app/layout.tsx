@@ -4,7 +4,6 @@ import "./globals.css";
 import "@mantine/core/styles.css";
 
 import AppMenu from "../components/common/AppMenu";
-import { BlogProvider } from "../context/article.context";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata = {
@@ -25,9 +24,7 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider defaultColorScheme="dark">
-          <BlogProvider>
-            <AppMenu>{children}</AppMenu>
-          </BlogProvider>
+          <AppMenu>{children}</AppMenu>
         </MantineProvider>
       </body>
     </html>
