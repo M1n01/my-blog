@@ -9,7 +9,7 @@ import {
   Group,
   Stack,
 } from "@mantine/core";
-import { type Article } from "../../types/notion/Article";
+import { type Article } from "@/types/notion/Article";
 import classes from "./ArticleCard.module.css";
 import { IconCalendarTime, IconCategory, IconTags } from "@tabler/icons-react";
 

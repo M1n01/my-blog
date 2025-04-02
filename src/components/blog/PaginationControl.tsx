@@ -1,5 +1,3 @@
-// クライアントコンポーネントを別ファイルとして切り出し
-// /Users/abeminato/project/dev/my-blog/src/app/blog/PaginationControl.tsx として作成
 "use client";
 
 import { Pagination } from "@mantine/core";
