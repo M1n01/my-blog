@@ -8,10 +8,12 @@ import {
   Title,
   Group,
   Stack,
+  Box,
 } from "@mantine/core";
 import { type Article } from "@/types/notion/Article";
 import classes from "./ArticleCard.module.css";
 import { IconCalendarTime, IconCategory, IconTags } from "@tabler/icons-react";
+import Link from "next/link";
 
 const ArticleCard: FC<{ post: Article }> = ({ post }) => {
   const { id, thumbnail, title, description, publishedAt, category, tags } =
@@ -41,13 +43,23 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
           <Badge size="md" variant="light">
             <IconCalendarTime size={12} /> {publishedAt}
           </Badge>
-          <Badge
-            size="md"
-            variant="transparent"
-            color={category.color || "blue"}
+          <Link
+            href={`/category/${category.id}`}
+            passHref
+            style={{ textDecoration: "none" }}
           >
-            <IconCategory size={12} /> {category.name}
-          </Badge>
+            <Box component="span">
+              <Badge
+                size="md"
+                variant="transparent"
+                color={category.color || "blue"}
+                style={{ cursor: "pointer" }}
+                component="span"
+              >
+                <IconCategory size={12} /> {category.name}
+              </Badge>
+            </Box>
+          </Link>
         </Group>
         <Title order={4} mt="xs" mb="sm">
           {title}
