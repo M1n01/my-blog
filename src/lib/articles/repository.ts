@@ -58,7 +58,7 @@ export class NotionRepository implements NotionRepositoryInterface {
       : {
           and: [
             {
-              property: "select",
+              property: "category",
               select: {
                 does_not_equal: "test",
               },
