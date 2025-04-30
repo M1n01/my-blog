@@ -24,6 +24,7 @@
     "@tabler/icons-react": "^3.28.1",
     "critters": "^0.0.25",
     "google": "link:@next/third-parties/google",
+    "lefthook": "^1.11.12",
     "neverthrow": "^8.2.0",
     "next": "15.0.3",
     "pnpm": "^9.15.4",
