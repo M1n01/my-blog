@@ -76,13 +76,13 @@ export class ArticleService implements ArticleServiceInterface {
    * コンテンツ付きの記事を取得する
    */
   async getArticleWithContent(
-    id: string,
+    articleId: string,
     article?: Article | null,
   ): Promise<Result<Article, ApplicationError>> {
     // 記事データがなければ取得
     let articleData = article;
     if (!articleData) {
-      const articleInfoResult = await this.getArticleInfo(id);
+      const articleInfoResult = await this.getArticleInfo(articleId);
       if (articleInfoResult.isErr()) {
         return articleInfoResult;
       }
@@ -90,7 +90,8 @@ export class ArticleService implements ArticleServiceInterface {
     }
 
     // 記事のコンテンツを取得
-    const blocksResult = await this.repository.getArticleBlocks(id);
+    const blocksResult =
+      await this.repository.fetchBlockWithChildren(articleId);
 
     if (blocksResult.isErr()) {
       return err({

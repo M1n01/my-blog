@@ -34,8 +34,8 @@ export interface NotionRepositoryInterface {
     params: PaginationParams | null,
   ): Promise<Result<QueryDatabaseResponse, NotionError>>;
   getArticle(id: string): Promise<Result<PageObjectResponse, NotionError>>;
-  getArticleBlocks(
-    id: string,
+  fetchBlockWithChildren(
+    blockId: string,
   ): Promise<Result<ListBlockChildrenResponse, NotionError>>;
 }
 

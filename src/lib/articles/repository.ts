@@ -128,15 +128,52 @@ export class NotionRepository implements NotionRepositoryInterface {
   }
 
   /**
-   * 特定の記事のブロックコンテンツを取得する
+   * ブロックとその子要素を再帰的に取得する
+   * @param blockId 取得するブロックID
+   * @returns ブロックとその子要素を含むレスポンス
    */
-  async getArticleBlocks(
-    id: string,
+  async fetchBlockWithChildren(
+    articleId: string,
   ): Promise<Result<ListBlockChildrenResponse, NotionError>> {
     try {
+      // 最初のブロックリストを取得
       const response = await this.client.blocks.children.list({
-        block_id: id,
+        block_id: articleId,
       });
+
+      // 子ブロックを持つブロックに対して再帰的に処理
+      const blocks = [...response.results];
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i];
+
+        // PartialBlockObjectResponseの場合は子ブロックを持たないため、スキップ
+        if (!("has_children" in block)) continue;
+
+        // 子ブロックがある場合は再帰的に取得
+        if (block.has_children) {
+          const childrenResult = await this.fetchBlockWithChildren(block.id);
+
+          if (childrenResult.isErr()) {
+            return childrenResult;
+          }
+
+          // 子ブロックを親ブロックに追加
+          if (
+            "children" in block &&
+            block.children &&
+            Array.isArray(block.children)
+          ) {
+            // すでにchildrenプロパティがある場合は追加
+            block.children.push(...childrenResult.value.results);
+          } else {
+            // childrenプロパティがない場合は作成
+            Object.assign(block, { children: childrenResult.value.results });
+          }
+        }
+      }
+
+      // 更新したブロックで結果を上書き
+      response.results = blocks;
       return ok(response);
     } catch (error: unknown) {
       return this.handleNotionError(error);
