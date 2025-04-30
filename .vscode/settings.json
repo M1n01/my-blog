@@ -1,5 +1,5 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode", // フォーマッターをPrettierにする
+  "editor.defaultFormatter": "biomejs.biome", // フォーマッターをPrettierにする
   "editor.formatOnSave": true,
   "github.copilot.chat.codeGeneration.instructions": [
     {
