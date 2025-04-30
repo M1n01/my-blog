@@ -18,7 +18,19 @@ import {
   NumberedListItemBlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
-const blockToJsx = (block: BlockObjectResponse, index: number) => {
+// NotionのAPIから取得したブロックに子要素（children）を追加した拡張型
+export type BlockWithChildren = BlockObjectResponse & {
+  children?: BlockObjectResponse[];
+};
+
+// ブロックをJSXに変換する関数
+const blockToJsx = (block: BlockWithChildren, index: number) => {
+  // 子要素をレンダリングする関数
+  const renderChildren = () => {
+    if (!block.children || block.children.length === 0) return null;
+    return renderBlocks(block.children as BlockWithChildren[]);
+  };
+
   switch (block.type) {
     case "heading_1":
       return <Heading1 block={block} index={index} />;
@@ -27,26 +39,46 @@ const blockToJsx = (block: BlockObjectResponse, index: number) => {
     case "heading_3":
       return <Heading3 block={block} index={index} />;
     case "paragraph":
-      return <Paragraph block={block} index={index} />;
+      return (
+        <React.Fragment key={`paragraph-${block.id}`}>
+          <Paragraph block={block} index={index} />
+          {renderChildren()}
+        </React.Fragment>
+      );
     case "code":
       return <CodeBlock block={block} index={index} />;
     case "image":
       return <ImageBlock block={block} index={index} />;
     case "quote":
-      return <QuoteBlock block={block} index={index} />;
+      return (
+        <React.Fragment key={`quote-${block.id}`}>
+          <QuoteBlock block={block} index={index} />
+          {renderChildren()}
+        </React.Fragment>
+      );
     case "bookmark":
       return <BookmarkBlock block={block} index={index} />;
     // case "toggle":
-    //   return <ToggleBlock block={block} index={index} />;
+    //   return (
+    //     <ToggleBlock block={block} index={index} children={renderChildren()} />
+    //   );
     default:
+      // 子要素があれば表示
+      if (block.children && block.children.length > 0) {
+        return (
+          <React.Fragment key={`default-${block.id}`}>
+            {renderChildren()}
+          </React.Fragment>
+        );
+      }
       return null;
   }
 };
 
 // リストとそれ以外のブロックを適切な順序で描画する
-export const renderBlocks = (blocks: BlockObjectResponse[]) => {
+export const renderBlocks = (blocks: BlockWithChildren[]) => {
   const result: JSX.Element[] = [];
-  let currentListItems: BlockObjectResponse[] = [];
+  let currentListItems: BlockWithChildren[] = [];
   let currentListType: "bulleted" | "numbered" | null = null;
 
   // 全ブロックを順番に処理
@@ -82,7 +114,7 @@ export const renderBlocks = (blocks: BlockObjectResponse[]) => {
       }
 
       // 現在のブロックを描画
-      if (!isFullBlock(block)) return null;
+      if (!isFullBlock(block)) return;
       const element = blockToJsx(block, index);
       if (element) {
         result.push(element);
@@ -101,21 +133,29 @@ export const renderBlocks = (blocks: BlockObjectResponse[]) => {
 // リストグループを適切なコンポーネントとして描画
 const renderListGroup = (
   result: JSX.Element[],
-  items: BlockObjectResponse[],
+  items: BlockWithChildren[],
   type: "bulleted" | "numbered",
 ) => {
   if (type === "bulleted") {
     result.push(
       <BulletedList
         key={`bulleted-${items[0].id}`}
-        items={items as BulletedListItemBlockObjectResponse[]}
+        items={
+          items as (BulletedListItemBlockObjectResponse & {
+            children?: BlockObjectResponse[];
+          })[]
+        }
       />,
     );
   } else {
     result.push(
       <NumberedList
         key={`numbered-${items[0].id}`}
-        items={items as NumberedListItemBlockObjectResponse[]}
+        items={
+          items as (NumberedListItemBlockObjectResponse & {
+            children?: BlockObjectResponse[];
+          })[]
+        }
       />,
     );
   }
