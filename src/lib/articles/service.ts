@@ -82,11 +82,11 @@ export class ArticleService implements ArticleServiceInterface {
     // 記事データがなければ取得
     let articleData = article;
     if (!articleData) {
-      const articleResult = await this.getArticleInfo(id);
-      if (articleResult.isErr()) {
-        return articleResult;
+      const articleInfoResult = await this.getArticleInfo(id);
+      if (articleInfoResult.isErr()) {
+        return articleInfoResult;
       }
-      articleData = articleResult.value;
+      articleData = articleInfoResult.value;
     }
 
     // 記事のコンテンツを取得
