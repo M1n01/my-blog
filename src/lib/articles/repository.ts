@@ -22,12 +22,14 @@ import {
 export class NotionRepository implements NotionRepositoryInterface {
   private client: Client;
   private databaseId: string | undefined;
+  private isDevelopment: boolean;
 
   constructor(authToken?: string, databaseId?: string) {
     this.client = new Client({
       auth: authToken || process.env.NEXT_PUBLIC_NOTION_TOKEN,
     });
     this.databaseId = databaseId || process.env.NEXT_PUBLIC_DATABASE_ID;
+    this.isDevelopment = process.env.NODE_ENV === "development";
   }
 
   /**
@@ -43,16 +45,33 @@ export class NotionRepository implements NotionRepositoryInterface {
           "NEXT_PUBLIC_DATABASE_ID is not defined in environment variables",
       });
     }
+
+    const baseFilter = {
+      property: "publishedAt",
+      date: {
+        is_not_empty: true as const,
+      },
+    };
+
+    const filter = this.isDevelopment
+      ? baseFilter
+      : {
+          and: [
+            {
+              property: "category",
+              select: {
+                does_not_equal: "test",
+              },
+            },
+            baseFilter,
+          ],
+        };
+
     // paramsがnullの場合は、全てのページを取得する
     if (!params) {
       const all = await this.client.databases.query({
         database_id: this.databaseId,
-        filter: {
-          property: "publishedAt",
-          date: {
-            is_not_empty: true,
-          },
-        },
+        filter,
         sorts: [
           {
             property: "publishedAt",
@@ -70,12 +89,7 @@ export class NotionRepository implements NotionRepositoryInterface {
         database_id: this.databaseId,
         start_cursor: startCursor,
         page_size: pageSize,
-        filter: {
-          property: "publishedAt",
-          date: {
-            is_not_empty: true,
-          },
-        },
+        filter,
         sorts: [
           {
             property: "publishedAt",
