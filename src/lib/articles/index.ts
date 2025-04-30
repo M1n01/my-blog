@@ -45,7 +45,7 @@ export async function getAllArticles(
 
 export async function getArticle(id: string): Promise<Article> {
   const service = createArticleService();
-  const result = await service.getArticle(id);
+  const result = await service.getContent(id);
 
   if (result.isErr()) {
     throw new Error(`Failed to get article: ${JSON.stringify(result.error)}`);

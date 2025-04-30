@@ -48,9 +48,9 @@ export class ArticleService implements ArticleServiceInterface {
   }
 
   /**
-   * 単一記事を取得する
+   * 単一の記事コンテンツを取得する
    */
-  async getArticle(id: string): Promise<Result<Article, ApplicationError>> {
+  async getContent(id: string): Promise<Result<Article, ApplicationError>> {
     const result = await this.repository.getArticle(id);
 
     if (result.isErr()) {
@@ -82,7 +82,7 @@ export class ArticleService implements ArticleServiceInterface {
     // 記事データがなければ取得
     let articleData = article;
     if (!articleData) {
-      const articleResult = await this.getArticle(id);
+      const articleResult = await this.getContent(id);
       if (articleResult.isErr()) {
         return articleResult;
       }

@@ -52,7 +52,7 @@ export interface ArticleServiceInterface {
   listArticles(
     params: PaginationParams | null,
   ): Promise<Result<ArticleListResult, ApplicationError>>;
-  getArticle(id: string): Promise<Result<Article, ApplicationError>>;
+  getContent(id: string): Promise<Result<Article, ApplicationError>>;
   getArticleWithContent(
     id: string,
     article?: Article | null,
