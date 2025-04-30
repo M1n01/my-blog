@@ -8,11 +8,12 @@ import { renderRichText } from "./Paragraph";
 export const ToggleBlock = ({
   block,
   index,
+  childrenContent,
 }: {
   block: ToggleBlockObjectResponse;
   index: number;
+  childrenContent?: React.ReactNode;
 }) => {
-  console.log("index: ", index);
   return (
     <Accordion mb="sm">
       <Accordion.Item value={String(block.id)} key={index}>
@@ -23,7 +24,7 @@ export const ToggleBlock = ({
             </React.Fragment>
           ))}
         </Accordion.Control>
-        <Accordion.Panel>{block.has_children === true}</Accordion.Panel>
+        <Accordion.Panel>{childrenContent}</Accordion.Panel>
       </Accordion.Item>
     </Accordion>
   );

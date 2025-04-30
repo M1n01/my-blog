@@ -64,7 +64,9 @@ export const groupListItems = (blocks: BlockObjectResponse[]) => {
 export const BulletedList = ({
   items,
 }: {
-  items: BulletedListItemBlockObjectResponse[];
+  items: (BulletedListItemBlockObjectResponse & {
+    children?: BlockObjectResponse[];
+  })[];
 }) => {
   return (
     <List withPadding>
@@ -79,7 +81,9 @@ export const BulletedList = ({
 export const NumberedList = ({
   items,
 }: {
-  items: NumberedListItemBlockObjectResponse[];
+  items: (NumberedListItemBlockObjectResponse & {
+    children?: BlockObjectResponse[];
+  })[];
 }) => {
   return (
     <List type="ordered" withPadding>
