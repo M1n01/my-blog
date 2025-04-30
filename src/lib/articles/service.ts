@@ -50,7 +50,7 @@ export class ArticleService implements ArticleServiceInterface {
   /**
    * 単一の記事コンテンツを取得する
    */
-  async getContent(id: string): Promise<Result<Article, ApplicationError>> {
+  async getArticleInfo(id: string): Promise<Result<Article, ApplicationError>> {
     const result = await this.repository.getArticle(id);
 
     if (result.isErr()) {
@@ -61,7 +61,7 @@ export class ArticleService implements ArticleServiceInterface {
     }
 
     try {
-      const article = this.presenter.convertToArticle(result.value);
+      const article = this.presenter.convertToArticleInfo(result.value);
       return ok(article);
     } catch (error) {
       return err({
@@ -82,7 +82,7 @@ export class ArticleService implements ArticleServiceInterface {
     // 記事データがなければ取得
     let articleData = article;
     if (!articleData) {
-      const articleResult = await this.getContent(id);
+      const articleResult = await this.getArticleInfo(id);
       if (articleResult.isErr()) {
         return articleResult;
       }

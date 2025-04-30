@@ -102,7 +102,7 @@ export class ArticlePresenter implements ArticlePresenterInterface {
   /**
    * NotionのページデータからArticleモデルへ変換する
    */
-  convertToArticle(notionPage: PageObjectResponse): Article {
+  convertToArticleInfo(notionPage: PageObjectResponse): Article {
     // PageObjectResponseをNotionPageとして扱う
     const page = notionPage as unknown as NotionPage;
 
@@ -126,7 +126,7 @@ export class ArticlePresenter implements ArticlePresenterInterface {
   convertToArticleList(response: QueryDatabaseResponse): ArticleListResult {
     const articles: Article[] = response.results
       .filter(isFullPage)
-      .map((page) => this.convertToArticle(page));
+      .map((page) => this.convertToArticleInfo(page));
 
     return {
       articles,

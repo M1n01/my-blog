@@ -52,7 +52,7 @@ export interface ArticleServiceInterface {
   listArticles(
     params: PaginationParams | null,
   ): Promise<Result<ArticleListResult, ApplicationError>>;
-  getContent(id: string): Promise<Result<Article, ApplicationError>>;
+  getArticleInfo(id: string): Promise<Result<Article, ApplicationError>>;
   getArticleWithContent(
     id: string,
     article?: Article | null,
@@ -63,6 +63,6 @@ export interface ArticleServiceInterface {
  * Presenter層のインターフェース定義
  */
 export interface ArticlePresenterInterface {
-  convertToArticle(notionPage: PageObjectResponse): Article;
+  convertToArticleInfo(notionPage: PageObjectResponse): Article;
   convertToArticleList(response: QueryDatabaseResponse): ArticleListResult;
 }
