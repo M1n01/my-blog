@@ -10,8 +10,7 @@
     "pages:build": "pnpm dlx @cloudflare/next-on-pages",
     "preview": "pnpm run pages:build && wrangler pages dev",
     "deploy": "pnpm run pages:build && wrangler pages deploy",
-    "type-check": "wrangler types --experimental-include-runtime && tsc",
-    "prepare": "husky"
+    "type-check": "wrangler types --experimental-include-runtime && tsc"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.7",
