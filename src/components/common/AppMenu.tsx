@@ -1,11 +1,11 @@
 "use client";
-import { usePathname } from "next/navigation";
-import { AppShell, Breadcrumbs, Anchor, Container } from "@mantine/core";
+import { Anchor, AppShell, Breadcrumbs, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { usePathname } from "next/navigation";
 import "@mantine/core/styles.css";
 
-import Navbar from "./Navbar";
 import Header from "./Header";
+import Navbar from "./Navbar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure(false);
@@ -15,6 +15,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     .split("/")
     .filter(Boolean)
     .map((path, index, array) => {
+      // blogの場合はルートに遷移
+      if (path === "blog") {
+        return (
+          <Anchor href="/" key={index}>
+            blog
+          </Anchor>
+        );
+      }
       const href = "/" + array.slice(0, index + 1).join("/");
       // ルートページには特別な表示をせず、記事ページのIDは「Article」として表示
       if (path.length === 36) {
