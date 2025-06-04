@@ -1,33 +1,33 @@
-import React, { Suspense } from "react";
+import { LikeButton } from "@/components/common/LikeButton";
+import { ShareButtons } from "@/components/common/ShareButtons";
+import { SupportButton } from "@/components/common/SupportButton";
+import { getArticleService } from "@/lib/articles/singleton";
+import { renderBlocks } from "@/lib/blocks";
 import {
-  Text,
-  Title,
+  Alert,
+  Badge,
+  Box,
+  Divider,
+  Group,
   Image,
   Stack,
-  Badge,
-  Group,
-  Divider,
-  Box,
-  Alert,
+  Text,
+  Title,
 } from "@mantine/core";
-import {
-  IconCalendarTime,
-  IconRefresh,
-  IconCategory,
-  IconTags,
-} from "@tabler/icons-react";
-import { type Article } from "../../../types/notion/Article";
 import {
   BlockObjectResponse,
   ParagraphBlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import {
+  IconCalendarTime,
+  IconCategory,
+  IconRefresh,
+  IconTags,
+} from "@tabler/icons-react";
 import { Metadata } from "next";
-
+import React, { Suspense } from "react";
+import { type Article } from "../../../types/notion/Article";
 import LoadingContent from "./loading";
-import { getArticleService } from "@/lib/articles/singleton";
-import { renderBlocks } from "@/lib/blocks";
-import { ShareButtons } from "@/components/common/ShareButtons";
-import { SupportButton } from "@/components/common/SupportButton";
 
 export const runtime = "edge";
 
@@ -196,11 +196,12 @@ function convertContent(article: Article): React.ReactNode {
         description={article.description || ""}
       />
 
-      {/* サポートボタン */}
+      {/* いいねボタンとサポートボタン */}
       <Divider my="xl" />
-      <Box pt="md" pb="xl">
+      <Group grow>
+        <LikeButton articleId={article.id} />
         <SupportButton />
-      </Box>
+      </Group>
     </>
   );
 }
