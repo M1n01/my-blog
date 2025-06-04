@@ -199,7 +199,7 @@ function convertContent(article: Article): React.ReactNode {
       {/* いいねボタンとサポートボタン */}
       <Divider my="xl" />
       <Group grow>
-        <LikeButton articleId={article.id} initialLikes={article.likes} />
+        <LikeButton articleId={article.id} />
         <SupportButton />
       </Group>
     </>
