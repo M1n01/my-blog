@@ -4,10 +4,10 @@ import { Button, Group, Text, Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconHeart } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 
 interface LikeButtonProps {
   articleId: string;
-  initialLikes: number;
 }
 
 /**
@@ -16,13 +16,24 @@ interface LikeButtonProps {
  * - 同じユーザーからの重複いいねをローカルストレージで防止
  * - いいね数をNotionデータベースに反映
  */
-export const LikeButton = ({ articleId, initialLikes }: LikeButtonProps) => {
-  const [likes, setLikes] = useState(initialLikes);
+export const LikeButton = ({ articleId }: LikeButtonProps) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // SWRでいいね数を取得
+  const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("いいね数の取得に失敗しました");
+    return (await res.json()) as { likes: number };
+  };
+  const { data, mutate, isValidating } = useSWR(
+    `/api/articles/like?articleId=${articleId}`,
+    fetcher,
+  );
+
   // ページ読み込み時にローカルストレージからいいね状態を取得
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const likedArticles = JSON.parse(
       localStorage.getItem("likedArticles") || "{}",
     );
@@ -31,7 +42,6 @@ export const LikeButton = ({ articleId, initialLikes }: LikeButtonProps) => {
 
   const handleLike = async () => {
     if (hasLiked || isLoading) return;
-
     setIsLoading(true);
     try {
       const response = await fetch("/api/articles/like", {
@@ -41,13 +51,9 @@ export const LikeButton = ({ articleId, initialLikes }: LikeButtonProps) => {
         },
         body: JSON.stringify({ articleId }),
       });
-
       if (!response.ok) {
         throw new Error("いいねの更新に失敗しました");
       }
-
-      const data = await response.json();
-      setLikes(data.likes);
 
       // ローカルストレージにいいね状態を保存
       const likedArticles = JSON.parse(
@@ -55,9 +61,9 @@ export const LikeButton = ({ articleId, initialLikes }: LikeButtonProps) => {
       );
       likedArticles[articleId] = true;
       localStorage.setItem("likedArticles", JSON.stringify(likedArticles));
-
       setHasLiked(true);
-
+      // SWRのキャッシュを更新
+      mutate();
       notifications.show({
         title: "ありがとうございます！",
         message: "いいねが送信されました",
@@ -85,13 +91,13 @@ export const LikeButton = ({ articleId, initialLikes }: LikeButtonProps) => {
         color="pink"
         leftSection={<IconHeart size={20} />}
         onClick={handleLike}
-        loading={isLoading}
+        loading={isLoading || isValidating}
         disabled={hasLiked}
         fullWidth
       >
         <Group gap="xs">
           <Text>いいね</Text>
-          <Text fw={700}>{likes}</Text>
+          <Text fw={700}>{data?.likes ?? 0}</Text>
         </Group>
       </Button>
     </Tooltip>
