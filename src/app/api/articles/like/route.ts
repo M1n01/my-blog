@@ -6,6 +6,8 @@ import {
 } from "@notionhq/client/build/src/api-endpoints";
 import { NextResponse } from "next/server";
 
+export const runtime = "edge";
+
 // NotionClientのインスタンスを作成
 const notion = new Client({
   auth: process.env.NEXT_PUBLIC_NOTION_TOKEN,
