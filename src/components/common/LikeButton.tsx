@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Group, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconHeart } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -83,23 +83,36 @@ export const LikeButton = ({ articleId }: LikeButtonProps) => {
 
   return (
     <Tooltip
-      label={hasLiked ? "すでにいいね済みです" : "この記事にいいねする"}
-      position="top"
+      label={
+        hasLiked ? "いいね ありがとうございます！" : "この記事にいいねする"
+      }
+      opened={hasLiked}
+      withArrow={hasLiked}
+      arrowOffset={20}
+      position="top-start"
+      offset={5}
+      color={hasLiked ? "pink" : "gray"}
     >
-      <Button
-        variant={hasLiked ? "filled" : "outline"}
-        color="pink"
-        leftSection={<IconHeart size={20} />}
-        onClick={handleLike}
-        loading={isLoading || isValidating}
-        disabled={hasLiked}
-        fullWidth
-      >
+      <Group gap="xs">
+        <ActionIcon
+          variant={hasLiked ? "filled" : "outline"}
+          color="pink"
+          onClick={handleLike}
+          loading={isLoading || isValidating}
+          loaderProps={{
+            type: "dots",
+          }}
+          disabled={hasLiked}
+          size="xl"
+          radius="xl"
+        >
+          <IconHeart style={{ width: "70%", height: "70%" }} stroke={1.5} />
+        </ActionIcon>
         <Group gap="xs">
-          <Text>いいね</Text>
           <Text fw={700}>{data?.likes ?? 0}</Text>
+          <Text>いいね！</Text>
         </Group>
-      </Button>
+      </Group>
     </Tooltip>
   );
 };

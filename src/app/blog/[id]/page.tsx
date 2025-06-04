@@ -188,6 +188,9 @@ function convertContent(article: Article): React.ReactNode {
         </Stack>
       </Box>
 
+      <Divider my="xl" />
+      <LikeButton articleId={article.id} />
+
       {/* SNSシェアボタン */}
       <Divider my="xl" />
       <ShareButtons
@@ -196,12 +199,8 @@ function convertContent(article: Article): React.ReactNode {
         description={article.description || ""}
       />
 
-      {/* いいねボタンとサポートボタン */}
       <Divider my="xl" />
-      <Group grow>
-        <LikeButton articleId={article.id} />
-        <SupportButton />
-      </Group>
+      <SupportButton />
     </>
   );
 }
