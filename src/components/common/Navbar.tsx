@@ -1,13 +1,12 @@
 "use client";
-import { FC } from "react";
 import {
   AppShell,
-  Stack,
   Avatar,
-  Title,
-  Text,
-  Group,
   Button,
+  Group,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
 import {
   IconBrandGithub,
@@ -15,6 +14,7 @@ import {
   IconMapPin,
   IconScript,
 } from "@tabler/icons-react";
+import { FC } from "react";
 
 const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
   return (
@@ -23,9 +23,9 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
         {/* Profile Section */}
         <Stack align="center" gap="xs">
           <Avatar size="lg" src="/assets/avatar.jpg" />
-          <Title order={3}>Abe Minato</Title>
+          <Title order={3}>Minabe</Title>
           <Text size="sm" c="dimmed">
-            Developer
+            Frontend Developer
           </Text>
           <Text size="md" c="">
             <IconMapPin size={15} /> Tokyo
@@ -34,11 +34,15 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
 
         {/* Bio Section */}
         <Stack gap="xs">
+          <Text size="sm">98年生まれのエンジニア。主にNext.js。</Text>
           <Text size="sm">
-            42Tokyo出身のエンジニア。札幌生まれ。主にフロントエンドを触っています。
+            デジタル認証について興味関心があります。DID/VCなど。
           </Text>
           <Text size="sm">
-            趣味は、野球観戦、読書、アニメ・マンガ、映画、美術館、コーヒーなど。好きな動物はテッポウエビ。飼いたい動物はユーラシアワシミミズクとボールパイソン。
+            私は日本ハムファイターズを全力で応援しています。
+          </Text>
+          <Text size="xs" c="dimmed">
+            札幌第一高→TUT(機械工学修士)→42Tokyo
           </Text>
         </Stack>
 
