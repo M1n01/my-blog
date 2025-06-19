@@ -36,7 +36,7 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
         <Stack gap="xs">
           <Text size="sm">98年生まれのエンジニア。主にNext.js。</Text>
           <Text size="sm">
-            デジタル認証について興味関心があります。DID/VCなど。
+            デジタル認証やWeb3.0に興味関心があります。DID/VCなど。
           </Text>
           <Text size="sm">
             私は日本ハムファイターズを全力で応援しています。
