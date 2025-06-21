@@ -1,7 +1,6 @@
 "use client";
 
-import { AppShell, Text, ScrollArea, Box } from "@mantine/core";
-import { TableOfContents } from "@mantine/core";
+import { AppShell, Box, NavLink, ScrollArea, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 /**
@@ -79,21 +78,29 @@ export default function BlogContentAside() {
               読み込み中...
             </Text>
           ) : links.length > 0 ? (
-            <TableOfContents
-              variant="filled"
-              color="blue"
-              size="sm"
-              radius="sm"
-              scrollSpyOptions={{
-                selector: ".article-content :is(h2, h3, h4)",
-              }}
-              getControlProps={({ active, data }) => ({
-                component: "a",
-                href: `#${data.id}`,
-                style: { color: active ? "blue" : "gray" },
-                children: data.value,
-              })}
-            />
+            <Box>
+              {links.map((link, index) => (
+                <NavLink
+                  key={index}
+                  href={link.link}
+                  label={link.label}
+                  component="a"
+                  style={{
+                    paddingLeft: `${link.order * 16}px`,
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    marginBottom: "4px",
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector(link.link);
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                />
+              ))}
+            </Box>
           ) : (
             <Text size="sm" c="dimmed">
               この記事には目次がありません
