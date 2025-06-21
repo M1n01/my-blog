@@ -1,9 +1,9 @@
-import { Result } from "neverthrow";
 import {
-  QueryDatabaseResponse,
-  PageObjectResponse,
   ListBlockChildrenResponse,
+  PageObjectResponse,
+  QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import { Result } from "neverthrow";
 import type { Article } from "../../types/notion/Article";
 
 /**
@@ -14,6 +14,7 @@ export type NotionError =
   | { type: "OBJECT_NOT_FOUND"; message: string }
   | { type: "REQUEST_TIMEOUT"; message: string }
   | { type: "VALIDATION_ERROR"; message: string }
+  | { type: "FETCH_ERROR"; message: string }
   | { type: "UNKNOWN"; message: string; originalError?: unknown };
 
 export type ApplicationError =
@@ -63,6 +64,12 @@ export interface ArticleServiceInterface {
  * Presenter層のインターフェース定義
  */
 export interface ArticlePresenterInterface {
-  convertToArticleInfo(notionPage: PageObjectResponse): Article;
-  convertToArticleList(response: QueryDatabaseResponse): ArticleListResult;
+  convertToArticleInfo(notionPage: PageObjectResponse): Promise<Article>;
+  convertToArticleList(
+    response: QueryDatabaseResponse,
+  ): Promise<ArticleListResult>;
+  processArticleContent(
+    content: ListBlockChildrenResponse,
+    articleId: string,
+  ): Promise<ListBlockChildrenResponse>;
 }

@@ -34,7 +34,9 @@ export class ArticleService implements ArticleServiceInterface {
     }
 
     try {
-      const articlesResult = this.presenter.convertToArticleList(result.value);
+      const articlesResult = await this.presenter.convertToArticleList(
+        result.value,
+      );
       return ok(articlesResult);
     } catch (error) {
       return err({
@@ -61,7 +63,7 @@ export class ArticleService implements ArticleServiceInterface {
     }
 
     try {
-      const article = this.presenter.convertToArticleInfo(result.value);
+      const article = await this.presenter.convertToArticleInfo(result.value);
       return ok(article);
     } catch (error) {
       return err({
@@ -100,10 +102,16 @@ export class ArticleService implements ArticleServiceInterface {
       });
     }
 
+    // コンテンツ内の画像をダウンロードしてURLを置き換え
+    const processedBlocksResult = await this.presenter.processArticleContent(
+      blocksResult.value,
+      articleId,
+    );
+
     // コンテンツを記事に追加
     return ok({
       ...articleData,
-      content: blocksResult.value.results,
+      content: processedBlocksResult.results,
     });
   }
 }

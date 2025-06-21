@@ -1,11 +1,14 @@
+import { isFullPage } from "@notionhq/client";
 import {
+  BlockObjectResponse,
+  ListBlockChildrenResponse,
   PageObjectResponse,
   QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import { isFullPage } from "@notionhq/client";
 import type { Article } from "../../types/notion/Article";
 import type { Category } from "../../types/notion/Category";
 import type { Tag } from "../../types/notion/Tag";
+import { downloadImage } from "./image-downloader";
 import { ArticleListResult, ArticlePresenterInterface } from "./types";
 
 // Notionのプロパティの型定義
@@ -102,13 +105,15 @@ export class ArticlePresenter implements ArticlePresenterInterface {
   /**
    * NotionのページデータからArticleモデルへ変換する
    */
-  convertToArticleInfo(notionPage: PageObjectResponse): Article {
+  async convertToArticleInfo(notionPage: PageObjectResponse): Promise<Article> {
     // PageObjectResponseをNotionPageとして扱う
     const page = notionPage as unknown as NotionPage;
 
+    const thumbnail = await this.extractThumbnail(page);
+
     return {
       id: page.id,
-      thumbnail: this.extractThumbnail(page),
+      thumbnail,
       title: this.extractTitle(page),
       description: this.extractDescription(page),
       publishedAt: this.extractPublishedAt(page),
@@ -123,10 +128,14 @@ export class ArticlePresenter implements ArticlePresenterInterface {
   /**
    * NotionのデータベースレスポンスからArticleのリストへ変換する
    */
-  convertToArticleList(response: QueryDatabaseResponse): ArticleListResult {
-    const articles: Article[] = response.results
-      .filter(isFullPage)
-      .map((page) => this.convertToArticleInfo(page));
+  async convertToArticleList(
+    response: QueryDatabaseResponse,
+  ): Promise<ArticleListResult> {
+    const articles: Article[] = await Promise.all(
+      response.results
+        .filter(isFullPage)
+        .map((page) => this.convertToArticleInfo(page)),
+    );
 
     return {
       articles,
@@ -135,14 +144,110 @@ export class ArticlePresenter implements ArticlePresenterInterface {
     };
   }
 
-  // 以下、プライベートヘルパーメソッド
-  private extractThumbnail(page: NotionPage): string {
-    if (page.cover?.type === "external") {
-      return page.cover.external.url;
-    } else if (page.cover?.type === "file") {
-      return page.cover.file.url;
+  /**
+   * 記事のコンテンツ内の画像URLをローカルパスに置き換える
+   */
+  async processArticleContent(
+    content: ListBlockChildrenResponse,
+    articleId: string,
+  ): Promise<ListBlockChildrenResponse> {
+    const newBlocks = await this.processBlocks(content.results, articleId);
+
+    return {
+      ...content,
+      results: newBlocks,
+    };
+  }
+
+  private async processBlocks(
+    blocks: (Partial<BlockObjectResponse> | BlockObjectResponse)[],
+    articleId: string,
+  ): Promise<BlockObjectResponse[]> {
+    const processedBlocks = [];
+
+    for (const block of blocks) {
+      if (!("type" in block)) {
+        processedBlocks.push(block as BlockObjectResponse); // 型アサーション
+        continue;
+      }
+
+      let newBlock: BlockObjectResponse = block as BlockObjectResponse;
+
+      // 画像ブロックの処理
+      if (newBlock.type === "image" && newBlock.image.type === "file") {
+        const imageUrl = newBlock.image.file.url;
+        const downloadResult = await downloadImage(imageUrl, articleId);
+
+        if (downloadResult.isOk()) {
+          const { caption } = newBlock.image;
+          // @ts-ignore TODO: 型を正しくする
+          newBlock = {
+            ...newBlock,
+            image: {
+              caption,
+              type: "external",
+              external: {
+                url: downloadResult.value,
+              },
+            },
+          };
+        } else {
+          console.error(
+            `Failed to download image in content for article ${articleId}:`,
+            downloadResult.error,
+          );
+        }
+      }
+
+      // 子ブロックがある場合の再帰処理
+      if ("children" in newBlock && newBlock.children) {
+        // @ts-ignore
+        const newChildren = await this.processBlocks(
+          // @ts-ignore
+          newBlock.children,
+          articleId,
+        );
+        newBlock.children = newChildren;
+      } else if (newBlock.has_children) {
+        // fetchBlockWithChildrenで子要素が取得済みなので、このパスは通常通らないはず
+        // 'children' in blockがfalseでもhas_childrenがtrueの場合のフォールバック
+      }
+
+      processedBlocks.push(newBlock);
     }
-    return "";
+    return processedBlocks;
+  }
+
+  // 以下、プライベートヘルパーメソッド
+  private async extractThumbnail(page: NotionPage): Promise<string> {
+    const imageUrl =
+      page.cover?.type === "external"
+        ? page.cover.external.url
+        : page.cover?.type === "file"
+          ? page.cover.file.url
+          : null;
+
+    if (!imageUrl) {
+      return "";
+    }
+
+    // fileタイプの画像（Notionにアップロードされた画像）のみダウンロード
+    if (page.cover?.type === "file") {
+      const downloadResult = await downloadImage(imageUrl, page.id);
+      if (downloadResult.isOk()) {
+        return downloadResult.value;
+      } else {
+        // エラーの場合は元のURLを返すか、空文字を返す
+        console.error(
+          `Failed to download thumbnail for article ${page.id}:`,
+          downloadResult.error,
+        );
+        return imageUrl; // フォールバック
+      }
+    }
+
+    // externalの画像はそのままURLを返す
+    return imageUrl;
   }
 
   private extractTitle(page: NotionPage): string {
