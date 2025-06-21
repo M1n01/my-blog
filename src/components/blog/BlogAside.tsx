@@ -66,6 +66,24 @@ export default function BlogContentAside() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    link: string,
+  ) => {
+    e.preventDefault();
+    const element = document.querySelector(link);
+    if (element) {
+      const headerOffset = 56; // 固定ヘッダーの高さ
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <AppShell.Aside p="md" w={280}>
       <Box>
@@ -79,27 +97,28 @@ export default function BlogContentAside() {
             </Text>
           ) : links.length > 0 ? (
             <Box>
-              {links.map((link, index) => (
-                <NavLink
-                  key={index}
-                  href={link.link}
-                  label={link.label}
-                  component="a"
-                  style={{
-                    paddingLeft: `${link.order * 16}px`,
-                    fontSize: "14px",
-                    borderRadius: "4px",
-                    marginBottom: "4px",
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const element = document.querySelector(link.link);
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                />
-              ))}
+              {links.map((link, index) => {
+                const nextLink = links[index + 1];
+                // 次のリンクが子要素（より深い階層）であれば間隔を狭める
+                const marginBottom =
+                  nextLink && nextLink.order > link.order ? "2px" : "8px";
+
+                return (
+                  <NavLink
+                    key={index}
+                    href={link.link}
+                    label={link.label}
+                    component="a"
+                    style={{
+                      paddingLeft: `${link.order * 16}px`,
+                      fontSize: "14px",
+                      borderRadius: "4px",
+                      marginBottom: marginBottom,
+                    }}
+                    onClick={(e) => handleLinkClick(e, link.link)}
+                  />
+                );
+              })}
             </Box>
           ) : (
             <Text size="sm" c="dimmed">
