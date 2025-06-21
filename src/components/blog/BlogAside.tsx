@@ -28,6 +28,7 @@ interface TocLink {
 export default function BlogContentAside() {
   const [links, setLinks] = useState<TocLink[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeLink, setActiveLink] = useState("");
 
   // 目次を構築する
   useEffect(() => {
@@ -65,6 +66,34 @@ export default function BlogContentAside() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const headerOffset = 60; // ヘッダーの高さ + 少しマージン
+      let current = "";
+
+      const headingElements = links
+        .map((link) => document.querySelector(link.link))
+        .filter((el) => el !== null);
+
+      const lastVisibleElement = [...headingElements]
+        .reverse()
+        .find((el) => el.getBoundingClientRect().top <= headerOffset);
+
+      if (lastVisibleElement) {
+        current = `#${lastVisibleElement.id}`;
+      }
+
+      setActiveLink(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // 初期チェック
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [links]);
 
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -109,6 +138,7 @@ export default function BlogContentAside() {
                     href={link.link}
                     label={link.label}
                     component="a"
+                    active={activeLink === link.link}
                     style={{
                       paddingLeft: `${link.order * 16}px`,
                       fontSize: "14px",
