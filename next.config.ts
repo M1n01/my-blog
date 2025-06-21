@@ -20,15 +20,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   generateBuildId: async () => {
-    const { execSync } = require("child_process");
-
-    try {
-      const gitSha = execSync("git rev-parse HEAD").toString().trim();
-      return `build-${gitSha}`;
-    } catch (error) {
-      console.error("Failed to get git SHA:", error);
-      throw new Error("Failed to get git SHA");
-    }
+    return `build-${Date.now()}`;
   },
 };
 
