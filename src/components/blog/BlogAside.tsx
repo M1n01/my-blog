@@ -105,7 +105,7 @@ export default function BlogContentAside() {
 
                 return (
                   <NavLink
-                    key={index}
+                    key={link.link}
                     href={link.link}
                     label={link.label}
                     component="a"
