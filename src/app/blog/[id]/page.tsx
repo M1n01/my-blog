@@ -29,7 +29,23 @@ import React, { Suspense } from "react";
 import { type Article } from "../../../types/notion/Article";
 import LoadingContent from "./loading";
 
-export const runtime = "edge";
+// Edge runtime disabled for static export compatibility
+
+export async function generateStaticParams() {
+  const articleService = getArticleService();
+
+  // 全記事のリストを取得してIDを返す
+  const result = await articleService.listArticles(null);
+
+  if (result.isErr()) {
+    console.error("Failed to generate static params:", result.error);
+    return [];
+  }
+
+  return result.value.articles.map((article) => ({
+    id: article.id,
+  }));
+}
 
 export async function generateMetadata({
   params,
@@ -207,26 +223,14 @@ function convertContent(article: Article): React.ReactNode {
 
 export default async function BlogContent({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ post: string }>;
 }) {
   const slug = (await params).id;
-  const { post: postParam } = await searchParams;
   const articleService = getArticleService();
 
-  // 一覧ページから流入した場合
-  let articleResult;
-  if (postParam) {
-    const postData = JSON.parse(
-      Array.isArray(postParam) ? postParam[0] : postParam,
-    ) as Article;
-    articleResult = await articleService.getArticleWithContent(slug, postData);
-  } else {
-    // クエリパラメータがない場合は従来通りAPIから取得
-    articleResult = await articleService.getArticleWithContent(slug, null);
-  }
+  // 静的生成の場合は常にAPIから取得
+  const articleResult = await articleService.getArticleWithContent(slug, null);
 
   if (articleResult.isErr()) {
     return (

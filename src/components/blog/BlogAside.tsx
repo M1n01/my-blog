@@ -1,7 +1,6 @@
 "use client";
 
-import { AppShell, Text, ScrollArea, Box } from "@mantine/core";
-import { TableOfContents } from "@mantine/core";
+import { AppShell, Box, NavLink, ScrollArea, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 /**
@@ -29,6 +28,7 @@ interface TocLink {
 export default function BlogContentAside() {
   const [links, setLinks] = useState<TocLink[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeLink, setActiveLink] = useState("");
 
   // 目次を構築する
   useEffect(() => {
@@ -67,6 +67,52 @@ export default function BlogContentAside() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const headerOffset = 60; // ヘッダーの高さ + 少しマージン
+      let current = "";
+
+      const headingElements = links
+        .map((link) => document.querySelector(link.link))
+        .filter((el) => el !== null);
+
+      const lastVisibleElement = [...headingElements]
+        .reverse()
+        .find((el) => el.getBoundingClientRect().top <= headerOffset);
+
+      if (lastVisibleElement) {
+        current = `#${lastVisibleElement.id}`;
+      }
+
+      setActiveLink(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // 初期チェック
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [links]);
+
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    link: string,
+  ) => {
+    e.preventDefault();
+    const element = document.querySelector(link);
+    if (element) {
+      const headerOffset = 60; // 固定ヘッダーの高さ
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <AppShell.Aside p="md" w={280}>
       <Box>
@@ -79,21 +125,31 @@ export default function BlogContentAside() {
               読み込み中...
             </Text>
           ) : links.length > 0 ? (
-            <TableOfContents
-              variant="filled"
-              color="blue"
-              size="sm"
-              radius="sm"
-              scrollSpyOptions={{
-                selector: ".article-content :is(h2, h3, h4)",
-              }}
-              getControlProps={({ active, data }) => ({
-                component: "a",
-                href: `#${data.id}`,
-                style: { color: active ? "blue" : "gray" },
-                children: data.value,
+            <Box>
+              {links.map((link, index) => {
+                const nextLink = links[index + 1];
+                // 次のリンクが子要素（より深い階層）であれば間隔を狭める
+                const marginBottom =
+                  nextLink && nextLink.order > link.order ? "2px" : "8px";
+
+                return (
+                  <NavLink
+                    key={link.link}
+                    href={link.link}
+                    label={link.label}
+                    component="a"
+                    active={activeLink === link.link}
+                    style={{
+                      paddingLeft: `${link.order * 16}px`,
+                      fontSize: "14px",
+                      borderRadius: "4px",
+                      marginBottom: marginBottom,
+                    }}
+                    onClick={(e) => handleLinkClick(e, link.link)}
+                  />
+                );
               })}
-            />
+            </Box>
           ) : (
             <Text size="sm" c="dimmed">
               この記事には目次がありません

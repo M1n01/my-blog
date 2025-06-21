@@ -1,31 +1,20 @@
-import { Suspense } from "react";
-import { Alert, Title, Grid, GridCol, Center } from "@mantine/core";
 import ArticleCard from "@/components/blog/ArticleCard";
-import PaginationControl from "@/components/blog/PaginationControl";
 import LoadingGrid from "@/components/blog/LoadingGrid";
-import { Article } from "@/types/notion/Article";
+import PaginationControl from "@/components/blog/PaginationControl";
 import { getArticleService } from "@/lib/articles/singleton";
+import { Article } from "@/types/notion/Article";
+import { Alert, Center, Grid, GridCol, Title } from "@mantine/core";
+import { Suspense } from "react";
 
-export const runtime = "edge";
-export const revalidate = 86400;
-export const dynamic = "force-dynamic";
+// Edge runtime disabled for static export compatibility
 
 // 1ページあたりの記事数
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 12;
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const pageParam = await searchParams;
-  const currentPage = pageParam?.page ? parseInt(pageParam.page as string) : 1;
-
+export default async function HomePage() {
   // シングルトンインスタンスを使用
   const articleService = getArticleService();
-  const result = await articleService.listArticles({
-    pageSize: ITEMS_PER_PAGE,
-  });
+  const result = await articleService.listArticles(null);
 
   // Result型のエラーハンドリング
   if (result.isErr()) {
@@ -38,13 +27,8 @@ export default async function HomePage({
   }
 
   const { articles } = result.value;
-  const totalArticles = articles.length;
-  const totalPages = Math.ceil(totalArticles / ITEMS_PER_PAGE);
-
-  // 現在のページに表示する記事を取得
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentPageArticles = articles.slice(startIndex, endIndex);
+  // 最新の記事を最大12件表示
+  const displayArticles = articles.slice(0, ITEMS_PER_PAGE);
 
   return (
     <>
@@ -53,21 +37,13 @@ export default async function HomePage({
       </Title>
 
       <Suspense fallback={<LoadingGrid />}>
-        <>
-          <Grid gutter="lg">
-            {currentPageArticles.map((post: Article) => (
-              <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
-                <ArticleCard post={post} />
-              </GridCol>
-            ))}
-          </Grid>
-
-          {totalPages > 1 && (
-            <Center mt="xl">
-              <PaginationControl total={totalPages} currentPage={currentPage} />
-            </Center>
-          )}
-        </>
+        <Grid gutter="lg">
+          {displayArticles.map((post: Article) => (
+            <GridCol span={{ base: 12, sm: 6, md: 4 }} key={post.id}>
+              <ArticleCard post={post} />
+            </GridCol>
+          ))}
+        </Grid>
       </Suspense>
     </>
   );
