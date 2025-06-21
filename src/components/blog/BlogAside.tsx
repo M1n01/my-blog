@@ -102,7 +102,7 @@ export default function BlogContentAside() {
     e.preventDefault();
     const element = document.querySelector(link);
     if (element) {
-      const headerOffset = 56; // 固定ヘッダーの高さ
+      const headerOffset = 60; // 固定ヘッダーの高さ
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
