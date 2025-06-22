@@ -1,10 +1,10 @@
-import React from "react";
 import { Title } from "@mantine/core";
 import {
   Heading1BlockObjectResponse,
   Heading2BlockObjectResponse,
   Heading3BlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import React from "react";
 import classes from "./Headings.module.css";
 
 export const Heading1 = ({
@@ -14,7 +14,7 @@ export const Heading1 = ({
   block: Heading1BlockObjectResponse;
   index: number;
 }) => {
-  const text = block.heading_1.rich_text[0]?.plain_text || "";
+  const text = block.heading_1.rich_text.map((t) => t.plain_text).join("");
   const headingId = `heading-1-${index}`;
 
   return (
@@ -31,7 +31,7 @@ export const Heading2 = ({
   block: Heading2BlockObjectResponse;
   index: number;
 }) => {
-  const text = block.heading_2.rich_text[0]?.plain_text || "";
+  const text = block.heading_2.rich_text.map((t) => t.plain_text).join("");
   const headingId = `heading-2-${index}`;
 
   return (
@@ -56,7 +56,7 @@ export const Heading3 = ({
   block: Heading3BlockObjectResponse;
   index: number;
 }) => {
-  const text = block.heading_3.rich_text[0]?.plain_text || "";
+  const text = block.heading_3.rich_text.map((t) => t.plain_text).join("");
   const headingId = `heading-3-${index}`;
 
   return (
