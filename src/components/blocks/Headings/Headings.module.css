@@ -1,67 +1,16 @@
 .h2 {
-  color: var(--mantine-color-gray-2);
-  font-size: rem(20px);
-  background-color: var(--mantine-color-dark-7);
-  display: block;
-  padding: rem(15px) rem(20px);
-  border-left: rem(3px) solid var(--mantine-primary-color-filled);
-  border-bottom: rem(3px) solid var(--mantine-primary-color-filled);
   position: relative;
-
-  &::before,
-  &::after {
-    content: "";
-    height: 0;
-    width: 0;
-    border: solid transparent;
-    position: absolute;
-    left: rem(30px);
-  }
-
-  &::before {
-    border-color: transparent;
-    border-top-color: var(--mantine-primary-color-filled);
-    border-width: rem(15px);
-    top: 100%;
-    left: rem(26px);
-  }
-
-  &::after {
-    border-color: transparent;
-    border-top-color: var(--mantine-color-dark-7);
-    border-width: rem(11px);
-    top: 99%;
-  }
+  padding: rem(10px) rem(15px);
+  border-left: rem(5px) solid var(--mantine-primary-color-filled);
+  background-color: var(--mantine-color-dark-6);
+  color: var(--mantine-color-gray-1);
 }
 
 .h3 {
-  color: var(--mantine-color-gray-2);
-  font-size: rem(18px);
-  padding: rem(20px) rem(20px) rem(10px);
-  display: block;
   position: relative;
-  padding-left: rem(25px);
-
-  &::before {
-    position: absolute;
-    content: "";
-    bottom: rem(-3px);
-    left: 0;
-    width: 0;
-    height: 0;
-    border: none;
-    border-left: rem(10px) solid transparent;
-    border-bottom: rem(10px) solid var(--mantine-primary-color-filled);
-  }
-
-  &::after {
-    position: absolute;
-    content: "";
-    bottom: rem(-3px);
-    left: rem(10px);
-    width: 100%;
-    border-bottom: rem(2px) solid var(--mantine-primary-color-filled);
-  }
+  padding: rem(8px) rem(15px);
+  border-left: rem(3px) solid var(--mantine-primary-color-filled);
+  color: var(--mantine-color-gray-2);
 }
 
 .h4 {
