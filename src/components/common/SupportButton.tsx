@@ -1,6 +1,6 @@
 "use client";
 import { Button, Tooltip } from "@mantine/core";
-import { IconHeart } from "@tabler/icons-react";
+import { IconCoffee } from "@tabler/icons-react";
 
 /**
  * サポートボタン（Buy Me Coffee）コンポーネント
@@ -17,10 +17,11 @@ export const SupportButton = () => {
       withArrow
     >
       <Button
-        variant="outline"
-        color="pink"
-        leftSection={<IconHeart size={20} />}
+        variant="filled"
+        color="green"
+        leftSection={<IconCoffee size={25} />}
         size="lg"
+        radius="xl"
         fullWidth
         onClick={() => window.open("https://buymeacoffee.com/m1n01", "_blank")}
       >
