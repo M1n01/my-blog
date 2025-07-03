@@ -2,7 +2,7 @@
 
 import { ActionIcon, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconHeart } from "@tabler/icons-react";
+import { IconHeart, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
@@ -68,6 +68,8 @@ export const LikeButton = ({ articleId }: LikeButtonProps) => {
         title: "ありがとうございます！",
         message: "いいねが送信されました",
         color: "pink",
+        withCloseButton: true,
+        icon: <IconHeart style={{ color: "pink" }} />,
       });
     } catch (error) {
       console.error("いいね処理中にエラーが発生しました:", error);
@@ -75,6 +77,8 @@ export const LikeButton = ({ articleId }: LikeButtonProps) => {
         title: "エラー",
         message: "いいねを送信できませんでした",
         color: "red",
+        withCloseButton: true,
+        icon: <IconX style={{ color: "red" }} />,
       });
     } finally {
       setIsLoading(false);
