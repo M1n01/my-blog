@@ -13,37 +13,38 @@
     "type-check": "wrangler types --experimental-include-runtime && tsc"
   },
   "dependencies": {
-    "@cloudflare/next-on-pages": "^1.13.7",
-    "@cloudflare/workers-types": "^4.20250224.0",
+    "@cloudflare/next-on-pages": "^1.13.12",
+    "@cloudflare/workers-types": "^4.20250704.0",
     "@mantine/code-highlight": "^8.1.2",
     "@mantine/core": "^8.1.2",
     "@mantine/hooks": "^8.1.2",
     "@mantine/notifications": "^8.1.2",
-    "@next/third-parties": "^15.1.7",
+    "@next/third-parties": "^15.3.5",
     "@notionhq/client": "^2.3.0",
-    "@tabler/icons-react": "^3.28.1",
+    "@tabler/icons-react": "^3.34.0",
     "critters": "^0.0.25",
-    "lefthook": "^1.11.12",
+    "google": "link:@next/third-parties/google",
+    "lefthook": "^1.11.16",
     "neverthrow": "^8.2.0",
     "next": "15.0.3",
-    "pnpm": "^9.15.4",
+    "pnpm": "^9.15.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-share": "^5.2.2",
-    "swr": "^2.3.3",
+    "swr": "^2.3.4",
     "vercel": "39.1.1",
-    "zod": "^3.24.2"
+    "zod": "^3.25.72"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "^20.17.14",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "postcss": "^8.5.1",
-    "postcss-preset-mantine": "^1.17.0",
+    "@types/node": "^20.19.4",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "postcss": "^8.5.6",
+    "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
-    "typescript": "^5.7.3",
-    "wrangler": "^3.103.2"
+    "typescript": "^5.8.3",
+    "wrangler": "^3.114.10"
   },
   "overrides": {
     "vercel": "$vercel"

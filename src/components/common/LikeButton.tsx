@@ -99,7 +99,7 @@ export const LikeButton = ({ articleId }: LikeButtonProps) => {
     >
       <Group gap="xs">
         <ActionIcon
-          variant={hasLiked ? "filled" : "outline"}
+          variant="filled"
           color="pink"
           onClick={handleLike}
           loading={isLoading || isValidating}

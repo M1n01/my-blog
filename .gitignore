@@ -47,3 +47,5 @@ next-env.d.ts
 !.vscode/settings.json
 
 .env*
+
+AI_INSTRUCTIONS.md
