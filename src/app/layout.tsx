@@ -1,10 +1,9 @@
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript } from "@mantine/core";
 import "./globals.css";
 import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css"; // 通知用のスタイルを追加
-import { Notifications } from "@mantine/notifications"; // Notificationsプロバイダーをインポート
 import { GoogleAnalytics } from "@next/third-parties/google";
-import AppMenu from "../components/common/AppMenu";
+
+import ThemeRegistry from "./ThemeRegistry";
 
 export const metadata = {
   title: "minabe's blog",
@@ -23,10 +22,7 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="dark">
-          <Notifications position="top-right" />
-          <AppMenu>{children}</AppMenu>
-        </MantineProvider>
+        <ThemeRegistry>{children}</ThemeRegistry>
       </body>
     </html>
   );
