@@ -1,28 +1,30 @@
 "use client";
-import { FC, useState } from "react";
-import { AppShell, Burger, Flex, Group, Title } from "@mantine/core";
+import { FC, useState, useEffect } from "react";
+import { AppShell, Burger, Button, Flex, Group, Title } from "@mantine/core";
 import classes from "./Header.module.css";
 import Link from "next/link";
-
-const links = [{ link: "/", label: "TOP" }];
+import { useMantineColorScheme } from "@mantine/core";
+import { IconSun, IconMoon } from "@tabler/icons-react";
 
 const Header: FC<{ opened: boolean; toggle: () => void }> = ({
   opened,
   toggle,
 }) => {
-  const [active, setActive] = useState<string | null>(null);
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
 
-  const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={classes.link}
-      data-active={active === link.link || undefined}
-      onClick={() => setActive(link.link)}
-    >
-      {link.label}
-    </a>
-  ));
+  // 初回マウント時にOSのカラースキームを反映
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia) {
+      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setColorScheme(isDark ? "dark" : "light");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 切り替えハンドラ
+  const handleToggleColorScheme = () => {
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  };
 
   return (
     <AppShell.Header className={classes.header} style={{ padding: "5px" }}>
@@ -39,10 +41,26 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
             Minabe&apos;s Blog
           </Title>
         </Link>
-        <Group gap={5} visibleFrom="xs" className={classes.links}>
-          {items}
-        </Group>
-
+        {/* カラースキーム切り替えボタン */}
+        <Button
+          onClick={handleToggleColorScheme}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 8,
+            borderRadius: 6,
+            display: "flex",
+            alignItems: "center",
+          }}
+          aria-label="Toggle color scheme"
+        >
+          {colorScheme === "dark" ? (
+            <IconSun size={20} />
+          ) : (
+            <IconMoon size={20} />
+          )}
+        </Button>
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
       </Flex>
     </AppShell.Header>
