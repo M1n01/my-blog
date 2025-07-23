@@ -49,5 +49,6 @@
   },
   "overrides": {
     "vercel": "$vercel"
-  }
+  },
+  "packageManager": "yarn@4.9.2"
 }
