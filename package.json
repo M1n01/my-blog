@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pages:build": "pnpm dlx @cloudflare/next-on-pages",
-    "preview": "pnpm run pages:build && wrangler pages dev",
-    "deploy": "pnpm run pages:build && wrangler pages deploy",
+    "pages:build": "yarn dlx @cloudflare/next-on-pages",
+    "preview": "yarn run pages:build && wrangler pages dev",
+    "deploy": "yarn run pages:build && wrangler pages deploy",
     "type-check": "wrangler types --experimental-include-runtime && tsc"
   },
   "dependencies": {
