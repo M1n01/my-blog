@@ -1,10 +1,55 @@
 "use client";
 import { FC, useState } from "react";
-import { AppShell, Burger, Flex, Group, Title } from "@mantine/core";
+import { AppShell, Burger, Flex, Group, Title, Menu, ActionIcon, SegmentedControl } from "@mantine/core";
+import { IconSettings } from "@tabler/icons-react";
 import classes from "./Header.module.css";
 import Link from "next/link";
+import { useBlogSettings } from "@/contexts/BlogSettingsContext";
 
 const links = [{ link: "/", label: "TOP" }];
+
+const SettingsMenu: FC = () => {
+  const { settings, updateFontSize, updateFontFamily } = useBlogSettings();
+
+  return (
+    <Menu position="bottom-end" withArrow>
+      <Menu.Target>
+        <ActionIcon variant="subtle" aria-label="ブログ設定">
+          <IconSettings size={20} />
+        </ActionIcon>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Label>文字サイズ</Menu.Label>
+        <Menu.Item>
+          <SegmentedControl
+            fullWidth
+            value={settings.fontSize}
+            onChange={(value) => updateFontSize(value as any)}
+            data={[
+              { label: "小", value: "small" },
+              { label: "中", value: "medium" },
+              { label: "大", value: "large" },
+            ]}
+          />
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Label>フォント</Menu.Label>
+        <Menu.Item>
+          <SegmentedControl
+            fullWidth
+            value={settings.fontFamily}
+            onChange={(value) => updateFontFamily(value as any)}
+            data={[
+              { label: "デフォルト", value: "default" },
+              { label: "ゴシック", value: "gothic" },
+              { label: "明朝", value: "mincho" },
+            ]}
+          />
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
 
 const Header: FC<{ opened: boolean; toggle: () => void }> = ({
   opened,
@@ -41,9 +86,13 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
         </Link>
         <Group gap={5} visibleFrom="xs" className={classes.links}>
           {items}
+          <SettingsMenu />
         </Group>
 
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+        <Group hiddenFrom="xs" gap={5}>
+          <SettingsMenu />
+          <Burger opened={opened} onClick={toggle} size="sm" />
+        </Group>
       </Flex>
     </AppShell.Header>
   );

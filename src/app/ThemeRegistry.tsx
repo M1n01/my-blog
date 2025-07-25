@@ -24,6 +24,7 @@ import htmlLang from "highlight.js/lib/languages/xml";
 import "highlight.js/styles/dark.css";
 
 import AppMenu from "../components/common/AppMenu";
+import { BlogSettingsProvider } from "@/contexts/BlogSettingsContext";
 
 const languages: [string, typeof tsLang][] = [
   ["typescript", tsLang],
@@ -49,8 +50,10 @@ export default function ThemeRegistry({
   return (
     <MantineProvider defaultColorScheme="dark">
       <CodeHighlightAdapterProvider adapter={highlightJsAdapter}>
-        <Notifications position="top-right" />
-        <AppMenu>{children}</AppMenu>
+        <BlogSettingsProvider>
+          <Notifications position="top-right" />
+          <AppMenu>{children}</AppMenu>
+        </BlogSettingsProvider>
       </CodeHighlightAdapterProvider>
     </MantineProvider>
   );

@@ -1,6 +1,10 @@
 {
   "permissions": {
-    "allow": ["Bash(find:*)", "Bash(osascript:*)"],
+    "allow": [
+      "Bash(find:*)",
+      "Bash(osascript:*)",
+      "mcp__context7__resolve-library-id"
+    ],
     "deny": []
   }
 }
