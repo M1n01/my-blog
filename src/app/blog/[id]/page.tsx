@@ -1,6 +1,6 @@
-import { LikeButton } from "@/components/common/LikeButton";
-import { ShareButtons } from "@/components/common/ShareButtons";
-import { SupportButton } from "@/components/common/SupportButton";
+import { LikeButton } from "@/components/article/LikeButton";
+import { ShareButtons } from "@/components/article/ShareButtons";
+import { SupportButton } from "@/components/article/SupportButton";
 import { getArticleService } from "@/lib/articles/singleton";
 import { renderBlocks } from "@/lib/blocks";
 import {
