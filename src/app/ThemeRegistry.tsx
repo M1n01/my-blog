@@ -18,6 +18,8 @@ import mdLang from "highlight.js/lib/languages/markdown";
 import pythonLang from "highlight.js/lib/languages/python";
 import shellLang from "highlight.js/lib/languages/shell";
 import tsLang from "highlight.js/lib/languages/typescript";
+import cLang from "highlight.js/lib/languages/c";
+import plaintextLang from "highlight.js/lib/languages/plaintext";
 import htmlLang from "highlight.js/lib/languages/xml";
 import "highlight.js/styles/dark.css";
 
@@ -33,6 +35,8 @@ const languages: [string, typeof tsLang][] = [
   ["css", cssLang],
   ["html", htmlLang],
   ["markdown", mdLang],
+  ["c", cLang],
+  ["plaintext", plaintextLang],
 ];
 
 languages.forEach(([name, lang]) => hljs.registerLanguage(name, lang));
