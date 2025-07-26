@@ -13,12 +13,10 @@ import {
   Text,
   Box,
 } from "@mantine/core";
-import { IconSettings } from "@tabler/icons-react";
+import { IconLetterCase } from "@tabler/icons-react";
 import classes from "./Header.module.css";
 import Link from "next/link";
 import { useBlogSettings } from "@/contexts/BlogSettingsContext";
-
-const links = [{ link: "/", label: "TOP" }];
 
 const SettingsMenu: FC = () => {
   const { settings, updateFontSize, updateFontFamily } = useBlogSettings();
@@ -27,7 +25,7 @@ const SettingsMenu: FC = () => {
     <Menu position="bottom-end" withArrow>
       <Menu.Target>
         <ActionIcon variant="subtle" aria-label="ブログ設定">
-          <IconSettings size={20} />
+          <IconLetterCase size={20} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
@@ -76,20 +74,6 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
   opened,
   toggle,
 }) => {
-  const [active, setActive] = useState<string | null>(null);
-
-  const items = links.map((link) => (
-    <a
-      key={link.label}
-      href={link.link}
-      className={classes.link}
-      data-active={active === link.link || undefined}
-      onClick={() => setActive(link.link)}
-    >
-      {link.label}
-    </a>
-  ));
-
   return (
     <AppShell.Header className={classes.header} style={{ padding: "5px" }}>
       <Flex
@@ -105,14 +89,12 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
             Minabe&apos;s Blog
           </Title>
         </Link>
-        <Group gap={5} visibleFrom="xs" className={classes.links}>
-          {items}
-          <SettingsMenu />
-        </Group>
 
-        <Group hiddenFrom="xs" gap={5}>
+        <Group gap={5}>
           <SettingsMenu />
-          <Burger opened={opened} onClick={toggle} size="sm" />
+          <Group hiddenFrom="sm" gap={5}>
+            <Burger opened={opened} onClick={toggle} size="sm" />
+          </Group>
         </Group>
       </Flex>
     </AppShell.Header>
