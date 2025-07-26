@@ -51,7 +51,7 @@ const SettingsMenu: FC = () => {
         </Menu.Item>
         <Menu.Divider />
         <Menu.Label>フォント</Menu.Label>
-        <Menu.Item>
+        <Menu.Item closeMenuOnClick={false}>
           <SegmentedControl
             fullWidth
             value={settings.fontFamily}
