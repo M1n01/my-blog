@@ -25,7 +25,7 @@ const SettingsMenu: FC = () => {
     <Menu position="bottom-end" withArrow>
       <Menu.Target>
         <ActionIcon variant="subtle" aria-label="ブログ設定">
-          <IconLetterCase size={20} />
+          <IconLetterCase size={50} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
