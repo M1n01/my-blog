@@ -17,13 +17,25 @@ export const NumberedListItem = ({
   // 子要素があれば処理
   const childContent =
     block.children && block.children.length > 0 ? (
-      <List type="ordered">
+      <List 
+        type="ordered"
+        style={{
+          fontSize: 'var(--blog-font-size)',
+          fontFamily: 'var(--blog-font-family)',
+        }}
+      >
         {renderBlocks(block.children as BlockWithChildren[])}
       </List>
     ) : null;
 
   return (
-    <List.Item mb="sm">
+    <List.Item 
+      mb="sm"
+      style={{
+        fontSize: 'var(--blog-font-size)',
+        fontFamily: 'var(--blog-font-family)',
+      }}
+    >
       {block.numbered_list_item.rich_text.map((text, i) => (
         <React.Fragment key={i}>{renderRichText(text)}</React.Fragment>
       ))}

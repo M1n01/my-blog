@@ -15,7 +15,13 @@ export const ToggleBlock = ({
   childrenContent?: React.ReactNode;
 }) => {
   return (
-    <Accordion mb="sm">
+    <Accordion 
+      mb="sm"
+      style={{
+        fontSize: 'var(--blog-font-size)',
+        fontFamily: 'var(--blog-font-family)',
+      }}
+    >
       <Accordion.Item value={String(block.id)} key={index}>
         <Accordion.Control>
           {block.toggle.rich_text.map((text, i) => (

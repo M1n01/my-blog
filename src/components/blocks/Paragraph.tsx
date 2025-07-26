@@ -17,10 +17,18 @@ export const renderRichText = (text: RichTextItemResponse) => {
       text.annotations.color !== "default" ? text.annotations.color : undefined,
   };
 
-  const customStyle = underlineEnabled ? { borderBottom: "1px dashed" } : {};
+  const customStyle = {
+    ...(underlineEnabled ? { borderBottom: "1px dashed" } : {}),
+    fontSize: "var(--blog-font-size)",
+    fontFamily: "var(--blog-font-family)",
+  };
 
   if (text.annotations.code) {
-    return <Code>{text.plain_text}</Code>;
+    return (
+      <Code style={{ fontSize: "var(--blog-font-size)" }}>
+        {text.plain_text}
+      </Code>
+    );
   }
 
   if (text.href) {
@@ -54,7 +62,13 @@ export const Paragraph = ({
   index: number;
 }) => {
   return (
-    <Text key={index}>
+    <Text
+      key={index}
+      style={{
+        fontSize: "var(--blog-font-size)",
+        fontFamily: "var(--blog-font-family)",
+      }}
+    >
       {block.paragraph.rich_text.map((text, i) => (
         <React.Fragment key={i}>{renderRichText(text)}</React.Fragment>
       ))}

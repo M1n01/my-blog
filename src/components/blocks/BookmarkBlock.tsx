@@ -78,13 +78,36 @@ export const BookmarkBlock = ({
       >
         <Group align="flex-start" style={{ gap: "1rem" }}>
           <Stack style={{ flex: 1 }}>
-            <Text size="sm" c="dimmed">
+            <Text 
+              size="sm" 
+              c="dimmed"
+              style={{
+                fontSize: 'var(--blog-font-size)',
+                fontFamily: 'var(--blog-font-family)',
+              }}
+            >
               {hostname}
             </Text>
-            <Text size="lg" fw={500} lineClamp={2}>
+            <Text 
+              size="lg" 
+              fw={500} 
+              lineClamp={2}
+              style={{
+                fontSize: 'var(--blog-font-size)',
+                fontFamily: 'var(--blog-font-family)',
+              }}
+            >
               {block.bookmark.url}
             </Text>
-            <Text size="sm" c="dimmed" lineClamp={2}>
+            <Text 
+              size="sm" 
+              c="dimmed" 
+              lineClamp={2}
+              style={{
+                fontSize: 'var(--blog-font-size)',
+                fontFamily: 'var(--blog-font-family)',
+              }}
+            >
               {hostname}からのリンク
             </Text>
           </Stack>
@@ -116,13 +139,36 @@ export const BookmarkBlock = ({
           />
         )}
         <Stack style={{ flex: 1 }}>
-          <Text size="sm" c="dimmed">
+          <Text 
+            size="sm" 
+            c="dimmed"
+            style={{
+              fontSize: 'var(--blog-font-size)',
+              fontFamily: 'var(--blog-font-family)',
+            }}
+          >
             {hostname}
           </Text>
-          <Text size="lg" fw={500} lineClamp={2}>
+          <Text 
+            size="lg" 
+            fw={500} 
+            lineClamp={2}
+            style={{
+              fontSize: 'var(--blog-font-size)',
+              fontFamily: 'var(--blog-font-family)',
+            }}
+          >
             {ogpData.title || block.bookmark.url}
           </Text>
-          <Text size="sm" c="dimmed" lineClamp={2}>
+          <Text 
+            size="sm" 
+            c="dimmed" 
+            lineClamp={2}
+            style={{
+              fontSize: 'var(--blog-font-size)',
+              fontFamily: 'var(--blog-font-family)',
+            }}
+          >
             {ogpData.description || `${hostname}からのリンク`}
           </Text>
         </Stack>

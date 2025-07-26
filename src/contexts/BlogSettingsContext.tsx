@@ -4,13 +4,13 @@ import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useContext, ReactNode } from "react";
 
 interface BlogSettings {
-  fontSize: "small" | "medium" | "large";
+  fontSize: number;
   fontFamily: "default" | "gothic" | "mincho";
 }
 
 interface BlogSettingsContextType {
   settings: BlogSettings;
-  updateFontSize: (size: BlogSettings["fontSize"]) => void;
+  updateFontSize: (size: number) => void;
   updateFontFamily: (family: BlogSettings["fontFamily"]) => void;
 }
 
@@ -22,12 +22,12 @@ export function BlogSettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useLocalStorage<BlogSettings>({
     key: "blog-settings",
     defaultValue: {
-      fontSize: "medium",
+      fontSize: 16,
       fontFamily: "default",
     },
   });
 
-  const updateFontSize = (size: BlogSettings["fontSize"]) => {
+  const updateFontSize = (size: number) => {
     setSettings((prev) => ({ ...prev, fontSize: size }));
   };
 
@@ -36,12 +36,6 @@ export function BlogSettingsProvider({ children }: { children: ReactNode }) {
   };
 
   // CSS変数を設定
-  const fontSizeMap = {
-    small: "14px",
-    medium: "16px",
-    large: "18px",
-  };
-
   const fontFamilyMap = {
     default: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     gothic: '"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif',
@@ -54,7 +48,7 @@ export function BlogSettingsProvider({ children }: { children: ReactNode }) {
     >
       <div
         style={{
-          "--blog-font-size": fontSizeMap[settings.fontSize],
+          "--blog-font-size": `${settings.fontSize}px`,
           "--blog-font-family": fontFamilyMap[settings.fontFamily],
         } as React.CSSProperties}
       >

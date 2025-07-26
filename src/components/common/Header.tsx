@@ -1,6 +1,18 @@
 "use client";
 import { FC, useState } from "react";
-import { AppShell, Burger, Flex, Group, Title, Menu, ActionIcon, SegmentedControl } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Flex,
+  Group,
+  Title,
+  Menu,
+  ActionIcon,
+  SegmentedControl,
+  Slider,
+  Text,
+  Box,
+} from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 import classes from "./Header.module.css";
 import Link from "next/link";
@@ -20,17 +32,24 @@ const SettingsMenu: FC = () => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>文字サイズ</Menu.Label>
-        <Menu.Item>
-          <SegmentedControl
-            fullWidth
-            value={settings.fontSize}
-            onChange={(value) => updateFontSize(value as any)}
-            data={[
-              { label: "小", value: "small" },
-              { label: "中", value: "medium" },
-              { label: "大", value: "large" },
-            ]}
-          />
+        <Menu.Item closeMenuOnClick={false}>
+          <Box w={200}>
+            <Text size="sm" mb="xs">
+              {settings.fontSize}px
+            </Text>
+            <Slider
+              value={settings.fontSize}
+              onChange={updateFontSize}
+              min={9}
+              max={24}
+              step={1}
+              marks={[
+                { value: 9, label: "9px" },
+                { value: 16, label: "16px" },
+                { value: 24, label: "24px" },
+              ]}
+            />
+          </Box>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Label>フォント</Menu.Label>
@@ -38,7 +57,9 @@ const SettingsMenu: FC = () => {
           <SegmentedControl
             fullWidth
             value={settings.fontFamily}
-            onChange={(value) => updateFontFamily(value as any)}
+            onChange={(value) =>
+              updateFontFamily(value as "default" | "gothic" | "mincho")
+            }
             data={[
               { label: "デフォルト", value: "default" },
               { label: "ゴシック", value: "gothic" },

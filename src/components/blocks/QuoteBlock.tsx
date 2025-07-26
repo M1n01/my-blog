@@ -10,7 +10,14 @@ export const QuoteBlock = ({
   index: number;
 }) => {
   return (
-    <Blockquote key={index} color="violet">
+    <Blockquote 
+      key={index} 
+      color="violet"
+      style={{
+        fontSize: 'var(--blog-font-size)',
+        fontFamily: 'var(--blog-font-family)',
+      }}
+    >
       {block.quote.rich_text.map((text) => text.plain_text)}
     </Blockquote>
   );
