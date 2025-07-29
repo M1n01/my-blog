@@ -22,7 +22,7 @@ const Navbar: FC<{ opened: boolean }> = ({ opened }) => {
       <Stack gap="xl">
         {/* Profile Section */}
         <Stack align="center" gap="xs">
-          <Avatar size="lg" src="/assets/avatar.jpg" />
+          <Avatar size="lg" src="/assets/avatar.jpg" alt="avatar" />
           <Title order={3}>Minabe</Title>
           <Text size="sm" c="dimmed">
             Frontend Developer
