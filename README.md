@@ -49,11 +49,47 @@ http://localhost:3000
 - Next.js
 - Notion API
 - Mantine
+- Sharp (画像処理・WebP変換)
 - cloudflare # for deployment
+
+## 3. Image Processing Features
+
+### WebP Conversion
+画像をWebP形式に変換してパフォーマンスを向上させる機能を追加しました。
+
+#### 主な機能
+- **自動WebP変換**: 画像をダウンロード時にWebP形式に変換
+- **サムネイル生成**: 最適化されたサムネイル画像の自動生成
+- **品質調整**: 用途に応じた品質設定（thumbnail: 85%, hero: 90%, content: 80%）
+- **リサイズ機能**: 指定したサイズに自動リサイズ
+
+#### 使用例
+```typescript
+import { downloadImage, downloadThumbnail } from './lib/articles/image-downloader';
+
+// 通常の画像ダウンロード
+const result = await downloadImage(imageUrl, articleId);
+
+// WebP変換付きダウンロード
+const webpResult = await downloadImage(imageUrl, articleId, {
+  convertToWebP: true,
+  quality: 90,
+  width: 1200,
+  height: 800,
+});
+
+// サムネイル生成
+const thumbnailResult = await downloadThumbnail(imageUrl, articleId, 400, 300);
+```
+
+#### 最適化設定
+- **thumbnail**: 400x300px, 85%品質
+- **hero**: 1200x800px, 90%品質  
+- **content**: 800x600px, 80%品質
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
-## 3. Git Commit Message prefix
+## 4. Git Commit Message prefix
 
 ```
 fix: バグ修正

@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 import { Result, err, ok } from "neverthrow";
 import type { NotionError } from "./types";
 
@@ -7,11 +8,18 @@ import type { NotionError } from "./types";
  * 画像をダウンロードして、publicディレクトリに保存する
  * @param url ダウンロードする画像のURL
  * @param articleId 記事ID
+ * @param options 変換オプション
  * @returns 保存した画像のパス or NotionError
  */
 export async function downloadImage(
   url: string,
   articleId: string,
+  options: {
+    convertToWebP?: boolean;
+    quality?: number;
+    width?: number;
+    height?: number;
+  } = {},
 ): Promise<Result<string, NotionError>> {
   try {
     const urlObject = new URL(url);
@@ -20,7 +28,10 @@ export async function downloadImage(
       pathnameParts[pathnameParts.length - 2] || `image_${Date.now()}`;
     const originalFilename = pathnameParts[pathnameParts.length - 1];
     const extension = path.extname(originalFilename) || ".png";
-    const imageName = `${imageId}${extension}`;
+
+    // WebP変換が有効な場合は拡張子を.webpに変更
+    const finalExtension = options.convertToWebP ? ".webp" : extension;
+    const imageName = `${imageId}${finalExtension}`;
 
     const directoryPath = path.join(
       process.cwd(),
@@ -51,7 +62,31 @@ export async function downloadImage(
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    fs.writeFileSync(imagePath, buffer);
+    // WebP変換が有効な場合はsharpで変換
+    if (options.convertToWebP) {
+      let sharpInstance = sharp(buffer);
+
+      // リサイズオプション
+      if (options.width || options.height) {
+        sharpInstance = sharpInstance.resize(options.width, options.height, {
+          fit: "inside",
+          withoutEnlargement: true,
+        });
+      }
+
+      // WebP変換
+      const webpBuffer = await sharpInstance
+        .webp({
+          quality: options.quality || 80,
+          effort: 4, // 圧縮レベル（0-6）
+        })
+        .toBuffer();
+
+      fs.writeFileSync(imagePath, webpBuffer);
+    } else {
+      // 元の形式で保存
+      fs.writeFileSync(imagePath, buffer);
+    }
 
     return ok(publicPath);
   } catch (error) {
@@ -62,4 +97,26 @@ export async function downloadImage(
       originalError: error,
     });
   }
+}
+
+/**
+ * サムネイル画像をWebP形式でダウンロードする
+ * @param url ダウンロードする画像のURL
+ * @param articleId 記事ID
+ * @param width サムネイルの幅
+ * @param height サムネイルの高さ
+ * @returns 保存した画像のパス or NotionError
+ */
+export async function downloadThumbnail(
+  url: string,
+  articleId: string,
+  width: number = 400,
+  height: number = 300,
+): Promise<Result<string, NotionError>> {
+  return downloadImage(url, articleId, {
+    convertToWebP: true,
+    quality: 85,
+    width,
+    height,
+  });
 }
