@@ -17,13 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <GoogleAnalytics gaId="G-RFT0CVB7F3" />
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body>
         <ThemeRegistry>{children}</ThemeRegistry>
       </body>
+      <GoogleAnalytics gaId="G-RFT0CVB7F3" />
     </html>
   );
 }
