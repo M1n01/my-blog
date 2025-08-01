@@ -9,6 +9,7 @@ import {
   Group,
   Stack,
 } from "@mantine/core";
+import NextImage from "next/image";
 import { type Article } from "@/types/notion/Article";
 import classes from "./ArticleCard.module.css";
 import { IconCalendarTime, IconCategory, IconTags } from "@tabler/icons-react";
@@ -34,7 +35,13 @@ const ArticleCard: FC<{ post: Article }> = ({ post }) => {
       href={`/blog/${id}`}
     >
       <CardSection>
-        <Image src={thumbnail} alt={title} height={180} />
+        <Image
+          component={NextImage}
+          src={thumbnail}
+          alt={title}
+          height={180}
+          width={320}
+        />
       </CardSection>
       <CardSection className={classes.section} style={{ height: 250 }}>
         <Group justify="space-between" mb="sm">
