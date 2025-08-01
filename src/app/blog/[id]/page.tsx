@@ -152,7 +152,7 @@ function convertContent(article: Article): React.ReactNode {
         src={article.thumbnail}
         alt={article.title}
         radius="md"
-        mah={350}
+        mah={360}
         mb="md"
       />
       <Title order={1} mb="md">
