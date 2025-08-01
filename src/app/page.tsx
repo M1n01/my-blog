@@ -3,7 +3,7 @@ import LoadingGrid from "@/components/blog/LoadingGrid";
 import PaginationControl from "@/components/blog/PaginationControl";
 import { getArticleService } from "@/lib/articles/singleton";
 import { Article } from "@/types/notion/Article";
-import { Alert, Center, Grid, GridCol, Title } from "@mantine/core";
+import { Alert, Grid, GridCol, Title } from "@mantine/core";
 import { Suspense } from "react";
 
 // Edge runtime disabled for static export compatibility
