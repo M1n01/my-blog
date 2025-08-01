@@ -85,6 +85,11 @@ export const LikeButton = ({ articleId }: LikeButtonProps) => {
     }
   };
 
+  const likeCount = data?.likes ?? 0;
+  const buttonLabel = hasLiked
+    ? "いいね済み"
+    : `この記事にいいねする（現在${likeCount}いいね）`;
+
   return (
     <Tooltip
       label={
@@ -97,7 +102,7 @@ export const LikeButton = ({ articleId }: LikeButtonProps) => {
       offset={5}
       color={hasLiked ? "pink" : "gray"}
     >
-      <Group gap="xs">
+      <Group gap="xs" aria-label="いいねボタン">
         <ActionIcon
           variant="filled"
           color="pink"
@@ -109,11 +114,22 @@ export const LikeButton = ({ articleId }: LikeButtonProps) => {
           disabled={hasLiked}
           size="xl"
           radius="xl"
+          // 追加すべきアクセシビリティ属性
+          aria-label={buttonLabel}
+          aria-pressed={hasLiked}
+          aria-describedby="like-count"
+          aria-live="polite"
         >
-          <IconHeart style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          <IconHeart
+            style={{ width: "70%", height: "70%" }}
+            stroke={1.5}
+            aria-hidden="true" // アイコンは装飾なので非表示
+          />
         </ActionIcon>
-        <Group gap="xs">
-          <Text fw={700}>{data?.likes ?? 0}</Text>
+        <Group gap="xs" id="like-count" aria-live="polite">
+          <Text fw={700} aria-label={`いいね数: ${likeCount}`}>
+            {likeCount}
+          </Text>
           <Text>いいね！</Text>
         </Group>
       </Group>
