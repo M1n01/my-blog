@@ -93,7 +93,13 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
         <Group gap={5}>
           <SettingsMenu />
           <Group hiddenFrom="sm" gap={5}>
-            <Burger opened={opened} onClick={toggle} size="sm" />
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              size="sm"
+              aria-label="メニューを開く"
+              title="メニューを開く"
+            />
           </Group>
         </Group>
       </Flex>
