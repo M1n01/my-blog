@@ -63,7 +63,7 @@ export async function downloadImage(
     const buffer = Buffer.from(arrayBuffer);
 
     // WebP変換が有効な場合はsharpで変換
-    if (options.convertToWebP) {
+    if (options.convertToWebP && url.startsWith("https://www.notion.so/")) {
       let sharpInstance = sharp(buffer);
 
       // リサイズオプション
@@ -110,13 +110,9 @@ export async function downloadImage(
 export async function downloadThumbnail(
   url: string,
   articleId: string,
-  width: number = 400,
-  height: number = 300,
 ): Promise<Result<string, NotionError>> {
   return downloadImage(url, articleId, {
     convertToWebP: true,
     quality: 85,
-    width,
-    height,
   });
 }

@@ -8,7 +8,7 @@ import {
 import type { Article } from "../../types/notion/Article";
 import type { Category } from "../../types/notion/Category";
 import type { Tag } from "../../types/notion/Tag";
-import { downloadImage } from "./image-downloader";
+import { downloadImage, downloadThumbnail } from "./image-downloader";
 import { ArticleListResult, ArticlePresenterInterface } from "./types";
 
 // Notionのプロパティの型定義
@@ -176,7 +176,13 @@ export class ArticlePresenter implements ArticlePresenterInterface {
       // 画像ブロックの処理
       if (newBlock.type === "image" && newBlock.image.type === "file") {
         const imageUrl = newBlock.image.file.url;
-        const downloadResult = await downloadImage(imageUrl, articleId);
+        // 記事本文の画像用にWebP変換を有効にしてダウンロード
+        const downloadResult = await downloadImage(imageUrl, articleId, {
+          convertToWebP: true,
+          quality: 80,
+          width: 1200,
+          height: 800,
+        });
 
         if (downloadResult.isOk()) {
           const { caption } = newBlock.image;
@@ -233,7 +239,11 @@ export class ArticlePresenter implements ArticlePresenterInterface {
 
     // fileタイプの画像（Notionにアップロードされた画像）のみダウンロード
     if (page.cover?.type === "file") {
-      const downloadResult = await downloadImage(imageUrl, page.id);
+      // サムネイル専用関数を使用してWebP変換
+      const downloadResult = await downloadThumbnail(
+        imageUrl,
+        page.id
+      );
       if (downloadResult.isOk()) {
         return downloadResult.value;
       } else {
